@@ -1,13 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Phase } from './Phase';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        MIC CHECK
-      </header>
+      <Phase number={1} />
+      <Phase number={2} />
+      <Phase number={3} />
     </div>
   );
 }
