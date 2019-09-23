@@ -1,13 +1,15 @@
 import React, { Component, ReactNode } from 'react'
 import SetGroup from './SetGroup';
 import IntensityScheme, { INTENSITY_SCHEME_DATA } from './Types'
-import { round5 } from '../Util';
+import { round5 } from '../util/Math';
+import PlateCalculator from '../util/PlateCalculator';
 
 type WorkoutProps = {
     number: number
     intensityScheme: IntensityScheme
     mainLifts: string[]
     trainingMaxes: object
+    plateCalculator: PlateCalculator
 };
 
 export class Workout extends Component<WorkoutProps> {
@@ -17,6 +19,7 @@ export class Workout extends Component<WorkoutProps> {
         const mainLiftSetIntensities = INTENSITY_SCHEME_DATA[intensitySchemeKey]
         const mainLifts = this.props.mainLifts
         const trainingMaxes = this.props.trainingMaxes
+        const plateCalculator = this.props.plateCalculator
 
         return <div className="card">
             <h3>Workout {number}</h3>
@@ -30,7 +33,8 @@ export class Workout extends Component<WorkoutProps> {
                                 return {
                                     "exercise": lift,
                                     "reps": 5,  // TODO: pass in the rep scheme
-                                    "weight": setWeight
+                                    "weight": setWeight,
+                                    "plates": plateCalculator.getPlatesPerSide(setWeight)
                                 }
                             }
                         )

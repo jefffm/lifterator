@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import { Phase } from './lib/Phase';
 import { Program } from './lib/Program';
 
 const App: React.FC = () => {

@@ -13,16 +13,17 @@ export class SetGroup extends Component<SetGroupProps> {
         const name = this.props.name
         const sets = this.props.sets
 
-        // TODO: generate warmup sets with beyond method
+        // TODO: generate warmup sets with "Beyond 531" method
 
         var setElems = []
         for (const [i, item] of sets.entries()) {
-            const key = name + item.exercise + item.reps + item.weight
             setElems.push(<WorkoutSet
                 key={i}
                 exercise={item.exercise}
                 reps={item.reps}
-                weight={item.weight} />)
+                weight={item.weight}
+                plates={item.plates}
+            />)
         }
         return <div className="card workout">
             <h3>{name}</h3>
