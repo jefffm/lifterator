@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from 'react'
 import { WorkoutSet, WorkoutSetProps } from './WorkoutSet'
+import Table from 'react-bootstrap/Table'
 
 
 type SetGroupProps = {
@@ -25,13 +26,11 @@ export class SetGroup extends Component<SetGroupProps> {
         }
         return <div className="card workout">
             <h3>{name}</h3>
-            <table>
+            <Table striped bordered hover>
                 <tbody>
-                    {
-                        setElems.map(x => x)
-                    }
+                    {setElems}
                 </tbody>
-            </table>
+            </Table>
         </div>
     }
 }

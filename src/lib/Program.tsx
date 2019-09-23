@@ -27,7 +27,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event: React.ChangeEvent<HTMLInputElement>, key: string) {
+    handleChange(event: React.FormEvent<HTMLInputElement>, key: string) {
         const value = event.currentTarget.valueAsNumber
         this.setState(state => (state.trainingMaxes[key] = value, state))
     }
@@ -40,7 +40,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
         return <div className="program card">
             <div className="programInfo card">
                 <div className="title">
-                    <h1>{programName}</h1>
                 </div>
 
                 <div className="trainingMaxesForm">

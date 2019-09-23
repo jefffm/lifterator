@@ -28,18 +28,3 @@
   margin: 12px;
   border-radius: 3;
 }
-
-.phase card {
-
-}
-
-.workout card {
-
-}
-
-table { 
-  display: table;
-  border-collapse: separate;
-  border-spacing: 20px;
-  border-color: gray;
-}
