@@ -19,7 +19,9 @@ export class WorkoutSet extends Component<WorkoutSetProps> {
             <td>{exercise}</td>
             <td>{reps}x</td>
             <td>{weight} lbs</td>
-            <td>({plates.join(", ")})</td>
+            <td style={{ textAlign: 'left' }}>
+                {plates.join(", ")}
+            </td>
         </tr>
     }
 }
