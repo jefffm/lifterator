@@ -1,22 +1,21 @@
 import React, { Component, ReactNode } from 'react'
 import SetGroup from './SetGroup';
-import IntensityScheme, { INTENSITY_SCHEME_DATA } from './Types'
 import { round5 } from '../util/Math';
 import PlateCalculator from '../util/PlateCalculator';
+import { ISetPrototype } from './Types';
 
 type WorkoutProps = {
     number: number
-    intensityScheme: IntensityScheme
     mainLifts: string[]
     trainingMaxes: object
     plateCalculator: PlateCalculator
+    setProtos: ISetPrototype[]
 };
 
 export class Workout extends Component<WorkoutProps> {
     render(): ReactNode {
         const number = this.props.number
-        const intensitySchemeKey = this.props.intensityScheme
-        const mainLiftSetIntensities = INTENSITY_SCHEME_DATA[intensitySchemeKey]
+        const setProtos = this.props.setProtos
         const mainLifts = this.props.mainLifts
         const trainingMaxes = this.props.trainingMaxes
         const plateCalculator = this.props.plateCalculator
@@ -27,12 +26,13 @@ export class Workout extends Component<WorkoutProps> {
                 mainLifts.map(
                     function (lift) {
                         const exerciseTrainingMax = (trainingMaxes as any)[lift]
-                        const sets = mainLiftSetIntensities.map(
-                            function (setIntensity) {
-                                const setWeight = round5(exerciseTrainingMax * setIntensity)
+                        const sets = setProtos.map(
+                            function (setProto: ISetPrototype) {
+                                const setReps = setProto.reps
+                                const setWeight = round5(exerciseTrainingMax * setProto.intensityPct)
                                 return {
                                     "exercise": lift,
-                                    "reps": 5,  // TODO: pass in the rep scheme
+                                    "reps": setReps.num,
                                     "weight": setWeight,
                                     "plates": plateCalculator.getPlatesPerSide(setWeight)
                                 }

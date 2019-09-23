@@ -14,7 +14,6 @@ export class SetGroup extends Component<SetGroupProps> {
         const sets = this.props.sets
 
         // TODO: generate warmup sets with "Beyond 531" method
-
         var setElems = []
         for (const [i, item] of sets.entries()) {
             setElems.push(<WorkoutSet

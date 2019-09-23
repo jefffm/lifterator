@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react'
 import Phase from './Phase'
 import TrainingMaxesForm from './TrainingMaxesForm'
-import { ITrainingMaxes } from './Types'
+import { ITrainingMaxes, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps } from './Types'
 import PlateCalculator, { IAvailablePlates } from '../util/PlateCalculator'
 
 type ProgramProps = {
@@ -38,6 +38,8 @@ export class Program extends Component<ProgramProps, IProgramState> {
         this.handleChange = this.handleChange.bind(this);
     }
 
+
+
     handleChange(event: React.FormEvent<HTMLInputElement>, key: string) {
         const value = event.currentTarget.valueAsNumber
         // eslint-disable-next-line
@@ -48,6 +50,27 @@ export class Program extends Component<ProgramProps, IProgramState> {
         const programName = this.props.name
         var trainingMaxes = this.state.trainingMaxes
         const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
+
+        // TODO: Add Set Prototype configuration to the program form configuration
+        const setProtoConfig = [
+            [INTENSITY_SCHEME_DATA["3s"], REPETITIONS_SCHEME_DATA["5s pro"]],
+            [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
+            [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
+        ]
+
+        var setProtosByPhase: ISetPrototype[][] = []
+        for (const [intensitySets, repSets] of setProtoConfig) {
+            var setList: ISetPrototype[] = []
+            for (const [setNum, intensityPct] of intensitySets.entries()) {
+                setList.push(
+                    {
+                        "intensityPct": intensityPct as number,
+                        "reps": repSets[setNum] as Reps
+                    }
+                )
+            }
+            setProtosByPhase.push(setList)
+        }
 
         // TODO: inject the intensityScheme instead of sending the key
         return <div className="program card">
@@ -65,10 +88,17 @@ export class Program extends Component<ProgramProps, IProgramState> {
             </div>
 
             <div className="phaseContainer">
-                <Phase number={1} intensityScheme="3s" trainingMaxes={trainingMaxes} plateCalculator={plateCalculator} />
-                <Phase number={2} intensityScheme="5s" trainingMaxes={trainingMaxes} plateCalculator={plateCalculator} />
-                <Phase number={3} intensityScheme="1s" trainingMaxes={trainingMaxes} plateCalculator={plateCalculator} />
+                {
+                    setProtosByPhase.map(function (setProtos: ISetPrototype[], i) {
+                        return <Phase
+                            number={i}
+                            trainingMaxes={trainingMaxes}
+                            plateCalculator={plateCalculator}
+                            setProtos={setProtos}
+                        />
+                    })
+                }
             </div>
-        </div>
+        </div >
     }
 }
