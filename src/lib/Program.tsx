@@ -51,12 +51,17 @@ export class Program extends Component<ProgramProps, IProgramState> {
         var trainingMaxes = this.state.trainingMaxes
         const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
 
-        // TODO: Add Set Prototype configuration to the program form configuration
+        // TODO: Add Set Prototype configuration to the program form
         const setProtoConfig = [
             [INTENSITY_SCHEME_DATA["3s"], REPETITIONS_SCHEME_DATA["5s pro"]],
             [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
             [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
         ]
+
+        // TODO: Add FSL/supplemental volume configuration to the program form
+        const firstSetLast = true
+        const firstSetLastFives = true
+        const firstSetLastAmrap = false
 
         var setProtosByPhase: ISetPrototype[][] = []
         for (const [intensitySets, repSets] of setProtoConfig) {
@@ -69,6 +74,35 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     }
                 )
             }
+
+            // Configure supplemental volume sets
+            if (firstSetLast) {
+                const firstSetIntensityPct = intensitySets[0]
+                const firstSetReps = repSets[0]
+
+                if (firstSetLastFives) {
+                    // Add 5x5 at first set's intensity
+                    for (var i = 0; i < 5; i++) {
+                        setList.push({
+                            "intensityPct": firstSetIntensityPct as number,
+                            "reps": firstSetReps as Reps
+                        })
+                    }
+                }
+
+                if (firstSetLastAmrap) {
+                    setList.push(
+                        {
+                            "intensityPct": firstSetIntensityPct as number,
+                            "reps": {
+                                "num": (firstSetReps as Reps).num,
+                                "setType": "amrap"
+                            }
+                        }
+                    )
+                }
+            }
+
             setProtosByPhase.push(setList)
         }
 
