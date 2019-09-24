@@ -10,13 +10,12 @@ export type WorkoutSetProps = {
 export class WorkoutSet extends Component<WorkoutSetProps> {
 
     render(): ReactNode {
-        const exercise = this.props.exercise
+        //const exercise = this.props.exercise
         const reps = this.props.reps
         const weight = this.props.weight
         const plates = this.props.plates
 
         return <tr>
-            <td>{exercise}</td>
             <td>{reps}x</td>
             <td>{weight} lbs</td>
             <td style={{ textAlign: 'left' }}>

@@ -3,6 +3,9 @@ import Phase from './Phase'
 import TrainingMaxesForm from './TrainingMaxesForm'
 import { ITrainingMaxes, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps } from './Types'
 import PlateCalculator, { IAvailablePlates } from '../util/PlateCalculator'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 type ProgramProps = {
     name: string
@@ -12,6 +15,7 @@ interface IProgramState {
     trainingMaxes: ITrainingMaxes
     availablePlates: IAvailablePlates
     barWeight: number
+    setProtoConfig: [number[], Reps[]][]
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
@@ -32,13 +36,16 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 5: 1,
                 2.5: 1
             },
-            "barWeight": 45
+            "barWeight": 45,
+            "setProtoConfig": [
+                [INTENSITY_SCHEME_DATA["3s"], REPETITIONS_SCHEME_DATA["5s pro"]],
+                [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
+                [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
+            ]
         }
 
         this.handleChange = this.handleChange.bind(this);
     }
-
-
 
     handleChange(event: React.FormEvent<HTMLInputElement>, key: string) {
         const value = event.currentTarget.valueAsNumber
@@ -50,13 +57,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
         const programName = this.props.name
         var trainingMaxes = this.state.trainingMaxes
         const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
-
-        // TODO: Add Set Prototype configuration to the program form
-        const setProtoConfig = [
-            [INTENSITY_SCHEME_DATA["3s"], REPETITIONS_SCHEME_DATA["5s pro"]],
-            [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
-            [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
-        ]
+        const setProtoConfig = this.state.setProtoConfig
 
         // TODO: Add FSL/supplemental volume configuration to the program form
         const firstSetLast = true
@@ -106,22 +107,19 @@ export class Program extends Component<ProgramProps, IProgramState> {
             setProtosByPhase.push(setList)
         }
 
-        // TODO: inject the intensityScheme instead of sending the key
-        return <div className="program card">
-            <div className="programInfo card">
-                <div className="title">
-                    {programName}
-                </div>
-
-                <div className="trainingMaxesForm">
-                    <h3>
-                        Training Maxes
-                    </h3>
+        // TODO: Move TrainingMaxesForm to a top react-doc: https://github.com/alexkuz/react-dock
+        return <Container>
+            <Row>
+                <Col md={12} lg={7}>
+                    <h2>{programName}</h2>
+                </Col>
+                <Col md={12} lg={5}>
+                    <h3>Training Maxes</h3>
                     <TrainingMaxesForm trainingMaxes={trainingMaxes} handleChange={this.handleChange} />
-                </div>
-            </div>
+                </Col>
+            </Row>
 
-            <div className="phaseContainer">
+            <Row noGutters>
                 {
                     setProtosByPhase.map(function (setProtos: ISetPrototype[], i) {
                         return <Phase
@@ -132,7 +130,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                         />
                     })
                 }
-            </div>
-        </div >
+            </Row>
+        </Container>
     }
 }

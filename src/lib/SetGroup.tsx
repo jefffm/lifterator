@@ -1,6 +1,8 @@
 import React, { Component, ReactNode } from 'react'
 import { WorkoutSet, WorkoutSetProps } from './WorkoutSet'
 import Table from 'react-bootstrap/Table'
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col'
 
 
 type SetGroupProps = {
@@ -24,14 +26,18 @@ export class SetGroup extends Component<SetGroupProps> {
                 plates={item.plates}
             />)
         }
-        return <div className="card workout">
-            <h3>{name}</h3>
-            <Table striped bordered hover>
-                <tbody>
-                    {setElems}
-                </tbody>
-            </Table>
-        </div>
+        return <Col md={6}>
+            <Card style={{ width: '15rem' }}>
+                <Card.Header>{name}</Card.Header>
+                <Card.Body>
+                    <Table bordered hover size="sm">
+                        <tbody>
+                            {setElems}
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card >
+        </Col>
     }
 }
 
