@@ -10,11 +10,13 @@ import Form from 'react-bootstrap/Form'
 interface IFormProps {
     trainingMaxes: IExerciseWeightMapping
     handleChange: (event: any, key: string) => void
+    unit: string
 }
 
 export class TrainingMaxesForm extends Component<IFormProps> {
     render(): ReactNode {
         const changeHandler = this.props.handleChange
+        const unit = this.props.unit
 
         var elems = []
         const it = Object.entries(this.props.trainingMaxes).entries()
@@ -32,7 +34,7 @@ export class TrainingMaxesForm extends Component<IFormProps> {
                             value={value.toString()}
                             onChange={function (e: any) { return changeHandler(e, key) }} />
                         <InputGroup.Append>
-                            <InputGroup.Text id="basic-addon2">lbs</InputGroup.Text>
+                            <InputGroup.Text id="basic-addon2">{unit}</InputGroup.Text>
                         </InputGroup.Append>
                     </InputGroup>
                 </Col>

@@ -8,12 +8,14 @@ import Col from 'react-bootstrap/Col'
 type SetGroupProps = {
     name: string
     sets: WorkoutSetProps[]
+    unit: string
 };
 
 export class SetGroup extends Component<SetGroupProps> {
     render(): ReactNode {
         const name = this.props.name
         const sets = this.props.sets
+        const unit = this.props.unit
 
         // TODO: generate warmup sets with "Beyond 531" method
         var setElems = []
@@ -24,6 +26,7 @@ export class SetGroup extends Component<SetGroupProps> {
                 reps={item.reps}
                 weight={item.weight}
                 plates={item.plates}
+                unit={unit}
             />)
         }
         return <Col md={6}>

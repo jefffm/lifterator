@@ -16,6 +16,7 @@ type PhaseProps = {
     plateCalculator: PlateCalculator
     warmupGen: WarmupGen
     setProtos: ISetPrototype[]
+    unit: string
 }
 
 export class Phase extends Component<PhaseProps> {
@@ -25,6 +26,7 @@ export class Phase extends Component<PhaseProps> {
         const plateCalculator = this.props.plateCalculator
         const warmupGen = this.props.warmupGen
         const setProtos = this.props.setProtos
+        const unit = this.props.unit
 
         // TODO: Add configuration for number of days and splits (eg. 4 day vs. 2 day)
         return <Row noGutters>
@@ -36,6 +38,7 @@ export class Phase extends Component<PhaseProps> {
                 plateCalculator={plateCalculator}
                 warmupGen={warmupGen}
                 setProtos={setProtos}
+                unit={unit}
             />
             <Workout
                 number={2}
@@ -45,6 +48,7 @@ export class Phase extends Component<PhaseProps> {
                 plateCalculator={plateCalculator}
                 warmupGen={warmupGen}
                 setProtos={setProtos}
+                unit={unit}
             />
         </Row>
     }

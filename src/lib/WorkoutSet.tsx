@@ -5,6 +5,7 @@ export type WorkoutSetProps = {
     reps: number
     weight: number
     plates: number[]
+    unit: string
 }
 
 export class WorkoutSet extends Component<WorkoutSetProps> {
@@ -14,10 +15,11 @@ export class WorkoutSet extends Component<WorkoutSetProps> {
         const reps = this.props.reps
         const weight = this.props.weight
         const plates = this.props.plates
+        const unit = this.props.unit
 
         return <tr>
             <td>{reps}x</td>
-            <td>{weight} lbs</td>
+            <td>{weight} {unit}</td>
             <td style={{ textAlign: 'left' }}>
                 {plates.join(", ")}
             </td>

@@ -18,6 +18,7 @@ interface IProgramState {
     barWeight: number
     setProtoConfig: [number[], Reps[]][]
     liftWarmupBaseWeights: IExerciseWeightMapping
+    unit: string
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
@@ -50,6 +51,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
                 [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
             ],
+            "unit": "lbs"
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -67,6 +69,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
         const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
         const setProtoConfig = this.state.setProtoConfig
         const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
+        const unit = this.state.unit
 
         // TODO: Add FSL/supplemental volume configuration to the program form
         const firstSetLast = true
@@ -124,7 +127,10 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 </Col>
                 <Col md={12} lg={5}>
                     <h3>Training Maxes</h3>
-                    <TrainingMaxesForm trainingMaxes={trainingMaxes} handleChange={this.handleChange} />
+                    <TrainingMaxesForm
+                        trainingMaxes={trainingMaxes}
+                        handleChange={this.handleChange}
+                        unit={unit} />
                 </Col>
             </Row>
 
@@ -137,6 +143,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                             plateCalculator={plateCalculator}
                             warmupGen={warmupGen}
                             setProtos={setProtos}
+                            unit={unit}
                         />
                     })
                 }

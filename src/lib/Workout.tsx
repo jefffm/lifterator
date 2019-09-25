@@ -17,6 +17,7 @@ type WorkoutProps = {
     plateCalculator: PlateCalculator
     warmupGen: WarmupGen
     setProtos: ISetPrototype[]
+    unit: string
 };
 
 export class Workout extends Component<WorkoutProps> {
@@ -28,6 +29,7 @@ export class Workout extends Component<WorkoutProps> {
         const trainingMaxes = this.props.trainingMaxes
         const plateCalculator = this.props.plateCalculator
         const warmupGen = this.props.warmupGen
+        const unit = this.props.unit
 
         return <Col md={12} lg={6}>
             <Card>
@@ -48,6 +50,7 @@ export class Workout extends Component<WorkoutProps> {
                                                 "exercise": lift,
                                                 "reps": setReps.num,
                                                 "weight": setWeight,
+                                                "unit": unit,
                                                 "plates": plateCalculator.getPlatesPerSide(setWeight)
                                             }
                                         }
@@ -61,16 +64,21 @@ export class Workout extends Component<WorkoutProps> {
                                             "exercise": lift,
                                             "reps": set.reps,
                                             "weight": set.weight,
+                                            "unit": unit,
                                             "plates": plateCalculator.getPlatesPerSide(set.weight)
                                         }
                                     })
 
-                                    return <SetGroup key={lift} name={lift} sets={warmupSets.concat(sets)} />
+                                    return <SetGroup
+                                        key={lift}
+                                        name={lift}
+                                        sets={warmupSets.concat(sets)}
+                                        unit={unit} />
                                 }
 
                             )
                         }
-                        <SetGroup name="Accessories" sets={[]} />
+                        <SetGroup name="Accessories" sets={[]} unit={unit} />
                     </Row>
                 </Card.Body>
             </Card>
