@@ -27,3 +27,11 @@
   margin: 6px;
   box-shadow: 3px 3px 6px grey;
 }
+
+.form-label {
+  text-align: end;
+}
+
+.form-group {
+  margin: 6px
+}

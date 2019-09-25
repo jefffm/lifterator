@@ -67,7 +67,7 @@ export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
 }
 
 export interface IExerciseWeightMapping {
-    [exercise: string]: number
+    [exercise: string]: number | undefined
 }
 
 export default IExerciseWeightMapping;

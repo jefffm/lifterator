@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { BeyondWarmupGen } from './WarmupGen'
+import Collapse from 'react-bootstrap/Collapse'
 
 type ProgramProps = {
     name: string
@@ -27,10 +28,10 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         this.state = {
             "trainingMaxes": {
-                "Squat": 150,
-                "Bench Press": 155,
-                "Deadlift": 190,
-                "Overhead Press": 105
+                "Squat": undefined,
+                "Bench Press": undefined,
+                "Deadlift": undefined,
+                "Overhead Press": undefined
             },
             "liftWarmupBaseWeights": {
                 "Squat": 135,
@@ -61,6 +62,16 @@ export class Program extends Component<ProgramProps, IProgramState> {
         const value = event.currentTarget.valueAsNumber
         // eslint-disable-next-line
         this.setState(state => (state.trainingMaxes[key] = value, state))
+    }
+
+    isRequiredDataSet(): boolean {
+        for (const [k, v] of Object.entries(this.state.trainingMaxes)) {
+            if (v === undefined) {
+                return false
+            }
+        }
+
+        return true
     }
 
     render(): ReactNode {
@@ -119,6 +130,8 @@ export class Program extends Component<ProgramProps, IProgramState> {
             setProtosByPhase.push(setList)
         }
 
+        const isRequiredDataSet = this.isRequiredDataSet()
+
         // TODO: Move TrainingMaxesForm to a top react-doc: https://github.com/alexkuz/react-dock
         return <Container>
             <Row>
@@ -126,28 +139,31 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     <h2>{programName}</h2>
                 </Col>
                 <Col md={12} lg={5}>
-                    <h3>Training Maxes</h3>
                     <TrainingMaxesForm
                         trainingMaxes={trainingMaxes}
                         handleChange={this.handleChange}
-                        unit={unit} />
+                        unit={unit}
+                        validated={isRequiredDataSet}
+                    />
                 </Col>
             </Row>
 
-            <Row noGutters>
-                {
-                    setProtosByPhase.map(function (setProtos: ISetPrototype[], i) {
-                        return <Phase
-                            number={i}
-                            trainingMaxes={trainingMaxes}
-                            plateCalculator={plateCalculator}
-                            warmupGen={warmupGen}
-                            setProtos={setProtos}
-                            unit={unit}
-                        />
-                    })
-                }
-            </Row>
-        </Container>
+            <Collapse in={isRequiredDataSet}>
+                <Row noGutters>
+                    {
+                        setProtosByPhase.map(function (setProtos: ISetPrototype[], i) {
+                            return <Phase
+                                number={i}
+                                trainingMaxes={trainingMaxes}
+                                plateCalculator={plateCalculator}
+                                warmupGen={warmupGen}
+                                setProtos={setProtos}
+                                unit={unit}
+                            />
+                        })
+                    }
+                </Row>
+            </Collapse>
+        </Container >
     }
 }
