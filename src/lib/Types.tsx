@@ -71,4 +71,3 @@ export interface ITrainingMaxes {
 }
 
 export default ITrainingMaxes;
-

@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container';
+import { BeyondWarmupGen } from './WarmupGen';
 
 type WorkoutProps = {
     number: number
@@ -25,6 +26,8 @@ export class Workout extends Component<WorkoutProps> {
         const mainLifts = this.props.mainLifts
         const trainingMaxes = this.props.trainingMaxes
         const plateCalculator = this.props.plateCalculator
+
+        const warmupGen = new BeyondWarmupGen()
 
         return <Col md={12} lg={6}>
             <Card>
@@ -50,7 +53,19 @@ export class Workout extends Component<WorkoutProps> {
                                         }
                                     )
 
-                                    return <SetGroup key={lift} name={lift} sets={sets} />
+                                    // TODO: 95 for bench/press, 135 for squat/dl
+                                    const warmupSets = warmupGen.getSets(
+                                        135, exerciseTrainingMax, sets[0].weight
+                                    ).map(function (set) {
+                                        return {
+                                            "exercise": lift,
+                                            "reps": set.reps,
+                                            "weight": set.weight,
+                                            "plates": plateCalculator.getPlatesPerSide(set.weight)
+                                        }
+                                    })
+
+                                    return <SetGroup key={lift} name={lift} sets={warmupSets.concat(sets)} />
                                 }
 
                             )

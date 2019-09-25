@@ -37,13 +37,15 @@ export class BeyondWarmupGen extends WarmupGen {
         const additionalWarmupSetCount = (weightDiff + padding) / step
 
         if (additionalWarmupSetCount > 0) {
-            const numSets = Math.round(additionalWarmupSetCount)
+            const numSets = Math.floor(additionalWarmupSetCount)
 
-            for (var i = numSets; i < 0; i--) {
+            for (var i = numSets; i > 0; i--) {
+                const nextWarmupWeight = round5(firstSetWeight - (i * step))
+
                 sets.push(
                     {
                         "reps": 5,
-                        "weight": round5(firstSetWeight - (i * step))
+                        "weight": nextWarmupWeight
                     }
                 )
             }
