@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { BeyondWarmupGen } from './WarmupGen'
 import Collapse from 'react-bootstrap/Collapse'
+import Jumbotron from 'react-bootstrap/Jumbotron'
 
 type ProgramProps = {
     name: string
@@ -147,6 +148,13 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     />
                 </Col>
             </Row>
+
+            <Collapse in={!isRequiredDataSet}>
+                <Jumbotron>
+                    <h1>Lifterator</h1>
+                    <p>Configure all required fields to build your program.</p>
+                </Jumbotron>
+            </Collapse>
 
             <Collapse in={isRequiredDataSet}>
                 <Row noGutters>
