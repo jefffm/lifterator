@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container';
-import { BeyondWarmupGen } from './WarmupGen';
+import WarmupGen from './WarmupGen';
 
 type WorkoutProps = {
     number: number
@@ -15,6 +15,7 @@ type WorkoutProps = {
     mainLifts: string[]
     trainingMaxes: object
     plateCalculator: PlateCalculator
+    warmupGen: WarmupGen
     setProtos: ISetPrototype[]
 };
 
@@ -26,8 +27,7 @@ export class Workout extends Component<WorkoutProps> {
         const mainLifts = this.props.mainLifts
         const trainingMaxes = this.props.trainingMaxes
         const plateCalculator = this.props.plateCalculator
-
-        const warmupGen = new BeyondWarmupGen()
+        const warmupGen = this.props.warmupGen
 
         return <Col md={12} lg={6}>
             <Card>

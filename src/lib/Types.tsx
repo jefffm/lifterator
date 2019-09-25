@@ -66,8 +66,8 @@ export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
     ]
 }
 
-export interface ITrainingMaxes {
+export interface IExerciseWeightMapping {
     [exercise: string]: number
 }
 
-export default ITrainingMaxes;
+export default IExerciseWeightMapping;

@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react'
-import { ITrainingMaxes } from './Types';
+import IExerciseWeightMapping from './Types';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form'
 
 
 interface IFormProps {
-    trainingMaxes: ITrainingMaxes
+    trainingMaxes: IExerciseWeightMapping
     handleChange: (event: any, key: string) => void
 }
 

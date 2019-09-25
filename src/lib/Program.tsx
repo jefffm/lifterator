@@ -1,21 +1,23 @@
 import React, { Component, ReactNode } from 'react'
 import Phase from './Phase'
 import TrainingMaxesForm from './TrainingMaxesForm'
-import { ITrainingMaxes, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps } from './Types'
+import { IExerciseWeightMapping, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps } from './Types'
 import PlateCalculator, { IAvailablePlates } from '../util/PlateCalculator'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { BeyondWarmupGen } from './WarmupGen'
 
 type ProgramProps = {
     name: string
 }
 
 interface IProgramState {
-    trainingMaxes: ITrainingMaxes
+    trainingMaxes: IExerciseWeightMapping
     availablePlates: IAvailablePlates
     barWeight: number
     setProtoConfig: [number[], Reps[]][]
+    liftWarmupBaseWeights: IExerciseWeightMapping
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
@@ -29,6 +31,12 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 "Deadlift": 190,
                 "Overhead Press": 105
             },
+            "liftWarmupBaseWeights": {
+                "Squat": 135,
+                "Deadlift": 135,
+                "Overhead Press": 95,
+                "Bench Press": 95
+            },
             "availablePlates": {
                 45: 4,
                 25: 3,
@@ -41,7 +49,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 [INTENSITY_SCHEME_DATA["3s"], REPETITIONS_SCHEME_DATA["5s pro"]],
                 [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
                 [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
-            ]
+            ],
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -58,6 +66,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
         var trainingMaxes = this.state.trainingMaxes
         const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
         const setProtoConfig = this.state.setProtoConfig
+        const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
 
         // TODO: Add FSL/supplemental volume configuration to the program form
         const firstSetLast = true
@@ -126,6 +135,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                             number={i}
                             trainingMaxes={trainingMaxes}
                             plateCalculator={plateCalculator}
+                            warmupGen={warmupGen}
                             setProtos={setProtos}
                         />
                     })

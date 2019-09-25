@@ -27,7 +27,7 @@ export class SetGroup extends Component<SetGroupProps> {
             />)
         }
         return <Col md={6}>
-            <Card style={{ width: '15rem' }}>
+            <Card>
                 <Card.Header>{name}</Card.Header>
                 <Card.Body>
                     <Table bordered hover size="sm">

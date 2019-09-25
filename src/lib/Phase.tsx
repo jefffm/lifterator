@@ -1,18 +1,20 @@
 import React, { Component, ReactNode } from 'react'
 import Workout from './Workout'
-import { ITrainingMaxes, ISetPrototype } from './Types'
+import { IExerciseWeightMapping, ISetPrototype } from './Types'
 import PlateCalculator from '../util/PlateCalculator'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container'
+import { WarmupGen } from './WarmupGen'
 
 
 // TODO: receive training maxes
 type PhaseProps = {
     number: number
-    trainingMaxes: ITrainingMaxes
+    trainingMaxes: IExerciseWeightMapping
     plateCalculator: PlateCalculator
+    warmupGen: WarmupGen
     setProtos: ISetPrototype[]
 }
 
@@ -21,6 +23,7 @@ export class Phase extends Component<PhaseProps> {
         const number = this.props.number
         const trainingMaxes = this.props.trainingMaxes
         const plateCalculator = this.props.plateCalculator
+        const warmupGen = this.props.warmupGen
         const setProtos = this.props.setProtos
 
         // TODO: Add configuration for number of days and splits (eg. 4 day vs. 2 day)
@@ -31,6 +34,7 @@ export class Phase extends Component<PhaseProps> {
                 mainLifts={["Squat", "Bench Press"]}
                 trainingMaxes={trainingMaxes}
                 plateCalculator={plateCalculator}
+                warmupGen={warmupGen}
                 setProtos={setProtos}
             />
             <Workout
@@ -39,6 +43,7 @@ export class Phase extends Component<PhaseProps> {
                 mainLifts={["Deadlift", "Overhead Press"]}
                 trainingMaxes={trainingMaxes}
                 plateCalculator={plateCalculator}
+                warmupGen={warmupGen}
                 setProtos={setProtos}
             />
         </Row>

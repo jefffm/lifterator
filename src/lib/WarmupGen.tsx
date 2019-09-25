@@ -1,4 +1,5 @@
 import { round5 } from "../util/Math";
+import IExerciseWeightMapping from "./Types";
 
 export type StaticSet = {
     reps: number
@@ -18,6 +19,13 @@ export abstract class WarmupGen {
  * 
  */
 export class BeyondWarmupGen extends WarmupGen {
+    baseWeights: IExerciseWeightMapping
+
+    constructor(baseWeights: IExerciseWeightMapping) {
+        super()
+        this.baseWeights = baseWeights
+    }
+
     getSets(baseWeight: number, trainingMax: number, firstSetWeight: number): StaticSet[] {
         // Initialize with a bar set
         var sets: StaticSet[] = [
@@ -55,3 +63,5 @@ export class BeyondWarmupGen extends WarmupGen {
         return sets
     }
 }
+
+export default WarmupGen
