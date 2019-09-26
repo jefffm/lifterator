@@ -39,3 +39,9 @@
 .jumbotron {
   text-align: start;
 }
+
+@media print {
+  #hide-print {
+    display: none;
+  }
+}

@@ -55,22 +55,26 @@ export class TrainingMaxesForm extends Component<IFormProps, IFormState> {
         }
         return (
             <Container>
-                <Col>
-                    <Button
-                        onClick={() => this.setState({ open: !open })}
-                        aria-controls="example-collapse-text"
-                        aria-expanded={open} >
-                        Toggle Config
-                    </Button>
-                </Col>
+                <div id="hide-print">
+                    <Col>
+                        <Collapse in={open}>
+                            <Form validated={validated}>
+                                {elems}
+                            </Form>
+                        </Collapse>
+                    </Col>
+                    <Col>
+                        <Button
+                            onClick={() => this.setState({ open: !open })}
+                            variant="link"
+                            aria-controls="example-collapse-text"
+                            size="sm"
+                            aria-expanded={open} >
+                            {open ? "Hide" : "Show Config"}
+                        </Button>
+                    </Col>
+                </div>
 
-                <Col>
-                    <Collapse in={open}>
-                        <Form validated={validated}>
-                            {elems}
-                        </Form>
-                    </Collapse>
-                </Col>
             </Container>
         );
     }
