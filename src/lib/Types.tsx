@@ -17,7 +17,12 @@ export const INTENSITY_SCHEME_DATA = {
     'tm-test': [0.7, 0.8, 0.9, 1]
 }
 
-export type SetType = 'normal' | 'amrap' | 'joker'
+export enum SetType {
+    NORMAL,
+    AMRAP,
+    JOKER,
+    WARMUP
+}
 
 export interface Reps {
     num: number
@@ -39,30 +44,30 @@ export interface IRepetitionSchemeData {
 export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
     // 5s pro can also be used for deload
     '5s pro': [
-        { num: 5, setType: 'normal' },
-        { num: 5, setType: 'normal' },
-        { num: 5, setType: 'normal' },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
     ],
     '5s': [
-        { num: 5, setType: 'normal' },
-        { num: 5, setType: 'normal' },
-        { num: 5, setType: 'amrap' },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.AMRAP },
     ],
     '3s': [
-        { num: 3, setType: 'normal' },
-        { num: 3, setType: 'normal' },
-        { num: 3, setType: 'amrap' },
+        { num: 3, setType: SetType.NORMAL },
+        { num: 3, setType: SetType.NORMAL },
+        { num: 3, setType: SetType.AMRAP },
     ],
     '1s': [
-        { num: 5, setType: 'normal' },
-        { num: 3, setType: 'normal' },
-        { num: 1, setType: 'amrap' },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 3, setType: SetType.NORMAL },
+        { num: 1, setType: SetType.AMRAP },
     ],
     'tm-test': [
-        { num: 5, setType: 'normal' },
-        { num: 5, setType: 'normal' },
-        { num: 5, setType: 'normal' },
-        { num: 3, setType: 'amrap' },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 3, setType: SetType.AMRAP },
     ]
 }
 

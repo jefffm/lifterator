@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react'
 import Phase from './Phase'
 import TrainingMaxesForm from './TrainingMaxesForm'
-import { IExerciseWeightMapping, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps } from './Types'
+import { IExerciseWeightMapping, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps, SetType } from './Types'
 import PlateCalculator, { IAvailablePlates } from '../util/PlateCalculator'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -9,6 +9,10 @@ import Col from 'react-bootstrap/Col'
 import { BeyondWarmupGen } from './WarmupGen'
 import Collapse from 'react-bootstrap/Collapse'
 import Jumbotron from 'react-bootstrap/Jumbotron'
+import Form from 'react-bootstrap/Form'
+import Card from 'react-bootstrap/Card'
+import InputGroup from 'react-bootstrap/InputGroup'
+import Accordion from 'react-bootstrap/Accordion'
 
 type ProgramProps = {
     name: string
@@ -21,6 +25,8 @@ interface IProgramState {
     setProtoConfig: [number[], Reps[]][]
     liftWarmupBaseWeights: IExerciseWeightMapping
     unit: string
+    firstSetLastFives: boolean
+    firstSetLastAmrap: boolean
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
@@ -53,13 +59,15 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
                 [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
             ],
-            "unit": "lbs"
+            "unit": "lbs",
+            "firstSetLastFives": true,
+            "firstSetLastAmrap": false
         }
 
-        this.handleChange = this.handleChange.bind(this);
+        this.updateTrainingMaxes = this.updateTrainingMaxes.bind(this);
     }
 
-    handleChange(event: React.FormEvent<HTMLInputElement>, key: string) {
+    updateTrainingMaxes(event: React.FormEvent<HTMLInputElement>, key: string) {
         const value = event.currentTarget.valueAsNumber
         // eslint-disable-next-line
         this.setState(state => (state.trainingMaxes[key] = value, state))
@@ -83,10 +91,8 @@ export class Program extends Component<ProgramProps, IProgramState> {
         const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
         const unit = this.state.unit
 
-        // TODO: Add FSL/supplemental volume configuration to the program form
-        const firstSetLast = true
-        const firstSetLastFives = true
-        const firstSetLastAmrap = false
+        const firstSetLastFives = this.state.firstSetLastFives
+        const firstSetLastAmrap = this.state.firstSetLastAmrap
 
         var setProtosByPhase: ISetPrototype[][] = []
         for (const [intensitySets, repSets] of setProtoConfig) {
@@ -101,31 +107,29 @@ export class Program extends Component<ProgramProps, IProgramState> {
             }
 
             // Configure supplemental volume sets
-            if (firstSetLast) {
-                const firstSetIntensityPct = intensitySets[0]
-                const firstSetReps = repSets[0]
+            const firstSetIntensityPct = intensitySets[0]
+            const firstSetReps = repSets[0]
 
-                if (firstSetLastFives) {
-                    // Add 5x5 at first set's intensity
-                    for (var i = 0; i < 5; i++) {
-                        setList.push({
-                            "intensityPct": firstSetIntensityPct as number,
-                            "reps": firstSetReps as Reps
-                        })
-                    }
+            if (firstSetLastFives) {
+                // Add 5x5 at first set's intensity
+                for (var i = 0; i < 5; i++) {
+                    setList.push({
+                        "intensityPct": firstSetIntensityPct as number,
+                        "reps": firstSetReps as Reps
+                    })
                 }
+            }
 
-                if (firstSetLastAmrap) {
-                    setList.push(
-                        {
-                            "intensityPct": firstSetIntensityPct as number,
-                            "reps": {
-                                "num": (firstSetReps as Reps).num,
-                                "setType": "amrap"
-                            }
+            if (firstSetLastAmrap) {
+                setList.push(
+                    {
+                        "intensityPct": firstSetIntensityPct as number,
+                        "reps": {
+                            "num": (firstSetReps as Reps).num,
+                            "setType": SetType.AMRAP
                         }
-                    )
-                }
+                    }
+                )
             }
 
             setProtosByPhase.push(setList)
@@ -133,19 +137,79 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
-        // TODO: Move TrainingMaxesForm to a top react-doc: https://github.com/alexkuz/react-dock
         return <Container>
             <Row>
                 <Col md={12} lg={7}>
                     <h2>{programName}</h2>
                 </Col>
                 <Col md={12} lg={5}>
-                    <TrainingMaxesForm
-                        trainingMaxes={trainingMaxes}
-                        handleChange={this.handleChange}
-                        unit={unit}
-                        validated={isRequiredDataSet}
-                    />
+                    <Accordion defaultActiveKey="0">
+
+                        {/* Training Maxes configuration */}
+                        <Card style={{ width: '35rem' }}>
+                            <Accordion.Toggle as={Card.Header} eventKey="0">
+                                Training Maxes
+                        </Accordion.Toggle>
+                            <Accordion.Collapse eventKey="0">
+                                <Card.Body>
+                                    <TrainingMaxesForm
+                                        trainingMaxes={trainingMaxes}
+                                        handleChange={this.updateTrainingMaxes}
+                                        unit={unit}
+                                        validated={isRequiredDataSet}
+                                    />
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+
+                        {/* TODO: move this into a component */}
+                        {/* Supplemental volume configuration */}
+                        <Card style={{ width: '35rem' }}>
+                            <Accordion.Toggle as={Card.Header} eventKey="1">
+                                Supplemental Volume
+                        </Accordion.Toggle>
+                            <Accordion.Collapse eventKey="1">
+                                <Card.Body>
+                                    <Form>
+                                        <fieldset>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column sm={6}>
+                                                    First Set Last
+                                                </Form.Label>
+                                                <Col sm={6}>
+                                                    <Form.Check
+                                                        type="checkbox"
+                                                        label="5x5"
+                                                        checked={firstSetLastFives}
+                                                        name="formHorizontalRadios"
+                                                        id="formHorizontalRadios1"
+                                                        onChange={
+                                                            (e: any) => {
+                                                                this.setState({ firstSetLastFives: (e as any).currentTarget.checked })
+                                                            }
+                                                        }
+                                                    />
+                                                    <Form.Check
+                                                        type="checkbox"
+                                                        label="AMRAP set"
+                                                        checked={firstSetLastAmrap}
+                                                        name="formHorizontalRadios"
+                                                        id="formHorizontalRadios2"
+                                                        onChange={
+                                                            (e: any) => {
+                                                                this.setState({ firstSetLastAmrap: (e as any).currentTarget.checked })
+                                                            }
+                                                        }
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </fieldset>
+                                    </Form>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                    </Accordion>
+
                 </Col>
             </Row>
 
@@ -172,6 +236,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     }
                 </Row>
             </Collapse>
-        </Container >
+        </Container>
     }
 }

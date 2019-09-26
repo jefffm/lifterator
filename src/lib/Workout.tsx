@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container';
 import WarmupGen from './WarmupGen';
+import { SetType, Reps } from './Types'
 
 type WorkoutProps = {
     number: number
@@ -48,7 +49,7 @@ export class Workout extends Component<WorkoutProps> {
                                             const setWeight = round5(exerciseTrainingMax * setProto.intensityPct)
                                             return {
                                                 "exercise": lift,
-                                                "reps": setReps.num,
+                                                "reps": setReps,
                                                 "weight": setWeight,
                                                 "unit": unit,
                                                 "plates": plateCalculator.getPlatesPerSide(setWeight)
@@ -56,13 +57,15 @@ export class Workout extends Component<WorkoutProps> {
                                         }
                                     )
 
+
+
                                     // TODO: 95 for bench/press, 135 for squat/dl
                                     const warmupSets = warmupGen.getSets(
                                         135, exerciseTrainingMax, sets[0].weight
                                     ).map(function (set) {
                                         return {
                                             "exercise": lift,
-                                            "reps": set.reps,
+                                            "reps": { "num": set.reps, "setType": SetType.WARMUP },
                                             "weight": set.weight,
                                             "unit": unit,
                                             "plates": plateCalculator.getPlatesPerSide(set.weight)
