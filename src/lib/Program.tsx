@@ -146,7 +146,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     <Accordion defaultActiveKey="0">
 
                         {/* Training Maxes configuration */}
-                        <Card style={{ width: '35rem' }}>
+                        <Card style={{ width: '25rem' }}>
                             <Accordion.Toggle as={Card.Header} eventKey="0">
                                 Training Maxes
                         </Accordion.Toggle>
@@ -164,7 +164,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
                         {/* TODO: move this into a component */}
                         {/* Supplemental volume configuration */}
-                        <Card style={{ width: '35rem' }}>
+                        <Card style={{ width: '25rem' }}>
                             <Accordion.Toggle as={Card.Header} eventKey="1">
                                 Supplemental Volume
                         </Accordion.Toggle>
