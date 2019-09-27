@@ -54,7 +54,7 @@ export class TrainingMaxesForm extends Component<IFormProps, IFormState> {
             )
         }
         return (
-            <Container>
+            <Container fluid>
                 <div id="hide-print">
                     <Col>
                         <Form validated={validated}>

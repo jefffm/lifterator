@@ -137,7 +137,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
-        return <Container>
+        return <Container fluid>
             <Row>
                 <Col md={12} lg={7}>
                     <h2>{programName}</h2>
@@ -146,7 +146,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     <Accordion defaultActiveKey="0">
 
                         {/* Training Maxes configuration */}
-                        <Card style={{ width: '25rem' }}>
+                        <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="0">
                                 Training Maxes
                         </Accordion.Toggle>
@@ -164,7 +164,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
                         {/* TODO: move this into a component */}
                         {/* Supplemental volume configuration */}
-                        <Card style={{ width: '25rem' }}>
+                        <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="1">
                                 Supplemental Volume
                         </Accordion.Toggle>
