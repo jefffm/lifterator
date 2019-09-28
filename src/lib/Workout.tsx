@@ -1,14 +1,12 @@
 import React, { Component, ReactNode } from 'react'
 import SetGroup from './SetGroup';
 import { round5 } from '../util/Math';
-import PlateCalculator from '../util/PlateCalculator';
-import { ISetPrototype } from './Types';
-import Col from 'react-bootstrap/Col'
+import PlateCalculator from '../util/PlateCalculator'
+import { ISetPrototype, SetType } from './Types'
+import Grid from '@material-ui/core/Grid'
 import Row from 'react-bootstrap/Row'
 import Card from 'react-bootstrap/Card'
-import Container from 'react-bootstrap/Container';
-import WarmupGen from './WarmupGen';
-import { SetType, Reps } from './Types'
+import WarmupGen from './WarmupGen'
 
 type WorkoutProps = {
     number: number
@@ -32,7 +30,7 @@ export class Workout extends Component<WorkoutProps> {
         const warmupGen = this.props.warmupGen
         const unit = this.props.unit
 
-        return <Col md={12} lg={6}>
+        return <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
             <Card>
                 <Card.Header>
                     Phase {phase + 1}: Workout {number}
@@ -85,7 +83,7 @@ export class Workout extends Component<WorkoutProps> {
                     </Row>
                 </Card.Body>
             </Card>
-        </Col>
+        </Grid >
     }
 }
 

@@ -2,11 +2,9 @@ import React, { Component, ReactNode } from 'react'
 import Workout from './Workout'
 import { IExerciseWeightMapping, ISetPrototype } from './Types'
 import PlateCalculator from '../util/PlateCalculator'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
-import Card from 'react-bootstrap/Card'
-import Container from 'react-bootstrap/Container'
 import { WarmupGen } from './WarmupGen'
+
+import Grid from '@material-ui/core/Grid'
 
 
 // TODO: receive training maxes
@@ -29,7 +27,11 @@ export class Phase extends Component<PhaseProps> {
         const unit = this.props.unit
 
         // TODO: Add configuration for number of days and splits (eg. 4 day vs. 2 day)
-        return <Row noGutters>
+        return <Grid
+            container
+            direction="column"
+            justify="space-evenly"
+            alignItems="stretch">
             <Workout
                 number={1}
                 phase={number}
@@ -50,7 +52,7 @@ export class Phase extends Component<PhaseProps> {
                 setProtos={setProtos}
                 unit={unit}
             />
-        </Row>
+        </Grid >
     }
 }
 

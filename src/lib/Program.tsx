@@ -3,15 +3,15 @@ import Phase from './Phase'
 import TrainingMaxesForm from './TrainingMaxesForm'
 import { IExerciseWeightMapping, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps, SetType } from './Types'
 import PlateCalculator, { IAvailablePlates } from '../util/PlateCalculator'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { BeyondWarmupGen } from './WarmupGen'
+
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+
 import Collapse from 'react-bootstrap/Collapse'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
-import InputGroup from 'react-bootstrap/InputGroup'
 import Accordion from 'react-bootstrap/Accordion'
 
 type ProgramProps = {
@@ -137,12 +137,11 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
-        return <Container fluid>
-            <Row>
-                <Col md={12} lg={7}>
-                    <h2>{programName}</h2>
-                </Col>
-                <Col md={12} lg={5}>
+        return <Container>
+            <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
+                <h2>{programName}</h2>
+
+                <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
                     <Accordion defaultActiveKey="0">
 
                         {/* Training Maxes configuration */}
@@ -172,11 +171,11 @@ export class Program extends Component<ProgramProps, IProgramState> {
                                 <Card.Body>
                                     <Form>
                                         <fieldset>
-                                            <Form.Group as={Row}>
+                                            <Form.Group as={Grid}>
                                                 <Form.Label column sm={6}>
                                                     First Set Last
                                                 </Form.Label>
-                                                <Col sm={6}>
+                                                <Grid sm={6}>
                                                     <Form.Check
                                                         type="checkbox"
                                                         label="5x5"
@@ -201,7 +200,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                                                             }
                                                         }
                                                     />
-                                                </Col>
+                                                </Grid>
                                             </Form.Group>
                                         </fieldset>
                                     </Form>
@@ -210,8 +209,8 @@ export class Program extends Component<ProgramProps, IProgramState> {
                         </Card>
                     </Accordion>
 
-                </Col>
-            </Row>
+                </Grid>
+            </Grid>
 
             <Collapse in={!isRequiredDataSet}>
                 <Jumbotron>
@@ -221,7 +220,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
             </Collapse>
 
             <Collapse in={isRequiredDataSet}>
-                <Row noGutters>
+                <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
                     {
                         setProtosByPhase.map(function (setProtos: ISetPrototype[], i) {
                             return <Phase
@@ -234,7 +233,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                             />
                         })
                     }
-                </Row>
+                </Grid>
             </Collapse>
         </Container>
     }
