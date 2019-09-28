@@ -1,32 +1,31 @@
 import React, { Component, ReactNode } from 'react'
-import Phase from './Phase'
-import TrainingMaxesForm from './TrainingMaxesForm'
-import { IExerciseWeightMapping, INTENSITY_SCHEME_DATA, REPETITIONS_SCHEME_DATA, ISetPrototype, Reps, SetType } from './Types'
-import PlateCalculator, { IAvailablePlates } from '../util/PlateCalculator'
-import { BeyondWarmupGen } from './WarmupGen'
 
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
+import Collapse from "@material-ui/core/Collapse"
 
-import Collapse from 'react-bootstrap/Collapse'
-import Jumbotron from 'react-bootstrap/Jumbotron'
-import Form from 'react-bootstrap/Form'
-import Card from 'react-bootstrap/Card'
-import Accordion from 'react-bootstrap/Accordion'
+import * as types from './Types'
+import { Phase } from './Phase'
+import { TrainingMaxesForm } from './TrainingMaxesForm'
+import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
+import { BeyondWarmupGen } from './WarmupGen'
+import { VolumeForm } from './VolumeForm'
 
 type ProgramProps = {
     name: string
 }
 
 interface IProgramState {
-    trainingMaxes: IExerciseWeightMapping
+    trainingMaxes: types.IExerciseWeightMapping
     availablePlates: IAvailablePlates
     barWeight: number
-    setProtoConfig: [number[], Reps[]][]
-    liftWarmupBaseWeights: IExerciseWeightMapping
+    setProtoConfig: [number[], types.Reps[]][]
+    liftWarmupBaseWeights: types.IExerciseWeightMapping
     unit: string
-    firstSetLastFives: boolean
-    firstSetLastAmrap: boolean
+    volumeSettings: types.IVolumeSettings
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
@@ -55,13 +54,15 @@ export class Program extends Component<ProgramProps, IProgramState> {
             },
             "barWeight": 45,
             "setProtoConfig": [
-                [INTENSITY_SCHEME_DATA["3s"], REPETITIONS_SCHEME_DATA["5s pro"]],
-                [INTENSITY_SCHEME_DATA["5s"], REPETITIONS_SCHEME_DATA["5s pro"]],
-                [INTENSITY_SCHEME_DATA["1s"], REPETITIONS_SCHEME_DATA["5s pro"]]
+                [types.INTENSITY_SCHEME_DATA["3s"], types.REPETITIONS_SCHEME_DATA["5s pro"]],
+                [types.INTENSITY_SCHEME_DATA["5s"], types.REPETITIONS_SCHEME_DATA["5s pro"]],
+                [types.INTENSITY_SCHEME_DATA["1s"], types.REPETITIONS_SCHEME_DATA["5s pro"]]
             ],
             "unit": "lbs",
-            "firstSetLastFives": true,
-            "firstSetLastAmrap": false
+            "volumeSettings": {
+                "firstSetLastFives": true,
+                "firstSetLastAmrap": false
+            }
         }
 
         this.updateTrainingMaxes = this.updateTrainingMaxes.bind(this);
@@ -91,17 +92,17 @@ export class Program extends Component<ProgramProps, IProgramState> {
         const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
         const unit = this.state.unit
 
-        const firstSetLastFives = this.state.firstSetLastFives
-        const firstSetLastAmrap = this.state.firstSetLastAmrap
+        const firstSetLastFives = this.state.volumeSettings.firstSetLastFives
+        const firstSetLastAmrap = this.state.volumeSettings.firstSetLastAmrap
 
-        var setProtosByPhase: ISetPrototype[][] = []
+        var setProtosByPhase: types.ISetPrototype[][] = []
         for (const [intensitySets, repSets] of setProtoConfig) {
-            var setList: ISetPrototype[] = []
+            var setList: types.ISetPrototype[] = []
             for (const [setNum, intensityPct] of intensitySets.entries()) {
                 setList.push(
                     {
                         "intensityPct": intensityPct as number,
-                        "reps": repSets[setNum] as Reps
+                        "reps": repSets[setNum] as types.Reps
                     }
                 )
             }
@@ -115,7 +116,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 for (var i = 0; i < 5; i++) {
                     setList.push({
                         "intensityPct": firstSetIntensityPct as number,
-                        "reps": firstSetReps as Reps
+                        "reps": firstSetReps as types.Reps
                     })
                 }
             }
@@ -125,8 +126,8 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     {
                         "intensityPct": firstSetIntensityPct as number,
                         "reps": {
-                            "num": (firstSetReps as Reps).num,
-                            "setType": SetType.AMRAP
+                            "num": (firstSetReps as types.Reps).num,
+                            "setType": types.SetType.AMRAP
                         }
                     }
                 )
@@ -139,102 +140,69 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         return <Container>
             <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
-                <h2>{programName}</h2>
+                <Box>
+                    <h2>{programName}</h2>
+                </Box>
 
-                <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
-                    <Accordion defaultActiveKey="0">
+                <Box>
+                    {/* Training Maxes configuration */}
+                    <Paper>
+                        <Typography>
+                            Training Maxes
+                        </Typography>
+                        <TrainingMaxesForm
+                            trainingMaxes={trainingMaxes}
+                            handleChange={this.updateTrainingMaxes}
+                            unit={unit}
+                            validated={isRequiredDataSet}
+                        />
+                    </Paper>
+                </Box>
 
-                        {/* Training Maxes configuration */}
-                        <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="0">
-                                Training Maxes
-                        </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="0">
-                                <Card.Body>
-                                    <TrainingMaxesForm
-                                        trainingMaxes={trainingMaxes}
-                                        handleChange={this.updateTrainingMaxes}
-                                        unit={unit}
-                                        validated={isRequiredDataSet}
-                                    />
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
+                <Box>
 
-                        {/* TODO: move this into a component */}
-                        {/* Supplemental volume configuration */}
-                        <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="1">
-                                Supplemental Volume
-                        </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="1">
-                                <Card.Body>
-                                    <Form>
-                                        <fieldset>
-                                            <Form.Group as={Grid}>
-                                                <Form.Label column sm={6}>
-                                                    First Set Last
-                                                </Form.Label>
-                                                <Grid sm={6}>
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="5x5"
-                                                        checked={firstSetLastFives}
-                                                        name="formHorizontalRadios"
-                                                        id="formHorizontalRadios1"
-                                                        onChange={
-                                                            (e: any) => {
-                                                                this.setState({ firstSetLastFives: (e as any).currentTarget.checked })
-                                                            }
-                                                        }
-                                                    />
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="AMRAP set"
-                                                        checked={firstSetLastAmrap}
-                                                        name="formHorizontalRadios"
-                                                        id="formHorizontalRadios2"
-                                                        onChange={
-                                                            (e: any) => {
-                                                                this.setState({ firstSetLastAmrap: (e as any).currentTarget.checked })
-                                                            }
-                                                        }
-                                                    />
-                                                </Grid>
-                                            </Form.Group>
-                                        </fieldset>
-                                    </Form>
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
-                    </Accordion>
+                    {/* Supplemental volume configuration */}
+                    <Paper>
+                        <VolumeForm
+                            volumeSettings={this.state.volumeSettings}
+                            onChange={
+                                (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    this.setState(
+                                        {
+                                            volumeSettings: {
+                                                ...this.state.volumeSettings, [name]: event.currentTarget.checked
+                                            }
+                                        }
+                                    );
+                                }
+                            } />
+                    </Paper>
+                </Box >
 
-                </Grid>
-            </Grid>
+                <Collapse in={!isRequiredDataSet}>
+                    <Paper>
+                        <h1>Lifterator</h1>
+                        <p>Configure all required fields to build your program.</p>
+                    </Paper>
+                </Collapse>
 
-            <Collapse in={!isRequiredDataSet}>
-                <Jumbotron>
-                    <h1>Lifterator</h1>
-                    <p>Configure all required fields to build your program.</p>
-                </Jumbotron>
-            </Collapse>
-
-            <Collapse in={isRequiredDataSet}>
-                <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
-                    {
-                        setProtosByPhase.map(function (setProtos: ISetPrototype[], i) {
-                            return <Phase
-                                number={i}
-                                trainingMaxes={trainingMaxes}
-                                plateCalculator={plateCalculator}
-                                warmupGen={warmupGen}
-                                setProtos={setProtos}
-                                unit={unit}
-                            />
-                        })
-                    }
-                </Grid>
-            </Collapse>
-        </Container>
+                <Collapse in={isRequiredDataSet}>
+                    <Box>
+                        {
+                            setProtosByPhase.map(function (setProtos: types.ISetPrototype[], i) {
+                                return <Phase
+                                    number={i}
+                                    trainingMaxes={trainingMaxes}
+                                    plateCalculator={plateCalculator}
+                                    warmupGen={warmupGen}
+                                    setProtos={setProtos}
+                                    unit={unit}
+                                />
+                            })
+                        }
+                    </Box>
+                </Collapse>
+            </Grid >
+        </Container >
     }
 }

@@ -75,4 +75,7 @@ export interface IExerciseWeightMapping {
     [exercise: string]: number | undefined
 }
 
-export default IExerciseWeightMapping;
+export interface IVolumeSettings {
+    firstSetLastFives: boolean
+    firstSetLastAmrap: boolean
+}
