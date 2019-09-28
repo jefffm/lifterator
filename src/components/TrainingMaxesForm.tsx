@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import { IExerciseWeightMapping } from './Types';
+import { IExerciseWeightMapping } from '../lib/Types';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
 import Typography from '@material-ui/core/Typography'
@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
         container: {
             display: 'flex',
             flexWrap: 'wrap',
+            margin: theme.spacing(3),
         },
         textField: {
             marginLeft: theme.spacing(1),

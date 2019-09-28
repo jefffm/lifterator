@@ -4,15 +4,14 @@ import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
 import Collapse from "@material-ui/core/Collapse"
 
 import * as types from './Types'
 import { Phase } from './Phase'
-import TrainingMaxesForm from './TrainingMaxesForm'
+import TrainingMaxesForm from '../components/TrainingMaxesForm'
 import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from './WarmupGen'
-import { VolumeForm } from './VolumeForm'
+import { VolumeForm } from '../components/VolumeForm'
 
 type ProgramProps = {
     name: string
@@ -33,11 +32,19 @@ export class Program extends Component<ProgramProps, IProgramState> {
         super(props)
 
         this.state = {
+            /*
             "trainingMaxes": {
                 "Squat": undefined,
                 "Bench Press": undefined,
                 "Deadlift": undefined,
                 "Overhead Press": undefined
+            },
+            */
+            "trainingMaxes": {
+                "Squat": 155,
+                "Bench Press": 155,
+                "Deadlift": 200,
+                "Overhead Press": 105
             },
             "liftWarmupBaseWeights": {
                 "Squat": 135,
@@ -199,7 +206,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                         }
                     </Box>
                 </Collapse>
-            </Grid >
-        </Container >
+            </Grid>
+        </Container>
     }
 }

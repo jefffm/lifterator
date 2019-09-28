@@ -1,6 +1,7 @@
-import React, { ReactNode, Component } from 'react'; // we need this to make JSX compile
-import { Reps, SetType } from './Types';
-import { stringLiteralTypeAnnotation } from '@babel/types';
+import React, { ReactNode, Component } from 'react'
+import { Reps, SetType } from '../lib/Types'
+import TableCell from '@material-ui/core/TableCell'
+import TableRow from '@material-ui/core/TableRow'
 
 export type WorkoutSetProps = {
     exercise: string
@@ -34,13 +35,14 @@ export class WorkoutSet extends Component<WorkoutSetProps> {
             }
         )()
 
-        return <tr>
-            <td>{reps.num}{repsToken}</td>
-            <td>{weight} {unit}</td>
-            <td style={{ textAlign: 'left' }}>
+        {/* TODO: set the key? */ }
+        return <TableRow>
+            <TableCell>{reps.num}{repsToken}</TableCell>
+            <TableCell>{weight} {unit}</TableCell>
+            <TableCell align="left">
                 {plates.join(", ")}
-            </td>
-        </tr >
+            </TableCell>
+        </TableRow>
     }
 }
 

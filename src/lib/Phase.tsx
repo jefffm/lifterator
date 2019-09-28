@@ -4,8 +4,6 @@ import { IExerciseWeightMapping, ISetPrototype } from './Types'
 import PlateCalculator from '../util/PlateCalculator'
 import { WarmupGen } from './WarmupGen'
 
-import Grid from '@material-ui/core/Grid'
-
 
 // TODO: receive training maxes
 type PhaseProps = {
@@ -27,11 +25,7 @@ export class Phase extends Component<PhaseProps> {
         const unit = this.props.unit
 
         // TODO: Add configuration for number of days and splits (eg. 4 day vs. 2 day)
-        return <Grid
-            container
-            direction="column"
-            justify="space-evenly"
-            alignItems="stretch">
+        return <div>
             <Workout
                 number={1}
                 phase={number}
@@ -52,7 +46,7 @@ export class Phase extends Component<PhaseProps> {
                 setProtos={setProtos}
                 unit={unit}
             />
-        </Grid >
+        </div>
     }
 }
 

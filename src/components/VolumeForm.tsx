@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IVolumeSettings } from './Types'
+import { IVolumeSettings } from '../lib/Types'
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import FormLabel from '@material-ui/core/FormLabel'
@@ -30,7 +30,7 @@ export const VolumeForm = (props: VolumeFormProps) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div hide-print className={classes.root}>
             <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">Supplemental Volume</FormLabel>
                 First Set Last
