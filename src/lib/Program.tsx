@@ -9,7 +9,7 @@ import Collapse from "@material-ui/core/Collapse"
 
 import * as types from './Types'
 import { Phase } from './Phase'
-import { TrainingMaxesForm } from './TrainingMaxesForm'
+import TrainingMaxesForm from './TrainingMaxesForm'
 import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from './WarmupGen'
 import { VolumeForm } from './VolumeForm'
@@ -147,9 +147,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 <Box>
                     {/* Training Maxes configuration */}
                     <Paper>
-                        <Typography>
-                            Training Maxes
-                        </Typography>
                         <TrainingMaxesForm
                             trainingMaxes={trainingMaxes}
                             handleChange={this.updateTrainingMaxes}

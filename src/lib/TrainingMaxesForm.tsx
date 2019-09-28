@@ -1,71 +1,75 @@
-import React, { Component, ReactNode } from 'react'
+import React from 'react'
+import clsx from 'clsx'
 import { IExerciseWeightMapping } from './Types';
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import InputGroup from 'react-bootstrap/InputGroup'
-import Form from 'react-bootstrap/Form'
-import Collapse from 'react-bootstrap/Collapse'
-import Button from 'react-bootstrap/Button'
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
+import Typography from '@material-ui/core/Typography'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
+import FormGroup from '@material-ui/core/FormLabel'
+import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
 
-interface IFormProps {
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        textField: {
+            marginLeft: theme.spacing(1),
+            marginRight: theme.spacing(1),
+            width: 200,
+        },
+        dense: {
+            marginTop: 19,
+        },
+        menu: {
+            width: 200,
+        },
+    }),
+)
+
+interface ITrainingMaxesFormProps {
     trainingMaxes: IExerciseWeightMapping
     handleChange: (event: any, key: string) => void
     unit: string
     validated: boolean
 }
 
-interface IFormState {
-    open: boolean
-}
+const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
+    const classes = useStyles();
 
-export class TrainingMaxesForm extends Component<IFormProps, IFormState> {
-    constructor(props: IFormProps) {
-        super(props)
-        this.state = { open: true }
-    }
+    const changeHandler = props.handleChange
+    const unit = props.unit
 
-    render(): ReactNode {
-        const changeHandler = this.props.handleChange
-        const unit = this.props.unit
-        const validated = this.props.validated
-        const open = this.state.open
-
-        var elems = []
-        const it = Object.entries(this.props.trainingMaxes).entries()
-        for (const [i, item] of it) {
-            const [key, value] = item
-            elems.push(<Form.Group as={Row} controlId={key}>
-                <Form.Label column sm="6">{key}</Form.Label>
-                <Col>
-                    <InputGroup className="mb-3">
-                        <Form.Control
-                            name={key}
-                            type="number"
-                            placeholder="1rm * 0.9"
-                            onChange={function (e: any) { return changeHandler(e, key) }} />
-                        <InputGroup.Append>
-                            <InputGroup.Text id="basic-addon2">{unit}</InputGroup.Text>
-                        </InputGroup.Append>
-                    </InputGroup>
-                </Col>
-            </Form.Group>
-            )
+    const elems = Object.keys(props.trainingMaxes).map(
+        key => {
+            return <TextField
+                key={key}
+                className={clsx(classes.textField)}
+                variant="outlined"
+                label={key}
+                onChange={function (e: any) { return changeHandler(e, key) }}
+                InputProps={{
+                    endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
+                }}
+            />
         }
-        return (
-            <Container fluid>
-                <div id="hide-print">
-                    <Col>
-                        <Form validated={validated}>
-                            {elems}
-                        </Form>
-                    </Col>
-                </div>
+    )
 
-            </Container>
-        );
-    }
+    return (
+        <div hide-print className={classes.container}>
+            <FormControl component="fieldset">
+                <FormLabel component="legend">
+                    Training Maxes
+            </FormLabel>
+                <FormGroup>
+                    {elems}
+                </FormGroup>
+            </FormControl>
+        </div>
+    );
 }
 
 export default TrainingMaxesForm
