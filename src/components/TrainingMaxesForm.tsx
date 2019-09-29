@@ -34,7 +34,6 @@ interface ITrainingMaxesFormProps {
     trainingMaxes: IExerciseWeightMapping
     onChange: (name: string) => (event: React.ChangeEvent<any>) => void
     unit: string
-    validated: boolean
 }
 
 const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {

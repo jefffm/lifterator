@@ -8,16 +8,16 @@ import Collapse from "@material-ui/core/Collapse"
 
 import * as types from './Types'
 import { Phase } from './Phase'
-import TrainingMaxesForm from '../components/TrainingMaxesForm'
 import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from './WarmupGen'
-import { VolumeForm } from '../components/VolumeForm'
+import ConfigurationPanel from '../components/ConfigurationPanel'
 
 type ProgramProps = {
     name: string
 }
 
 interface IProgramState {
+    [key: string]: any
     trainingMaxes: types.IExerciseWeightMapping
     availablePlates: IAvailablePlates
     barWeight: number
@@ -67,6 +67,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
     isRequiredDataSet(): boolean {
         for (const [_, v] of Object.entries(this.state.trainingMaxes)) {
+            console.log(_, v)
             if (v === undefined) {
                 return false
             }
@@ -83,8 +84,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
         const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
         const unit = this.state.unit
 
-        const firstSetLastFives = this.state.volumeSettings.firstSetLastFives
-        const firstSetLastAmrap = this.state.volumeSettings.firstSetLastAmrap
+        const volumeSettings = this.state.volumeSettings
 
         var setProtosByPhase: types.ISetPrototype[][] = []
         for (const [intensitySets, repSets] of setProtoConfig) {
@@ -102,7 +102,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
             const firstSetIntensityPct = intensitySets[0]
             const firstSetReps = repSets[0]
 
-            if (firstSetLastFives) {
+            if (volumeSettings.firstSetLastFives) {
                 // Add 5x5 at first set's intensity
                 for (var i = 0; i < 5; i++) {
                     setList.push({
@@ -112,7 +112,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 }
             }
 
-            if (firstSetLastAmrap) {
+            if (volumeSettings.firstSetLastAmrap) {
                 setList.push(
                     {
                         "intensityPct": firstSetIntensityPct as number,
@@ -129,53 +129,31 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
+        const programInstance = this
+        const changeHandlerFactory = (key: string) => (subkey: string) => (event: React.ChangeEvent<any>) => {
+            console.log({ key: key, subkey: subkey, state: programInstance.state })
+            programInstance.setState(
+                {
+                    [key]: {
+                        ...programInstance.state[key],
+                        // TODO: support values/checkboxes better
+                        [subkey]: event.currentTarget.value || event.currentTarget.checked
+                    }
+                }
+            );
+        }
+
         return <Container>
+            <ConfigurationPanel
+                unit={unit}
+                volumeSettings={volumeSettings}
+                trainingMaxes={trainingMaxes}
+                onChange={changeHandlerFactory}
+            />
             <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
                 <Box>
                     <h2>{programName}</h2>
                 </Box>
-
-                <Box>
-                    {/* Training Maxes configuration */}
-                    <Paper>
-                        <TrainingMaxesForm
-                            trainingMaxes={trainingMaxes}
-                            onChange={
-                                (name: string) => (event: React.ChangeEvent<any>) => {
-                                    this.setState(
-                                        {
-                                            trainingMaxes: {
-                                                ...this.state.trainingMaxes, [name]: event.currentTarget.value
-                                            }
-                                        }
-                                    );
-                                }
-                            }
-                            unit={unit}
-                            validated={isRequiredDataSet}
-                        />
-                    </Paper>
-                </Box>
-
-                <Box>
-
-                    {/* Supplemental volume configuration */}
-                    <Paper>
-                        <VolumeForm
-                            volumeSettings={this.state.volumeSettings}
-                            onChange={
-                                (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    this.setState(
-                                        {
-                                            volumeSettings: {
-                                                ...this.state.volumeSettings, [name]: event.currentTarget.checked
-                                            }
-                                        }
-                                    );
-                                }
-                            } />
-                    </Paper>
-                </Box >
 
                 <Collapse in={!isRequiredDataSet}>
                     <Paper>
