@@ -1,11 +1,9 @@
-import React, { Component, ReactNode } from 'react'
+import React from 'react'
 import { WorkoutSet, WorkoutSetProps } from './WorkoutSetRow'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
 import TableBody from '@material-ui/core/TableBody'
-import Paper from '@material-ui/core/Paper'
 
 
 

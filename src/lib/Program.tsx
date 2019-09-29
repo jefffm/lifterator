@@ -82,7 +82,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
     }
 
     isRequiredDataSet(): boolean {
-        for (const [k, v] of Object.entries(this.state.trainingMaxes)) {
+        for (const [_, v] of Object.entries(this.state.trainingMaxes)) {
             if (v === undefined) {
                 return false
             }

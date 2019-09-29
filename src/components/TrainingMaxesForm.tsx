@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import { IExerciseWeightMapping } from '../lib/Types';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
-import Typography from '@material-ui/core/Typography'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormGroup from '@material-ui/core/FormLabel'
