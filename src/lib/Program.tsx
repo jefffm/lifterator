@@ -67,7 +67,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
     isRequiredDataSet(): boolean {
         for (const [_, v] of Object.entries(this.state.trainingMaxes)) {
-            console.log(_, v)
             if (v === undefined) {
                 return false
             }
@@ -131,7 +130,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         const programInstance = this
         const changeHandlerFactory = (key: string) => (subkey: string) => (event: React.ChangeEvent<any>) => {
-            console.log({ key: key, subkey: subkey, state: programInstance.state })
             programInstance.setState(
                 {
                     [key]: {

@@ -1,4 +1,3 @@
-import React from 'react'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 
@@ -12,8 +11,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(3),
         },
         textField: {
-            marginLeft: theme.spacing(1),
-            marginRight: theme.spacing(1),
+            margin: theme.spacing(1),
             width: 200,
         },
         dense: {
