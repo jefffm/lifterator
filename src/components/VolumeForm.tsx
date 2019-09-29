@@ -9,17 +9,7 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Checkbox from '@material-ui/core/Checkbox'
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-        },
-        formControl: {
-            margin: theme.spacing(3),
-        },
-    }),
-);
+import { useStyles } from './ConfigurationCommon';
 
 interface VolumeFormProps {
     volumeSettings: IVolumeSettings

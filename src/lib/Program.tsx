@@ -144,16 +144,17 @@ export class Program extends Component<ProgramProps, IProgramState> {
         }
 
         return <Container>
-            <ConfigurationPanel
-                unit={unit}
-                volumeSettings={volumeSettings}
-                trainingMaxes={trainingMaxes}
-                onChange={changeHandlerFactory}
-            />
             <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
                 <Box>
                     <h2>{programName}</h2>
                 </Box>
+
+                <ConfigurationPanel
+                    unit={unit}
+                    volumeSettings={volumeSettings}
+                    trainingMaxes={trainingMaxes}
+                    onChange={changeHandlerFactory}
+                />
 
                 <Collapse in={!isRequiredDataSet}>
                     <Paper>

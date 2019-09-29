@@ -1,34 +1,13 @@
 import React from 'react'
 import clsx from 'clsx'
 import { IExerciseWeightMapping } from '../lib/Types';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormGroup from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        container: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            margin: theme.spacing(3),
-        },
-        textField: {
-            marginLeft: theme.spacing(1),
-            marginRight: theme.spacing(1),
-            width: 200,
-        },
-        dense: {
-            marginTop: 19,
-        },
-        menu: {
-            width: 200,
-        },
-    }),
-)
+import { useStyles } from './ConfigurationCommon';
 
 interface ITrainingMaxesFormProps {
     trainingMaxes: IExerciseWeightMapping
@@ -55,8 +34,8 @@ const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
     )
 
     return (
-        <div hide-print className={classes.container}>
-            <FormControl component="fieldset">
+        <div hide-print className={classes.root}>
+            <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">
                     Training Maxes
             </FormLabel>
