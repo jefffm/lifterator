@@ -5,4 +5,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
-serviceWorker.register();
+
+if (process.env.NODE_ENV === 'development') {
+    serviceWorker.unregister()
+} else {
+    serviceWorker.register()
+}
