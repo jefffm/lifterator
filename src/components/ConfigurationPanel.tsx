@@ -23,15 +23,12 @@ export default function ConfigurationPanel(props: ConfigurationPanelProps) {
             />
         </Paper>
 
-        <Box>
-
-            {/* Supplemental volume configuration */}
-            <Paper>
-                <VolumeForm
-                    volumeSettings={props.volumeSettings}
-                    onChange={props.onChange('volumeSettings')}
-                />
-            </Paper>
-        </Box>
+        {/* Supplemental volume configuration */}
+        <Paper>
+            <VolumeForm
+                volumeSettings={props.volumeSettings}
+                onChange={props.onChange('volumeSettings')}
+            />
+        </Paper>
     </div>
 }

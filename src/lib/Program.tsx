@@ -34,11 +34,17 @@ export class Program extends Component<ProgramProps, IProgramState> {
         super(props)
 
         this.state = {
+            // "trainingMaxes": {
+            //     "Squat": undefined,
+            //     "Bench Press": undefined,
+            //     "Deadlift": undefined,
+            //     "Overhead Press": undefined
+            // },
             "trainingMaxes": {
-                "Squat": undefined,
-                "Bench Press": undefined,
-                "Deadlift": undefined,
-                "Overhead Press": undefined
+                "Squat": 155,
+                "Bench Press": 155,
+                "Deadlift": 200,
+                "Overhead Press": 105
             },
             "liftWarmupBaseWeights": {
                 "Squat": 135,
