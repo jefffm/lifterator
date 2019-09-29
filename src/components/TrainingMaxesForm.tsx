@@ -25,6 +25,7 @@ const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
                 className={clsx(classes.textField)}
                 variant="outlined"
                 label={key}
+                type="number"
                 onChange={props.onChange(key)}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">{props.unit}</InputAdornment>,
