@@ -5,13 +5,14 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Collapse from "@material-ui/core/Collapse"
+import { Typography } from '@material-ui/core'
 
 import * as types from './Types'
-import { Phase } from './Phase'
 import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from './WarmupGen'
 import ConfigurationPanel from '../components/ConfigurationPanel'
-import { Typography } from '@material-ui/core'
+import WorkoutStepper from '../components/WorkoutStepper';
+import Workout from './Workout'
 
 type ProgramProps = {
     name: string
@@ -142,6 +143,33 @@ export class Program extends Component<ProgramProps, IProgramState> {
             );
         }
 
+        const phases = setProtosByPhase.flatMap(function (setProtos: types.ISetPrototype[], i) {
+
+            return [
+                <Workout
+                    number={1}
+                    phase={i}
+                    mainLifts={["Squat", "Bench Press"]}
+                    trainingMaxes={trainingMaxes}
+                    plateCalculator={plateCalculator}
+                    warmupGen={warmupGen}
+                    setProtos={setProtos}
+                    unit={unit}
+                />,
+
+                <Workout
+                    number={2}
+                    phase={i}
+                    mainLifts={["Deadlift", "Overhead Press"]}
+                    trainingMaxes={trainingMaxes}
+                    plateCalculator={plateCalculator}
+                    warmupGen={warmupGen}
+                    setProtos={setProtos}
+                    unit={unit}
+                />
+            ]
+        })
+
         return <Container>
             <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
                 <Box>
@@ -168,18 +196,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
                 <Collapse in={isRequiredDataSet}>
                     <Box>
-                        {
-                            setProtosByPhase.map(function (setProtos: types.ISetPrototype[], i) {
-                                return <Phase
-                                    number={i}
-                                    trainingMaxes={trainingMaxes}
-                                    plateCalculator={plateCalculator}
-                                    warmupGen={warmupGen}
-                                    setProtos={setProtos}
-                                    unit={unit}
-                                />
-                            })
-                        }
+                        {<WorkoutStepper elems={() => phases} />}
                     </Box>
                 </Collapse>
             </Grid>
