@@ -11,6 +11,7 @@ import { Phase } from './Phase'
 import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from './WarmupGen'
 import ConfigurationPanel from '../components/ConfigurationPanel'
+import { Typography } from '@material-ui/core'
 
 type ProgramProps = {
     name: string
@@ -156,7 +157,11 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
                 <Collapse in={!isRequiredDataSet}>
                     <Paper>
-                        <h1>Lifterator</h1>
+                        <Typography>
+                            <h1>
+                                Lifterator
+                            </h1>
+                        </Typography>
                         <p>Configure all required fields to build your program.</p>
                     </Paper>
                 </Collapse>
