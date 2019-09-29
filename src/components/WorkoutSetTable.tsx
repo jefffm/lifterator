@@ -51,6 +51,11 @@ export default function SetGroup(props: SetGroupProps) {
     }
     return <div className={classes.root}>
         <Table className={classes.table} size="small">
+            <colgroup>
+                <col width="5%" />
+                <col width="20%" />
+                <col width="33%" />
+            </colgroup>
             <TableHead>
                 {name}
             </TableHead>

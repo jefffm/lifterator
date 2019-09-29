@@ -30,53 +30,50 @@ export class Workout extends Component<WorkoutProps> {
         const warmupGen = this.props.warmupGen
         const unit = this.props.unit
 
+        const mainSets = mainLifts.map(
+            function (lift) {
+                const exerciseTrainingMax = (trainingMaxes as any)[lift]
+                const sets = setProtos.map(
+                    function (setProto: ISetPrototype) {
+                        const setReps = setProto.reps
+                        const setWeight = round5(exerciseTrainingMax * setProto.intensityPct)
+                        return {
+                            "exercise": lift,
+                            "reps": setReps,
+                            "weight": setWeight,
+                            "unit": unit,
+                            "plates": plateCalculator.getPlatesPerSide(setWeight)
+                        }
+                    }
+                )
+
+                const warmupSets = warmupGen.getSets(
+                    lift, exerciseTrainingMax, sets[0].weight
+                ).map(function (set) {
+                    return {
+                        "exercise": lift,
+                        "reps": { "num": set.reps, "setType": SetType.WARMUP },
+                        "weight": set.weight,
+                        "unit": unit,
+                        "plates": plateCalculator.getPlatesPerSide(set.weight)
+                    }
+                })
+
+                return <SetGroup
+                    key={lift}
+                    name={lift}
+                    sets={warmupSets.concat(sets)}
+                    unit={unit} />
+            }
+
+        )
+
         return <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
             <Paper>
                 <Typography variant="h5" component="h3">
                     Phase {phase + 1}: Workout {number}
                 </Typography>
-                {
-                    mainLifts.map(
-                        function (lift) {
-                            const exerciseTrainingMax = (trainingMaxes as any)[lift]
-                            const sets = setProtos.map(
-                                function (setProto: ISetPrototype) {
-                                    const setReps = setProto.reps
-                                    const setWeight = round5(exerciseTrainingMax * setProto.intensityPct)
-                                    return {
-                                        "exercise": lift,
-                                        "reps": setReps,
-                                        "weight": setWeight,
-                                        "unit": unit,
-                                        "plates": plateCalculator.getPlatesPerSide(setWeight)
-                                    }
-                                }
-                            )
-
-
-
-                            // TODO: 95 for bench/press, 135 for squat/dl
-                            const warmupSets = warmupGen.getSets(
-                                135, exerciseTrainingMax, sets[0].weight
-                            ).map(function (set) {
-                                return {
-                                    "exercise": lift,
-                                    "reps": { "num": set.reps, "setType": SetType.WARMUP },
-                                    "weight": set.weight,
-                                    "unit": unit,
-                                    "plates": plateCalculator.getPlatesPerSide(set.weight)
-                                }
-                            })
-
-                            return <SetGroup
-                                key={lift}
-                                name={lift}
-                                sets={warmupSets.concat(sets)}
-                                unit={unit} />
-                        }
-
-                    )
-                }
+                {mainSets}
                 <SetGroup name="Accessories" sets={[]} unit={unit} />
             </Paper>
         </Grid >

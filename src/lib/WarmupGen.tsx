@@ -7,7 +7,7 @@ export type StaticSet = {
 }
 
 export abstract class WarmupGen {
-    abstract getSets(baseWeight: number, trainingMax: number, firstSetWeight: number): StaticSet[]
+    abstract getSets(exercise: string, trainingMax: number, firstSetWeight: number): StaticSet[]
 }
 
 /**
@@ -26,7 +26,9 @@ export class BeyondWarmupGen extends WarmupGen {
         this.baseWeights = baseWeights
     }
 
-    getSets(baseWeight: number, trainingMax: number, firstSetWeight: number): StaticSet[] {
+    getSets(exercise: string, trainingMax: number, firstSetWeight: number): StaticSet[] {
+        const baseWeight = this.baseWeights[exercise] || 95
+
         // Initialize with a bar set
         var sets: StaticSet[] = [
             {
@@ -58,7 +60,6 @@ export class BeyondWarmupGen extends WarmupGen {
                 )
             }
         }
-
 
         return sets
     }
