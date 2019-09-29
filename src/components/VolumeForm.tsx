@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface VolumeFormProps {
     volumeSettings: IVolumeSettings
-    onChange: (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: (name: string) => (event: React.ChangeEvent<any>) => void
 }
 
 export const VolumeForm = (props: VolumeFormProps) => {

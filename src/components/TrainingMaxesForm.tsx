@@ -32,16 +32,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface ITrainingMaxesFormProps {
     trainingMaxes: IExerciseWeightMapping
-    handleChange: (event: any, key: string) => void
+    onChange: (name: string) => (event: React.ChangeEvent<any>) => void
     unit: string
     validated: boolean
 }
 
 const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
     const classes = useStyles();
-
-    const changeHandler = props.handleChange
-    const unit = props.unit
 
     const elems = Object.keys(props.trainingMaxes).map(
         key => {
@@ -50,9 +47,9 @@ const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
                 className={clsx(classes.textField)}
                 variant="outlined"
                 label={key}
-                onChange={function (e: any) { return changeHandler(e, key) }}
+                onChange={props.onChange(key)}
                 InputProps={{
-                    endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
+                    endAdornment: <InputAdornment position="end">{props.unit}</InputAdornment>,
                 }}
             />
         }

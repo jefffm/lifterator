@@ -32,19 +32,11 @@ export class Program extends Component<ProgramProps, IProgramState> {
         super(props)
 
         this.state = {
-            /*
             "trainingMaxes": {
                 "Squat": undefined,
                 "Bench Press": undefined,
                 "Deadlift": undefined,
                 "Overhead Press": undefined
-            },
-            */
-            "trainingMaxes": {
-                "Squat": 155,
-                "Bench Press": 155,
-                "Deadlift": 200,
-                "Overhead Press": 105
             },
             "liftWarmupBaseWeights": {
                 "Squat": 135,
@@ -71,14 +63,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 "firstSetLastAmrap": false
             }
         }
-
-        this.updateTrainingMaxes = this.updateTrainingMaxes.bind(this);
-    }
-
-    updateTrainingMaxes(event: React.FormEvent<HTMLInputElement>, key: string) {
-        const value = event.currentTarget.valueAsNumber
-        // eslint-disable-next-line
-        this.setState(state => (state.trainingMaxes[key] = value, state))
     }
 
     isRequiredDataSet(): boolean {
@@ -156,7 +140,17 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     <Paper>
                         <TrainingMaxesForm
                             trainingMaxes={trainingMaxes}
-                            handleChange={this.updateTrainingMaxes}
+                            onChange={
+                                (name: string) => (event: React.ChangeEvent<any>) => {
+                                    this.setState(
+                                        {
+                                            trainingMaxes: {
+                                                ...this.state.trainingMaxes, [name]: event.currentTarget.value
+                                            }
+                                        }
+                                    );
+                                }
+                            }
                             unit={unit}
                             validated={isRequiredDataSet}
                         />
