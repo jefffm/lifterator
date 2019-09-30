@@ -10,7 +10,7 @@ import TableBody from '@material-ui/core/TableBody'
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: '100%',
+            marginTop: theme.spacing(3),
         },
         paper: {
             marginTop: theme.spacing(3),
