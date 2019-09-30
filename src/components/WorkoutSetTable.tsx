@@ -4,6 +4,7 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
 import TableBody from '@material-ui/core/TableBody'
+import { TableRow, TableCell } from '@material-ui/core'
 
 
 
@@ -57,7 +58,11 @@ export default function SetGroup(props: SetGroupProps) {
                 <col width="33%" />
             </colgroup>
             <TableHead>
-                {name}
+                <TableRow>
+                    <TableCell colSpan={3}>
+                        {name}
+                    </TableCell>
+                </TableRow>
             </TableHead>
             <TableBody>
                 {setElems}
