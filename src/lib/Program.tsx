@@ -13,6 +13,7 @@ import { BeyondWarmupGen } from './WarmupGen'
 import ConfigurationPanel from '../components/ConfigurationPanel'
 import WorkoutStepper from '../components/WorkoutStepper';
 import Workout from './Workout'
+import createSets from './SetFactory';
 
 type ProgramProps = {
     name: string
@@ -87,48 +88,34 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
         const volumeSettings = this.state.volumeSettings
 
-        var setProtosByPhase: types.ISetPrototype[][] = []
-        for (const [intensitySets, repSets] of setProtoConfig) {
-            var setList: types.ISetPrototype[] = []
-            for (const [setNum, intensityPct] of intensitySets.entries()) {
-                setList.push(
-                    {
-                        "intensityPct": intensityPct as number,
-                        "reps": repSets[setNum] as types.Reps
-                    }
-                )
-            }
+        const setProtosByPhase = createSets(setProtoConfig, volumeSettings)
+        const phases = setProtosByPhase.flatMap(function (setProtos: types.ISetPrototype[], i) {
+            return [
+                <Workout
+                    number={1}
+                    phase={i}
+                    mainLifts={["Squat", "Bench Press"]}
+                    trainingMaxes={trainingMaxes}
+                    plateCalculator={plateCalculator}
+                    warmupGen={warmupGen}
+                    setProtos={setProtos}
+                    unit={unit}
+                    accessorySets={[]}
+                />,
 
-            // Configure supplemental volume sets
-            const firstSetIntensityPct = intensitySets[0]
-            const firstSetReps = repSets[0]
-
-            if (volumeSettings.firstSetLastFives) {
-                // Add 5x5 at first set's intensity
-                for (var i = 0; i < 5; i++) {
-                    setList.push({
-                        "intensityPct": firstSetIntensityPct as number,
-                        "reps": firstSetReps as types.Reps
-                    })
-                }
-            }
-
-            if (volumeSettings.firstSetLastAmrap) {
-                setList.push(
-                    {
-                        "intensityPct": firstSetIntensityPct as number,
-                        "reps": {
-                            "num": (firstSetReps as types.Reps).num,
-                            "setType": types.SetType.AMRAP
-                        }
-                    }
-                )
-            }
-
-            setProtosByPhase.push(setList)
-        }
-
-        const isRequiredDataSet = this.isRequiredDataSet()
+                <Workout
+                    number={2}
+                    phase={i}
+                    mainLifts={["Deadlift", "Overhead Press"]}
+                    trainingMaxes={trainingMaxes}
+                    plateCalculator={plateCalculator}
+                    warmupGen={warmupGen}
+                    setProtos={setProtos}
+                    unit={unit}
+                    accessorySets={[]}
+                />
+            ]
+        })
 
         const programInstance = this
         const changeHandlerFactory = (key: string) => (subkey: string) => (event: React.ChangeEvent<any>) => {
@@ -143,32 +130,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
             );
         }
 
-        const phases = setProtosByPhase.flatMap(function (setProtos: types.ISetPrototype[], i) {
-
-            return [
-                <Workout
-                    number={1}
-                    phase={i}
-                    mainLifts={["Squat", "Bench Press"]}
-                    trainingMaxes={trainingMaxes}
-                    plateCalculator={plateCalculator}
-                    warmupGen={warmupGen}
-                    setProtos={setProtos}
-                    unit={unit}
-                />,
-
-                <Workout
-                    number={2}
-                    phase={i}
-                    mainLifts={["Deadlift", "Overhead Press"]}
-                    trainingMaxes={trainingMaxes}
-                    plateCalculator={plateCalculator}
-                    warmupGen={warmupGen}
-                    setProtos={setProtos}
-                    unit={unit}
-                />
-            ]
-        })
+        const isRequiredDataSet = this.isRequiredDataSet()
 
         return <Container>
             <Grid container direction="column" justify="space-evenly" alignItems="stretch" >

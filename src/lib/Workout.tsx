@@ -8,6 +8,7 @@ import WarmupGen from './WarmupGen'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
+import { WorkoutSetProps } from '../components/WorkoutSetRow';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,6 +33,7 @@ type WorkoutProps = {
     warmupGen: WarmupGen
     setProtos: ISetPrototype[]
     unit: string
+    accessorySets: WorkoutSetProps[]
 };
 
 export function Workout(props: WorkoutProps) {
@@ -50,22 +52,22 @@ export function Workout(props: WorkoutProps) {
         function (lift) {
             const exerciseTrainingMax = (trainingMaxes as IExerciseWeightMapping)[lift] as number
             const sets = setProtos.map(
-                function (setProto: ISetPrototype) {
+                function (setProto: ISetPrototype): WorkoutSetProps {
                     const setReps = setProto.reps
                     const setWeight = round5(exerciseTrainingMax * setProto.intensityPct)
                     return {
-                        "exercise": lift,
-                        "reps": setReps,
-                        "weight": setWeight,
-                        "unit": unit,
-                        "plates": plateCalculator.getPlatesPerSide(setWeight)
+                        exercise: lift,
+                        reps: setReps,
+                        weight: setWeight,
+                        unit: unit,
+                        plates: plateCalculator.getPlatesPerSide(setWeight)
                     }
                 }
             )
 
             const warmupSets = warmupGen.getSets(
                 lift, exerciseTrainingMax, sets[0].weight
-            ).map(function (set) {
+            ).map(function (set): WorkoutSetProps {
                 return {
                     "exercise": lift,
                     "reps": { "num": set.reps, "setType": SetType.WARMUP },
@@ -85,7 +87,7 @@ export function Workout(props: WorkoutProps) {
     )
 
     const allSets = mainSets.concat([
-        <SetGroup name="Accessories" sets={[]} unit={unit} />
+        <SetGroup name="Accessories" sets={props.accessorySets} unit={unit} />
     ])
 
     return <div className={classes.root}>
