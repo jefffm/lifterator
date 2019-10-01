@@ -2,13 +2,14 @@ import React from 'react'
 import SetGroup from '../components/WorkoutSetTable';
 import { round5 } from '../util/Math';
 import PlateCalculator from '../util/PlateCalculator'
-import { ISetPrototype, SetType, IExerciseWeightMapping } from './Types';
+import { ISetPrototype, SetType } from './Types';
 import Grid from '@material-ui/core/Grid'
 import WarmupGen from './WarmupGen'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { WorkoutSetProps } from '../components/WorkoutSetRow';
+import { Exercise, IExerciseWeightMapping } from './Exercises';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -27,8 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
 type WorkoutProps = {
     number: number
     phase: number
-    mainLifts: string[]
-    trainingMaxes: object
+    mainLifts: Exercise[]
+    trainingMaxes: IExerciseWeightMapping
     plateCalculator: PlateCalculator
     warmupGen: WarmupGen
     setProtos: ISetPrototype[]
@@ -50,36 +51,34 @@ export function Workout(props: WorkoutProps) {
 
     const mainSets = mainLifts.map(
         function (lift) {
-            const exerciseTrainingMax = (trainingMaxes as IExerciseWeightMapping)[lift] as number
+            const exerciseTrainingMax = trainingMaxes[lift.name] as number
             const sets = setProtos.map(
                 function (setProto: ISetPrototype): WorkoutSetProps {
                     const setReps = setProto.reps
                     const setWeight = round5(exerciseTrainingMax * setProto.intensityPct)
                     return {
-                        exercise: lift,
+                        exercise: lift.name,
                         reps: setReps,
                         weight: setWeight,
-                        unit: unit,
                         plates: plateCalculator.getPlatesPerSide(setWeight)
                     }
                 }
             )
 
             const warmupSets = warmupGen.getSets(
-                lift, exerciseTrainingMax, sets[0].weight
+                lift.name, exerciseTrainingMax, sets[0].weight
             ).map(function (set): WorkoutSetProps {
                 return {
-                    "exercise": lift,
-                    "reps": { "num": set.reps, "setType": SetType.WARMUP },
-                    "weight": set.weight,
-                    "unit": unit,
-                    "plates": plateCalculator.getPlatesPerSide(set.weight)
+                    exercise: lift.name,
+                    reps: { "num": set.reps, "setType": SetType.WARMUP },
+                    weight: set.weight,
+                    plates: plateCalculator.getPlatesPerSide(set.weight)
                 }
             })
 
             return <SetGroup
-                key={lift}
-                name={lift}
+                key={lift.shortname}
+                name={lift.shortname}
                 sets={warmupSets.concat(sets)}
                 unit={unit} />
         }

@@ -1,5 +1,5 @@
 import { round5 } from "../util/Math";
-import { IExerciseWeightMapping } from "./Types";
+import { IExerciseWeightMapping, Exercise } from "./Exercises";
 
 export type StaticSet = {
     reps: number

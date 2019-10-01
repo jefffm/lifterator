@@ -2,8 +2,9 @@ import React from 'react'
 
 import TrainingMaxesForm from '../components/TrainingMaxesForm'
 import { VolumeForm } from '../components/VolumeForm'
-import { IExerciseWeightMapping, IVolumeSettings } from '../lib/Types';
+import { IVolumeSettings } from '../lib/Types';
 import { Paper, Box } from '@material-ui/core';
+import { IExerciseWeightMapping } from '../lib/Exercises';
 
 interface ConfigurationPanelProps {
     unit: string

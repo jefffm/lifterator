@@ -21,7 +21,8 @@ export enum SetType {
     NORMAL,
     AMRAP,
     JOKER,
-    WARMUP
+    WARMUP,
+    ACCESSORY
 }
 
 export interface Reps {
@@ -69,10 +70,6 @@ export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
         { num: 5, setType: SetType.NORMAL },
         { num: 3, setType: SetType.AMRAP },
     ]
-}
-
-export interface IExerciseWeightMapping {
-    [exercise: string]: number | undefined
 }
 
 export interface IVolumeSettings {

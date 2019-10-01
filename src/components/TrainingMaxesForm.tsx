@@ -1,6 +1,5 @@
 import React from 'react'
 import clsx from 'clsx'
-import { IExerciseWeightMapping } from '../lib/Types';
 
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
@@ -8,6 +7,7 @@ import FormGroup from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { useStyles } from './ConfigurationCommon';
+import { IExerciseWeightMapping } from '../lib/Exercises'
 
 interface ITrainingMaxesFormProps {
     trainingMaxes: IExerciseWeightMapping

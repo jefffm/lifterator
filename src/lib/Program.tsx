@@ -14,6 +14,7 @@ import ConfigurationPanel from '../components/ConfigurationPanel'
 import WorkoutStepper from '../components/WorkoutStepper';
 import Workout from './Workout'
 import createSets from './SetFactory';
+import NameExerciseMapper, { Exercise, IExerciseWeightMapping } from './Exercises';
 
 type ProgramProps = {
     name: string
@@ -21,13 +22,14 @@ type ProgramProps = {
 
 interface IProgramState {
     [key: string]: any
-    trainingMaxes: types.IExerciseWeightMapping
+    trainingMaxes: IExerciseWeightMapping
     availablePlates: IAvailablePlates
     barWeight: number
     setProtoConfig: [number[], types.Reps[]][]
-    liftWarmupBaseWeights: types.IExerciseWeightMapping
+    liftWarmupBaseWeights: IExerciseWeightMapping
     unit: string
     volumeSettings: types.IVolumeSettings
+    mainExercises: Exercise[]
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
@@ -35,17 +37,23 @@ export class Program extends Component<ProgramProps, IProgramState> {
         super(props)
 
         this.state = {
+            // "trainingMaxes": {
+            //     "Squat": undefined,
+            //     "Bench Press": undefined,
+            //     "Deadlift": undefined,
+            //     "Overhead Press": undefined
+            // },
             "trainingMaxes": {
-                "Squat": undefined,
-                "Bench Press": undefined,
-                "Deadlift": undefined,
-                "Overhead Press": undefined
+                SQUAT: 155,
+                BENCH_PRESS: 155,
+                DEADLIFT: 200,
+                OVERHEAD_PRESS: 105
             },
             "liftWarmupBaseWeights": {
-                "Squat": 135,
-                "Deadlift": 135,
-                "Overhead Press": 95,
-                "Bench Press": 95
+                SQUAT: 135,
+                DEADLIFT: 135,
+                OVERHEAD_PRESS: 95,
+                BENCH_PRESS: 95
             },
             "availablePlates": {
                 45: 4,
@@ -64,7 +72,30 @@ export class Program extends Component<ProgramProps, IProgramState> {
             "volumeSettings": {
                 "firstSetLastFives": true,
                 "firstSetLastAmrap": false
-            }
+            },
+            "mainExercises": [
+                {
+                    name: "Bench Press",
+                    shortname: "BP",
+                    aliases: ["bps", "bench", "horizontal press"]
+                },
+                {
+                    name: "Deadlift",
+                    shortname: "DL",
+                    aliases: ["dead", "deads", "dls"]
+                },
+                {
+                    name: "Overhead Press",
+                    shortname: "OHP",
+                    aliases: ["press", "military press"]
+                },
+                {
+                    name: "Squat",
+                    shortname: "SQ",
+                    aliases: ["back squat"]
+                }
+            ]
+
         }
     }
 
@@ -80,11 +111,13 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
     render(): ReactNode {
         const programName = this.props.name
-        var trainingMaxes = this.state.trainingMaxes
+        const trainingMaxes = this.state.trainingMaxes
         const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
         const setProtoConfig = this.state.setProtoConfig
         const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
         const unit = this.state.unit
+
+        const getExerciseFromName = NameExerciseMapper(this.state.mainExercises)
 
         const volumeSettings = this.state.volumeSettings
 
@@ -94,19 +127,32 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 <Workout
                     number={1}
                     phase={i}
-                    mainLifts={["Squat", "Bench Press"]}
+                    mainLifts={[getExerciseFromName("Squat"), getExerciseFromName("Bench Press")]}
                     trainingMaxes={trainingMaxes}
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
                     setProtos={setProtos}
                     unit={unit}
-                    accessorySets={[]}
+                    accessorySets={[
+                        {
+                            exercise: "DB Row",
+                            reps: { "num": 20, "setType": types.SetType.ACCESSORY },
+                            weight: 65,
+                            plates: []
+                        },
+                        {
+                            exercise: "KB Swing",
+                            reps: { "num": 20, "setType": types.SetType.ACCESSORY },
+                            weight: 53,
+                            plates: []
+                        },
+                    ]}
                 />,
 
                 <Workout
                     number={2}
                     phase={i}
-                    mainLifts={["Deadlift", "Overhead Press"]}
+                    mainLifts={[getExerciseFromName("Deadlift"), getExerciseFromName("Overhead Press")]}
                     trainingMaxes={trainingMaxes}
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
