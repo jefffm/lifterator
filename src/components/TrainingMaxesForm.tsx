@@ -7,10 +7,11 @@ import FormGroup from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { useStyles } from './ConfigurationCommon';
-import { IExerciseWeightMapping } from '../lib/Exercises'
+import ExerciseProvider from '../lib/Exercises';
 
 interface ITrainingMaxesFormProps {
-    trainingMaxes: IExerciseWeightMapping
+    exerciseProvider: ExerciseProvider
+    // TODO: how tf is this onChange handler going to work with ExerciseProvider?
     onChange: (name: string) => (event: React.ChangeEvent<any>) => void
     unit: string
 }
@@ -18,15 +19,15 @@ interface ITrainingMaxesFormProps {
 const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
     const classes = useStyles();
 
-    const elems = Object.keys(props.trainingMaxes).map(
-        key => {
+    const elems = props.exerciseProvider.filterWithTms().map(
+        exercise => {
             return <TextField
-                key={key}
+                key={exercise.shortname}
                 className={clsx(classes.textField)}
                 variant="outlined"
-                label={key}
+                label={exercise.name}
                 type="number"
-                onChange={props.onChange(key)}
+                onChange={props.onChange(exercise.shortname)}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">{props.unit}</InputAdornment>,
                 }}

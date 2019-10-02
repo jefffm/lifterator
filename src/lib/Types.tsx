@@ -76,3 +76,5 @@ export interface IVolumeSettings {
     firstSetLastFives: boolean
     firstSetLastAmrap: boolean
 }
+
+export type OnChangeHandlerFunction = (event: React.ChangeEvent<any>) => void

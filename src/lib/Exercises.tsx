@@ -1,3 +1,6 @@
+import { isUndefined } from "util"
+import { OnChangeHandlerFunction } from "./Types"
+
 export type IExerciseWeightMapping = {
     [exercise: string]: number
 }
@@ -6,23 +9,52 @@ export interface Exercise {
     name: string
     shortname: string
     aliases: string[]
+    trainingMax: number | undefined
+    warmupBaseWeight: number
 }
-
-type ExerciseMapFunction = (exerciseName: string) => Exercise
 
 const UNDEFINED_EXERCISE: Exercise = {
     name: "Undefined",
     shortname: "UNDEF",
-    aliases: []
+    aliases: [],
+    trainingMax: undefined,
+    warmupBaseWeight: 0,
 }
 
-export default function NameExerciseMapper(exercises: Exercise[]): ExerciseMapFunction {
-    const nameExercisePairs: [string, Exercise][] = exercises.flatMap(exercise => {
-        const allNames = [exercise.name, exercise.shortname].concat(exercise.aliases)
-        return allNames.map((name: string): [string, Exercise] => [name.toLowerCase(), exercise])
-    })
+export interface ExerciseWithHandler {
+    exercise: Exercise
+    onChangeHandler: OnChangeHandlerFunction
+}
 
-    const nameToExercise = new Map(nameExercisePairs)
+// TODO: Can ExerciseProvider somehow bind onChange handlers to each item in the Program state array...?
+export default class ExerciseProvider {
+    exercises: Exercise[]
+    nameToExercise: Map<string, ExerciseWithHandler>
 
-    return (exerciseName) => nameToExercise.get(exerciseName.toLowerCase()) || UNDEFINED_EXERCISE
+    constructor(exercises: Exercise[], onChangeHandlerFactory: (i: number, exercise: Exercise) => OnChangeHandlerFunction) {
+        this.exercises = exercises
+
+        const nameExercisePairs = exercises.flatMap(
+            (exercise: Exercise, i: number) => {
+                const allNames = [exercise.name, exercise.shortname].concat(exercise.aliases)
+                return allNames.map(
+                    (name: string): [string, ExerciseWithHandler] => [
+                        name.toLowerCase(), {
+                            onChangeHandler: onChangeHandlerFactory(i, exercise), exercise: exercise
+                        }
+                    ]
+                )
+            })
+
+        this.nameToExercise = new Map(nameExercisePairs)
+    }
+
+    filterWithTms(): Exercise[] {
+        return this.exercises.filter(x => !isUndefined(x.trainingMax))
+    }
+
+
+    get(exerciseName: string): ExerciseWithHandler | undefined {
+        return this.nameToExercise.get(exerciseName.toLowerCase())
+    }
 }

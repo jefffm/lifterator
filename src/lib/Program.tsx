@@ -14,7 +14,10 @@ import ConfigurationPanel from '../components/ConfigurationPanel'
 import WorkoutStepper from '../components/WorkoutStepper';
 import Workout from './Workout'
 import createSets from './SetFactory';
-import NameExerciseMapper, { Exercise, IExerciseWeightMapping } from './Exercises';
+import NameExerciseMapper, { Exercise } from './Exercises';
+import { isUndefined } from 'util'
+import ExerciseProvider from './Exercises'
+import { ExerciseWithHandler } from './Exercises';
 
 type ProgramProps = {
     name: string
@@ -22,12 +25,10 @@ type ProgramProps = {
 
 interface IProgramState {
     [key: string]: any
-    trainingMaxes: IExerciseWeightMapping
-    availablePlates: IAvailablePlates
-    barWeight: number
-    setProtoConfig: [number[], types.Reps[]][]
-    liftWarmupBaseWeights: IExerciseWeightMapping
     unit: string
+    barWeight: number
+    availablePlates: IAvailablePlates
+    setProtoConfig: [number[], types.Reps[]][]
     volumeSettings: types.IVolumeSettings
     mainExercises: Exercise[]
 }
@@ -37,24 +38,8 @@ export class Program extends Component<ProgramProps, IProgramState> {
         super(props)
 
         this.state = {
-            // "trainingMaxes": {
-            //     "Squat": undefined,
-            //     "Bench Press": undefined,
-            //     "Deadlift": undefined,
-            //     "Overhead Press": undefined
-            // },
-            "trainingMaxes": {
-                SQUAT: 155,
-                BENCH_PRESS: 155,
-                DEADLIFT: 200,
-                OVERHEAD_PRESS: 105
-            },
-            "liftWarmupBaseWeights": {
-                SQUAT: 135,
-                DEADLIFT: 135,
-                OVERHEAD_PRESS: 95,
-                BENCH_PRESS: 95
-            },
+            "unit": "lbs",
+            "barWeight": 45,
             "availablePlates": {
                 45: 4,
                 25: 3,
@@ -62,13 +47,11 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 5: 1,
                 2.5: 1
             },
-            "barWeight": 45,
             "setProtoConfig": [
                 [types.INTENSITY_SCHEME_DATA["3s"], types.REPETITIONS_SCHEME_DATA["5s pro"]],
                 [types.INTENSITY_SCHEME_DATA["5s"], types.REPETITIONS_SCHEME_DATA["5s pro"]],
                 [types.INTENSITY_SCHEME_DATA["1s"], types.REPETITIONS_SCHEME_DATA["5s pro"]]
             ],
-            "unit": "lbs",
             "volumeSettings": {
                 "firstSetLastFives": true,
                 "firstSetLastAmrap": false
@@ -77,22 +60,30 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 {
                     name: "Bench Press",
                     shortname: "BP",
-                    aliases: ["bps", "bench", "horizontal press"]
+                    aliases: ["bps", "bench", "horizontal press"],
+                    trainingMax: undefined,
+                    warmupBaseWeight: 95
                 },
                 {
                     name: "Deadlift",
                     shortname: "DL",
-                    aliases: ["dead", "deads", "dls"]
+                    aliases: ["dead", "deads", "dls"],
+                    trainingMax: undefined,
+                    warmupBaseWeight: 135
                 },
                 {
                     name: "Overhead Press",
                     shortname: "OHP",
-                    aliases: ["press", "military press"]
+                    aliases: ["press", "military press"],
+                    trainingMax: undefined,
+                    warmupBaseWeight: 95
                 },
                 {
                     name: "Squat",
                     shortname: "SQ",
-                    aliases: ["back squat"]
+                    aliases: ["back squat"],
+                    trainingMax: undefined,
+                    warmupBaseWeight: 135
                 }
             ]
 
@@ -100,24 +91,38 @@ export class Program extends Component<ProgramProps, IProgramState> {
     }
 
     isRequiredDataSet(): boolean {
-        for (const [_, v] of Object.entries(this.state.trainingMaxes)) {
-            if (v === undefined) {
-                return false
-            }
-        }
+        const isAnyExerciseWithoutTm = this.state.mainExercises.some(x => isUndefined(x.trainingMax))
 
-        return true
+        return isAnyExerciseWithoutTm
     }
 
     render(): ReactNode {
         const programName = this.props.name
-        const trainingMaxes = this.state.trainingMaxes
         const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
         const setProtoConfig = this.state.setProtoConfig
         const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
         const unit = this.state.unit
 
-        const getExerciseFromName = NameExerciseMapper(this.state.mainExercises)
+        const programInstance = this
+        const changeHandlerFactory = (key: string) => (subkey: string) => (event: React.ChangeEvent<any>) => {
+            programInstance.setState(
+                {
+                    [key]: {
+                        ...programInstance.state[key],
+                        // TODO: support values/checkboxes better
+                        [subkey]: event.currentTarget.value || event.currentTarget.checked
+                    }
+                }
+            );
+        }
+
+        const exerciseChangeHandlerFactory = (index: number, exercise: Exercise) => (event: React.ChangeEvent<any>) => {
+            var newExercises = programInstance.state.mainExercises
+            newExercises.splice(index, 1, exercise)
+            programInstance.setState({ mainExercises: newExercises })
+        }
+
+        const exerciseProvider = new ExerciseProvider(this.state.mainExercises, exerciseChangeHandlerFactory)
 
         const volumeSettings = this.state.volumeSettings
 
@@ -127,8 +132,12 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 <Workout
                     number={1}
                     phase={i}
-                    mainLifts={[getExerciseFromName("Squat"), getExerciseFromName("Bench Press")]}
-                    trainingMaxes={trainingMaxes}
+                    mainLifts={
+                        [
+                            exerciseProvider.get("Squat"),
+                            exerciseProvider.get("Bench Press")
+                        ].filter(x => !isUndefined(x)).map(x => (x as ExerciseWithHandler).exercise)
+                    }
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
                     setProtos={setProtos}
@@ -152,8 +161,12 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 <Workout
                     number={2}
                     phase={i}
-                    mainLifts={[getExerciseFromName("Deadlift"), getExerciseFromName("Overhead Press")]}
-                    trainingMaxes={trainingMaxes}
+                    mainLifts={
+                        [
+                            exerciseProvider.get("Deadlift"),
+                            exerciseProvider.get("Overhead Press")
+                        ].filter(x => !isUndefined(x)).map(x => (x as ExerciseWithHandler).exercise)
+                    }
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
                     setProtos={setProtos}
@@ -163,19 +176,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
             ]
         })
 
-        const programInstance = this
-        const changeHandlerFactory = (key: string) => (subkey: string) => (event: React.ChangeEvent<any>) => {
-            programInstance.setState(
-                {
-                    [key]: {
-                        ...programInstance.state[key],
-                        // TODO: support values/checkboxes better
-                        [subkey]: event.currentTarget.value || event.currentTarget.checked
-                    }
-                }
-            );
-        }
-
         const isRequiredDataSet = this.isRequiredDataSet()
 
         return <Container>
@@ -184,12 +184,14 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     <h2>{programName}</h2>
                 </Box>
 
+                {/*}
                 <ConfigurationPanel
                     unit={unit}
                     volumeSettings={volumeSettings}
-                    trainingMaxes={trainingMaxes}
                     onChange={changeHandlerFactory}
+                    exerciseProvider={exerciseProvider}
                 />
+    {*/}
 
                 <Collapse in={!isRequiredDataSet}>
                     <Paper>
@@ -208,6 +210,6 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     </Box>
                 </Collapse>
             </Grid>
-        </Container>
+        </Container >
     }
 }

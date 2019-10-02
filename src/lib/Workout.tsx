@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { WorkoutSetProps } from '../components/WorkoutSetRow';
 import { Exercise, IExerciseWeightMapping } from './Exercises';
+import { isUndefined } from 'util';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,7 +30,6 @@ type WorkoutProps = {
     number: number
     phase: number
     mainLifts: Exercise[]
-    trainingMaxes: IExerciseWeightMapping
     plateCalculator: PlateCalculator
     warmupGen: WarmupGen
     setProtos: ISetPrototype[]
@@ -42,20 +42,22 @@ export function Workout(props: WorkoutProps) {
     const phase = props.phase
     const setProtos = props.setProtos
     const mainLifts = props.mainLifts
-    const trainingMaxes = props.trainingMaxes
     const plateCalculator = props.plateCalculator
     const warmupGen = props.warmupGen
     const unit = props.unit
 
     const classes = useStyles()
 
-    const mainSets = mainLifts.map(
+    const mainSets = mainLifts.filter(x => !isUndefined(x.trainingMax)).map(
         function (lift) {
-            const exerciseTrainingMax = trainingMaxes[lift.name] as number
+            const trainingMax = lift.trainingMax as number
+
             const sets = setProtos.map(
                 function (setProto: ISetPrototype): WorkoutSetProps {
                     const setReps = setProto.reps
-                    const setWeight = round5(exerciseTrainingMax * setProto.intensityPct)
+                    const setWeight = round5(
+                        trainingMax * setProto.intensityPct
+                    )
                     return {
                         exercise: lift.name,
                         reps: setReps,
@@ -66,7 +68,7 @@ export function Workout(props: WorkoutProps) {
             )
 
             const warmupSets = warmupGen.getSets(
-                lift.name, exerciseTrainingMax, sets[0].weight
+                lift.name, trainingMax, sets[0].weight
             ).map(function (set): WorkoutSetProps {
                 return {
                     exercise: lift.name,
