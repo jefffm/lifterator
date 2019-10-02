@@ -1,7 +1,12 @@
 import { MainExerciseActionTypes, UPDATE_TM } from '../types';
 import { Exercise } from '../lib/Exercises';
 
-const initialState: Map<string, Exercise> = function () {
+
+type IMainExercisesState = Map<string, Exercise>
+
+
+// TODO: support aliases
+const initialState: IMainExercisesState = function () {
     const exercises = [
         {
             name: "Bench Press",
@@ -37,9 +42,9 @@ const initialState: Map<string, Exercise> = function () {
 }()
 
 const mainExercises = (
-    state: Map<string, Exercise> = initialState,
+    state = initialState,
     action: MainExerciseActionTypes
-): Map<string, Exercise> => {
+): IMainExercisesState => {
 
     switch (action.type) {
         case UPDATE_TM:

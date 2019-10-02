@@ -11,11 +11,13 @@ import weightSettings, { IWeightSettings } from '../reducers/weightSettings';
 import { connect } from 'react-redux';
 import { updateTM } from '../actions/index';
 import { render } from 'react-dom';
+import e from 'express';
 
 interface ConfigurationPanelProps {
     weightSettings: IWeightSettings  // TODO: weight settings type
     mainExercises: Map<string, Exercise>
     volumeSettings: IVolumeSettings
+    dispatch: any
 }
 
 export class ConfigurationPanel extends React.Component<ConfigurationPanelProps> {
@@ -24,13 +26,17 @@ export class ConfigurationPanel extends React.Component<ConfigurationPanelProps>
         return <div>
             {/* Training Maxes configuration */}
             <Paper>
-                {/*}
-            <TrainingMaxesForm
-                unit={props.weightSettings.unit}
-                mainExercises={mainExercises}
-                exerciseProvider={props.exerciseProvider}
-            />
-            {*/}
+                <TrainingMaxesForm
+                    unit={this.props.weightSettings.unit}
+                    mainExercises={this.props.mainExercises}
+                    updateTrainingMax={
+                        (e: Exercise) => (tm: number) => {
+                            this.props.dispatch(
+                                { type: UPDATE_TM, exercise: e, trainingMax: tm }
+                            )
+                        }
+                    }
+                />
             </Paper>
 
             {/* Supplemental volume configuration */}
@@ -47,7 +53,4 @@ const mapStateToProps = (state: any) => ({
     volumeSettings: state.volumeSettings,
 })
 
-export default connect(
-    mapStateToProps,
-    {}
-)(ConfigurationPanel)
+export default connect(mapStateToProps)(ConfigurationPanel)
