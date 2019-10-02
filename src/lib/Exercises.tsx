@@ -1,5 +1,4 @@
 import { isUndefined } from "util"
-import { OnChangeHandlerFunction } from "../types"
 
 export type IExerciseWeightMapping = {
     [exercise: string]: number
@@ -21,27 +20,22 @@ const UNDEFINED_EXERCISE: Exercise = {
     warmupBaseWeight: 0,
 }
 
-export interface ExerciseWithHandler {
-    exercise: Exercise
-    onChangeHandler: OnChangeHandlerFunction
-}
-
-// TODO: Can ExerciseProvider somehow bind onChange handlers to each item in the Program state array...?
+/**
+ * Parses all configured exercises and maps arbitrary strings to Exercise instances
+ */
 export default class ExerciseProvider {
     exercises: Exercise[]
-    nameToExercise: Map<string, ExerciseWithHandler>
+    nameToExercise: Map<string, Exercise>
 
-    constructor(exercises: Exercise[], onChangeHandlerFactory: (i: number, exercise: Exercise) => OnChangeHandlerFunction) {
+    constructor(exercises: Exercise[]) {
         this.exercises = exercises
 
         const nameExercisePairs = exercises.flatMap(
             (exercise: Exercise, i: number) => {
                 const allNames = [exercise.name, exercise.shortname].concat(exercise.aliases)
                 return allNames.map(
-                    (name: string): [string, ExerciseWithHandler] => [
-                        name.toLowerCase(), {
-                            onChangeHandler: onChangeHandlerFactory(i, exercise), exercise: exercise
-                        }
+                    (name: string): [string, Exercise] => [
+                        name.toLowerCase(), exercise
                     ]
                 )
             })
@@ -53,8 +47,7 @@ export default class ExerciseProvider {
         return this.exercises.filter(x => !isUndefined(x.trainingMax))
     }
 
-
-    get(exerciseName: string): ExerciseWithHandler | undefined {
-        return this.nameToExercise.get(exerciseName.toLowerCase())
+    get(exerciseName: string): Exercise {
+        return this.nameToExercise.get(exerciseName.toLowerCase()) || UNDEFINED_EXERCISE
     }
 }

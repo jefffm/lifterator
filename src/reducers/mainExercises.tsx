@@ -36,11 +36,14 @@ const initialState: Map<string, Exercise> = function () {
     return new Map(exercises.map(e => [e.name, e]))
 }()
 
-const mainExercises = (state = initialState, action: MainExerciseActionTypes) => {
-    const exerciseKey: string = action.exercise.name
+const mainExercises = (
+    state: Map<string, Exercise> = initialState,
+    action: MainExerciseActionTypes
+): Map<string, Exercise> => {
 
     switch (action.type) {
         case UPDATE_TM:
+            const exerciseKey: string = action.exercise.name
             return {
                 ...state,
                 [exerciseKey]: {
@@ -48,6 +51,8 @@ const mainExercises = (state = initialState, action: MainExerciseActionTypes) =>
                     trainingMax: action.trainingMax
                 }
             }
+        default:
+            return state
     }
 }
 

@@ -17,7 +17,7 @@ import createSets from './SetFactory';
 import NameExerciseMapper, { Exercise } from './Exercises';
 import { isUndefined } from 'util'
 import ExerciseProvider from './Exercises'
-import { ExerciseWithHandler } from './Exercises';
+import mainExercises from '../reducers/mainExercises';
 
 type ProgramProps = {
     name: string
@@ -28,13 +28,13 @@ interface IProgramState {
     unit: string
     barWeight: number
     availablePlates: IAvailablePlates
-    setProtoConfig: [number[], types.Reps[]][]
     volumeSettings: types.IVolumeSettings
     mainExercises: Exercise[]
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
     isRequiredDataSet(): boolean {
+        return true
         const isAnyExerciseWithoutTm = this.state.mainExercises.some(x => isUndefined(x.trainingMax))
 
         return isAnyExerciseWithoutTm
@@ -42,46 +42,27 @@ export class Program extends Component<ProgramProps, IProgramState> {
 
     render(): ReactNode {
         const programName = this.props.name
-        const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
-        const setProtoConfig = this.state.setProtoConfig
-        const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
-        const unit = this.state.unit
+        //const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
+        //const setProtoConfig = this.state.setProtoConfig
+        //const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
+        //const unit = this.state.unit
 
-        const programInstance = this
-        const changeHandlerFactory = (key: string) => (subkey: string) => (event: React.ChangeEvent<any>) => {
-            programInstance.setState(
-                {
-                    [key]: {
-                        ...programInstance.state[key],
-                        // TODO: support values/checkboxes better
-                        [subkey]: event.currentTarget.value || event.currentTarget.checked
-                    }
-                }
-            );
-        }
+        // TODO START-SETBUILDER-CLASS
+        //const volumeSettings = this.state.volumeSettings
+        //const setProtosByPhase = createSets(setProtoConfig, volumeSettings)
 
-        const exerciseChangeHandlerFactory = (index: number, exercise: Exercise) => (event: React.ChangeEvent<any>) => {
-            var newExercises = programInstance.state.mainExercises
-            newExercises.splice(index, 1, exercise)
-            programInstance.setState({ mainExercises: newExercises })
-        }
+        // TODO ... can the ExerciseProvider live *in* the reducer?
+        //const exerciseProvider = new ExerciseProvider(mainExercises)
 
-        const exerciseProvider = new ExerciseProvider(this.state.mainExercises, exerciseChangeHandlerFactory)
-
-        const volumeSettings = this.state.volumeSettings
-
-        const setProtosByPhase = createSets(setProtoConfig, volumeSettings)
+        const phases: JSX.Element[] = []
+        /*
+        // TODO: extract the default workout into a reducer
         const phases = setProtosByPhase.flatMap(function (setProtos: types.ISetPrototype[], i) {
             return [
                 <Workout
                     number={1}
                     phase={i}
-                    mainLifts={
-                        [
-                            exerciseProvider.get("Squat"),
-                            exerciseProvider.get("Bench Press")
-                        ].filter(x => !isUndefined(x)).map(x => (x as ExerciseWithHandler).exercise)
-                    }
+                    mainLifts={["Squat", "Bench Press"]}
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
                     setProtos={setProtos}
@@ -105,12 +86,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 <Workout
                     number={2}
                     phase={i}
-                    mainLifts={
-                        [
-                            exerciseProvider.get("Deadlift"),
-                            exerciseProvider.get("Overhead Press")
-                        ].filter(x => !isUndefined(x)).map(x => (x as ExerciseWithHandler).exercise)
-                    }
+                    mainLifts={["Deadlift", "Overhead Press"]}
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
                     setProtos={setProtos}
@@ -119,6 +95,8 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 />
             ]
         })
+        */
+        // TODO END-SETBUILDER-CLASS
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
@@ -128,14 +106,7 @@ export class Program extends Component<ProgramProps, IProgramState> {
                     <h2>{programName}</h2>
                 </Box>
 
-                {/*}
-                <ConfigurationPanel
-                    unit={unit}
-                    volumeSettings={volumeSettings}
-                    onChange={changeHandlerFactory}
-                    exerciseProvider={exerciseProvider}
-                />
-    {*/}
+                <ConfigurationPanel />
 
                 <Collapse in={!isRequiredDataSet}>
                     <Paper>

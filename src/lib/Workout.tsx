@@ -11,6 +11,7 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { WorkoutSetProps } from '../components/WorkoutSetRow';
 import { Exercise, IExerciseWeightMapping } from './Exercises';
 import { isUndefined } from 'util';
+import ExerciseProvider from './Exercises';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,12 +30,13 @@ const useStyles = makeStyles((theme: Theme) =>
 type WorkoutProps = {
     number: number
     phase: number
-    mainLifts: Exercise[]
+    mainLifts: string[]
     plateCalculator: PlateCalculator
     warmupGen: WarmupGen
     setProtos: ISetPrototype[]
     unit: string
     accessorySets: WorkoutSetProps[]
+    exerciseProvider: ExerciseProvider
 };
 
 export function Workout(props: WorkoutProps) {
@@ -45,10 +47,13 @@ export function Workout(props: WorkoutProps) {
     const plateCalculator = props.plateCalculator
     const warmupGen = props.warmupGen
     const unit = props.unit
+    const exerciseProvider = props.exerciseProvider
 
     const classes = useStyles()
 
-    const mainSets = mainLifts.filter(x => !isUndefined(x.trainingMax)).map(
+    const mainSets = mainLifts.map(e => {
+        return exerciseProvider.get(e)
+    }).filter(x => !isUndefined(x.trainingMax)).map(
         function (lift) {
             const trainingMax = lift.trainingMax as number
 
