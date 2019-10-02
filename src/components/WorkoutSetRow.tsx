@@ -1,5 +1,5 @@
 import React from 'react'
-import { Reps, SetType } from '../lib/Types'
+import { Reps, SetType } from '../types'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import { Typography } from '@material-ui/core'

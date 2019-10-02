@@ -1,5 +1,5 @@
 import { isUndefined } from "util"
-import { OnChangeHandlerFunction } from "./Types"
+import { OnChangeHandlerFunction } from "../types"
 
 export type IExerciseWeightMapping = {
     [exercise: string]: number

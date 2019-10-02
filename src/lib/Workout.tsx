@@ -2,7 +2,7 @@ import React from 'react'
 import SetGroup from '../components/WorkoutSetTable';
 import { round5 } from '../util/Math';
 import PlateCalculator from '../util/PlateCalculator'
-import { ISetPrototype, SetType } from './Types';
+import { ISetPrototype, SetType } from '../types';
 import Grid from '@material-ui/core/Grid'
 import WarmupGen from './WarmupGen'
 import Paper from '@material-ui/core/Paper'

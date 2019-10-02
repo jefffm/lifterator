@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IVolumeSettings } from '../lib/Types'
+import { IVolumeSettings } from '../types'
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import FormLabel from '@material-ui/core/FormLabel'

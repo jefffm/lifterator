@@ -1,3 +1,5 @@
+import { Exercise } from "./lib/Exercises"
+
 /**
  * Defines the intensity presets we can build sets with
  * 
@@ -72,9 +74,21 @@ export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
     ]
 }
 
+
 export interface IVolumeSettings {
     firstSetLastFives: boolean
     firstSetLastAmrap: boolean
 }
 
 export type OnChangeHandlerFunction = (event: React.ChangeEvent<any>) => void
+
+
+export const UPDATE_TM = 'UPDATE_TM'
+
+interface UpdateTMAction {
+    type: typeof UPDATE_TM
+    exercise: Exercise
+    trainingMax: number
+}
+
+export type MainExerciseActionTypes = UpdateTMAction

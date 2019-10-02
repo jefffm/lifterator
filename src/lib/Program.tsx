@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box'
 import Collapse from "@material-ui/core/Collapse"
 import { Typography } from '@material-ui/core'
 
-import * as types from './Types'
+import * as types from '../types'
 import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from './WarmupGen'
 import ConfigurationPanel from '../components/ConfigurationPanel'
@@ -34,62 +34,6 @@ interface IProgramState {
 }
 
 export class Program extends Component<ProgramProps, IProgramState> {
-    constructor(props: ProgramProps) {
-        super(props)
-
-        this.state = {
-            "unit": "lbs",
-            "barWeight": 45,
-            "availablePlates": {
-                45: 4,
-                25: 3,
-                10: 2,
-                5: 1,
-                2.5: 1
-            },
-            "setProtoConfig": [
-                [types.INTENSITY_SCHEME_DATA["3s"], types.REPETITIONS_SCHEME_DATA["5s pro"]],
-                [types.INTENSITY_SCHEME_DATA["5s"], types.REPETITIONS_SCHEME_DATA["5s pro"]],
-                [types.INTENSITY_SCHEME_DATA["1s"], types.REPETITIONS_SCHEME_DATA["5s pro"]]
-            ],
-            "volumeSettings": {
-                "firstSetLastFives": true,
-                "firstSetLastAmrap": false
-            },
-            "mainExercises": [
-                {
-                    name: "Bench Press",
-                    shortname: "BP",
-                    aliases: ["bps", "bench", "horizontal press"],
-                    trainingMax: undefined,
-                    warmupBaseWeight: 95
-                },
-                {
-                    name: "Deadlift",
-                    shortname: "DL",
-                    aliases: ["dead", "deads", "dls"],
-                    trainingMax: undefined,
-                    warmupBaseWeight: 135
-                },
-                {
-                    name: "Overhead Press",
-                    shortname: "OHP",
-                    aliases: ["press", "military press"],
-                    trainingMax: undefined,
-                    warmupBaseWeight: 95
-                },
-                {
-                    name: "Squat",
-                    shortname: "SQ",
-                    aliases: ["back squat"],
-                    trainingMax: undefined,
-                    warmupBaseWeight: 135
-                }
-            ]
-
-        }
-    }
-
     isRequiredDataSet(): boolean {
         const isAnyExerciseWithoutTm = this.state.mainExercises.some(x => isUndefined(x.trainingMax))
 

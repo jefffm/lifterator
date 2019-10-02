@@ -1,4 +1,4 @@
-import { ISetPrototype, Reps, SetType, IVolumeSettings } from './Types';
+import { ISetPrototype, Reps, SetType, IVolumeSettings } from '../types';
 
 
 export default function createSets(

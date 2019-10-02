@@ -2,7 +2,7 @@ import React from 'react'
 
 import TrainingMaxesForm from '../components/TrainingMaxesForm'
 import { VolumeForm } from '../components/VolumeForm'
-import { IVolumeSettings } from '../lib/Types';
+import { IVolumeSettings } from '../types';
 import { Paper, Box } from '@material-ui/core';
 import ExerciseProvider, { IExerciseWeightMapping } from '../lib/Exercises';
 
