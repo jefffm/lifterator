@@ -6,7 +6,7 @@ import FormLabel from '@material-ui/core/FormLabel'
 import FormGroup from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import { useStyles } from './ConfigurationCommon';
+import { useStyles } from '../lib/ConfigurationCommon';
 import { Exercise } from '../lib/Exercises';
 import { IMainExercisesState } from '../reducers/mainExercises'
 

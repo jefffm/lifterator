@@ -1,14 +1,13 @@
 import React from 'react'
 import { Reps, SetType } from '../types'
-import TableCell from '@material-ui/core/TableCell'
-import TableRow from '@material-ui/core/TableRow'
-import { Typography } from '@material-ui/core'
+import { Card, Grid } from '@material-ui/core'
 
 export type WorkoutSetProps = {
     exercise: string
     reps: Reps
     weight: number
     plates: number[]
+    isNext: boolean | undefined
 }
 
 export function WorkoutSetRow(props: WorkoutSetProps) {
@@ -31,19 +30,14 @@ export function WorkoutSetRow(props: WorkoutSetProps) {
         }
     )()
 
-    {/* TODO: set the key? */ }
-    return <TableRow>
-        <TableCell>{
-            <Typography>
-                {props.exercise}
-            </Typography>
-        }</TableCell>
-        <TableCell>{reps.num}{repsToken}</TableCell>
-        <TableCell>{weight}</TableCell>
-        <TableCell align="left">
-            {plates.join(", ")}
-        </TableCell>
-    </TableRow>
+    return <Grid item xs={6} sm={3} md={6} component={Card}>
+        <div>
+        {props.isNext ? "NEXT SET " : ""}{reps.num}{repsToken} x {weight}
+        </div>
+        <div>
+        [{plates.join(", ")}]
+        </div>
+    </Grid>
 }
 
 export default WorkoutSetRow

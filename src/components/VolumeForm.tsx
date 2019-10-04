@@ -8,7 +8,7 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Checkbox from '@material-ui/core/Checkbox'
-import { useStyles } from './ConfigurationCommon';
+import { useStyles } from '../lib/ConfigurationCommon';
 
 interface VolumeFormProps {
     volumeSettings: IVolumeSettings

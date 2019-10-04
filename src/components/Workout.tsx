@@ -1,17 +1,17 @@
 import React from 'react'
-import SetGroup from '../components/WorkoutSetTable';
+import SetGroup from './WorkoutSetTable';
 import { round5 } from '../util/Math';
 import PlateCalculator from '../util/PlateCalculator'
 import { ISetPrototype, SetType } from '../types';
 import Grid from '@material-ui/core/Grid'
-import WarmupGen from './WarmupGen'
+import WarmupGen from '../lib/WarmupGen'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import { WorkoutSetProps } from '../components/WorkoutSetRow';
-import { Exercise, IExerciseWeightMapping } from './Exercises';
+import { WorkoutSetProps } from './WorkoutSetRow';
+import { Exercise, IExerciseWeightMapping } from '../lib/Exercises';
 import { isUndefined } from 'util';
-import ExerciseProvider from './Exercises';
+import ExerciseProvider from '../lib/Exercises';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -62,6 +62,7 @@ export function Workout(props: WorkoutProps) {
                             trainingMax * setProto.intensityPct
                         )
                         return {
+                            isNext: false,
                             exercise: lift.shortname,
                             reps: setReps,
                             weight: setWeight,
@@ -73,6 +74,7 @@ export function Workout(props: WorkoutProps) {
                 const warmupSets = warmupGen.getSets(lift.name, trainingMax, sets[0].weight)
                     .map(function (set): WorkoutSetProps {
                         return {
+                            isNext: false,
                             exercise: lift.shortname,
                             reps: { "num": set.reps, "setType": SetType.WARMUP },
                             weight: set.weight,

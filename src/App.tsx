@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Program from './lib/Program';
+import Program from './containers/Program';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const App: React.FC = () => {

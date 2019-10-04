@@ -14,12 +14,12 @@ import { AppState } from '../index';
 
 import * as types from '../types'
 import { PlateCalculator } from '../util/PlateCalculator'
-import { BeyondWarmupGen } from './WarmupGen'
-import ConfigurationPanel from '../components/ConfigurationPanel'
+import { BeyondWarmupGen } from '../lib/WarmupGen'
+import ConfigurationPanel from './ConfigurationPanel'
 import WorkoutStepper from '../components/WorkoutStepper';
-import Workout from './Workout'
-import createSets from './SetFactory';
-import { Exercise } from './Exercises';
+import Workout from '../components/Workout'
+import createSets from '../lib/SetFactory';
+import { Exercise } from '../lib/Exercises';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
@@ -76,30 +76,35 @@ class Program extends Component<ProgramProps> {
                     unit={unit}
                     accessorySets={[
                         {
+                            isNext: false,
                             exercise: "Kroc Row",
                             reps: { "num": 20, "setType": types.SetType.ACCESSORY },
                             weight: 70,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
@@ -123,6 +128,7 @@ class Program extends Component<ProgramProps> {
                     unit={unit}
                     accessorySets={[
                         {
+                            isNext: false,
                             exercise: "Dips",
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
@@ -130,41 +136,48 @@ class Program extends Component<ProgramProps> {
                         },
                         {
                             exercise: "Dips",
+                            isNext: false,
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "Dips",
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "Dips",
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
                             plates: []
                         },
                         {
+                            isNext: false,
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
