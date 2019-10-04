@@ -27,6 +27,7 @@ const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
                     className={clsx(classes.textField)}
                     variant="outlined"
                     label={exercise.name}
+                    value={exercise.trainingMax}
                     type="number"
                     onChange={
                         (event) => [
