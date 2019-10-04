@@ -76,15 +76,33 @@ class Program extends Component<ProgramProps> {
                     unit={unit}
                     accessorySets={[
                         {
-                            exercise: "DB Row",
+                            exercise: "Kroc Row",
                             reps: { "num": 20, "setType": types.SetType.ACCESSORY },
-                            weight: 65,
+                            weight: 70,
                             plates: []
                         },
                         {
-                            exercise: "KB Swing",
-                            reps: { "num": 20, "setType": types.SetType.ACCESSORY },
-                            weight: 53,
+                            exercise: "DB OHP",
+                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                            weight: 35,
+                            plates: []
+                        },
+                        {
+                            exercise: "DB OHP",
+                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                            weight: 35,
+                            plates: []
+                        },
+                        {
+                            exercise: "DB OHP",
+                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                            weight: 35,
+                            plates: []
+                        },
+                        {
+                            exercise: "DB OHP",
+                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                            weight: 35,
                             plates: []
                         },
                     ]}
@@ -103,7 +121,57 @@ class Program extends Component<ProgramProps> {
                     warmupGen={warmupGen}
                     setProtos={setProtos}
                     unit={unit}
-                    accessorySets={[]}
+                    accessorySets={[
+                        {
+                            exercise: "Dips",
+                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                            weight: 0,
+                            plates: []
+                        },
+                        {
+                            exercise: "Dips",
+                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                            weight: 0,
+                            plates: []
+                        },
+                        {
+                            exercise: "Dips",
+                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                            weight: 0,
+                            plates: []
+                        },
+                        {
+                            exercise: "Dips",
+                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                            weight: 0,
+                            plates: []
+                        },
+                        {
+                            exercise: "Face Pull",
+                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                            weight: 32.3,
+                            plates: []
+                        },
+                        {
+                            exercise: "Face Pull",
+                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                            weight: 32.3,
+                            plates: []
+                        },
+                        {
+                            exercise: "Face Pull",
+                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                            weight: 32.3,
+                            plates: []
+                        },
+                        {
+                            exercise: "Face Pull",
+                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                            weight: 32.3,
+                            plates: []
+                        },
+
+                    ]}
                 />
             ]
         })
