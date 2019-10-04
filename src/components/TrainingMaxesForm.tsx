@@ -8,17 +8,18 @@ import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { useStyles } from './ConfigurationCommon';
 import { Exercise } from '../lib/Exercises';
+import { IMainExercisesState } from '../reducers/mainExercises'
 
 interface ITrainingMaxesFormProps {
     unit: string
-    mainExercises: Map<string, Exercise>
+    mainExercises: IMainExercisesState
     updateTrainingMax(e: Exercise): (tm: number) => void
 }
 
 const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
     const classes = useStyles();
 
-    const elems = Array.from(props.mainExercises.values())
+    const elems = Array.from(Object.values(props.mainExercises))
         .map(
             exercise => {
                 return <TextField
@@ -27,7 +28,11 @@ const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
                     variant="outlined"
                     label={exercise.name}
                     type="number"
-                    onChange={tm => props.updateTrainingMax(exercise)}
+                    onChange={
+                        (event) => [
+                            props.updateTrainingMax(exercise)(parseInt(event.currentTarget.value))
+                        ]
+                    }
                     InputProps={{
                         endAdornment: <InputAdornment position="end">{props.unit}</InputAdornment>,
                     }}

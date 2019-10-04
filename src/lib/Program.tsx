@@ -35,10 +35,10 @@ interface ProgramProps {
 class Program extends Component<ProgramProps> {
     isRequiredDataSet(): boolean {
         const isAnyExerciseWithoutTm = Array.from(
-            this.props.mainExercises.values()
+            Object.values(this.props.mainExercises)
         ).some(x => isUndefined(x.trainingMax))
 
-        return isAnyExerciseWithoutTm
+        return !isAnyExerciseWithoutTm
     }
 
     render(): ReactNode {
@@ -46,7 +46,9 @@ class Program extends Component<ProgramProps> {
             {
                 availablePlates: this.props.weightSettings.availablePlates,
                 barWeight: this.props.weightSettings.barWeight
-            })
+            }
+        )
+
         const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
         const unit = this.props.weightSettings.unit
 
@@ -54,6 +56,7 @@ class Program extends Component<ProgramProps> {
         const setProtosByPhase = createSets(this.props.setProtoConfig, this.props.volumeSettings)
 
         const mainExercises = this.props.mainExercises
+        console.log(mainExercises)
 
         // TODO: extract the default workout into a reducer
         const phases = setProtosByPhase.flatMap(function (setProtos: types.ISetPrototype[], i) {
@@ -63,8 +66,8 @@ class Program extends Component<ProgramProps> {
                     phase={i}
                     mainLifts={
                         [
-                            mainExercises.get("Squat") as Exercise,
-                            mainExercises.get("Bench Press") as Exercise
+                            mainExercises['Squat'] as Exercise,
+                            mainExercises['Bench Press'] as Exercise
                         ]
                     }
                     plateCalculator={plateCalculator}
@@ -92,8 +95,8 @@ class Program extends Component<ProgramProps> {
                     phase={i}
                     mainLifts={
                         [
-                            mainExercises.get("Deadlift") as Exercise,
-                            mainExercises.get("Overhead Press") as Exercise
+                            mainExercises["Deadlift"] as Exercise,
+                            mainExercises["Overhead Press"] as Exercise
                         ]
                     }
                     plateCalculator={plateCalculator}

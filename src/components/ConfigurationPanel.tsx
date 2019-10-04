@@ -6,20 +6,22 @@ import { IVolumeSettings, UPDATE_TM } from '../types';
 import { Paper, Grid } from '@material-ui/core';
 import { Exercise } from '../lib/Exercises';
 import { AppState } from '../index';
-import mainExercises from '../reducers/mainExercises';
-import weightSettings, { IWeightSettings } from '../reducers/weightSettings';
+import { IWeightSettings } from '../reducers/weightSettings';
 import { connect } from 'react-redux';
 import { updateTM } from '../actions/index';
-import { render } from 'react-dom';
+import { IMainExercisesState } from '../reducers/mainExercises';
 
 interface ConfigurationPanelProps {
     weightSettings: IWeightSettings  // TODO: weight settings type
-    mainExercises: Map<string, Exercise>
+    mainExercises: IMainExercisesState
     volumeSettings: IVolumeSettings
     dispatch: any
 }
 
 export class ConfigurationPanel extends Component<ConfigurationPanelProps> {
+    updateTmFunc = (exercise: Exercise) => (trainingMax: number) => {
+        this.props.dispatch(updateTM(exercise, trainingMax));
+    }
 
     render() {
         return <div>

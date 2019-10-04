@@ -1,7 +1,7 @@
 import { round5 } from "../util/Math";
-import { IExerciseWeightMapping, Exercise } from './Exercises';
-import mainExercises from '../reducers/mainExercises';
+import { Exercise } from './Exercises';
 import { isUndefined } from "util";
+import { IMainExercisesState } from '../reducers/mainExercises';
 
 const DEFAULT_BASE_WEIGHT = 95
 
@@ -23,20 +23,18 @@ export abstract class WarmupGen {
  * 
  */
 export class BeyondWarmupGen extends WarmupGen {
-    mainExercises: Map<string, Exercise>
+    mainExercises: IMainExercisesState
 
-    constructor(mainExercises: Map<string, Exercise>) {
+    constructor(mainExercises: IMainExercisesState) {
         super()
         this.mainExercises = mainExercises
     }
 
     getBaseWeight(exerciseName: string): number {
-        const exercise = this.mainExercises.get(exerciseName)
+        const exercise = this.mainExercises[exerciseName]
         return isUndefined(exercise)
             ? DEFAULT_BASE_WEIGHT
             : (exercise as Exercise).warmupBaseWeight
-
-
     }
 
     getSets(exercise: string, trainingMax: number, firstSetWeight: number): StaticSet[] {
