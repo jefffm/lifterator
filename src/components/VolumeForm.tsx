@@ -2,7 +2,6 @@ import React from 'react';
 
 import { IVolumeSettings } from '../types'
 
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -28,7 +27,7 @@ export const VolumeForm = (props: VolumeFormProps) => {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                checked={props.volumeSettings.firstSetLastFives || false}
+                                checked={props.volumeSettings.firstSetLastFives}
                                 onChange={e => props.toggleVolumeField("firstSetLastFives")}
                             />
                         }
@@ -37,7 +36,7 @@ export const VolumeForm = (props: VolumeFormProps) => {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                checked={props.volumeSettings.firstSetLastAmrap || false}
+                                checked={props.volumeSettings.firstSetLastAmrap}
                                 onChange={e => props.toggleVolumeField("firstSetLastAmrap")}
                             />
                         }
