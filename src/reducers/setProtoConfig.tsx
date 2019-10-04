@@ -10,10 +10,10 @@ const initialState: ISetProtoConfig = [
 ]
 
 
-export function setProtoConfig(
+const setProtoConfig = (
     state: ISetProtoConfig = initialState,
     action: any
-): ISetProtoConfig {
+): ISetProtoConfig => {
     // TODO: append, update, delete, swap (reorder)
     return state
 }

@@ -19,7 +19,7 @@ const initialState: IWeightSettings = {
     },
 }
 
-export const weightSettings = (
+const weightSettings = (
     state: IWeightSettings = initialState,
     action: any
 ): IWeightSettings => {

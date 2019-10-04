@@ -12,13 +12,11 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         textField: {
             margin: theme.spacing(1),
-            width: 200,
         },
         dense: {
             marginTop: 19,
         },
         menu: {
-            width: 200,
         },
     }),
 )

@@ -2,7 +2,7 @@ import { MainExerciseActionTypes, UPDATE_TM } from '../types';
 import { Exercise } from '../lib/Exercises';
 
 
-type IMainExercisesState = Map<string, Exercise>
+export type IMainExercisesState = Map<string, Exercise>
 
 
 // TODO: support aliases

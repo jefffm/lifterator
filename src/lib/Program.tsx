@@ -1,5 +1,8 @@
 import React, { Component, ReactNode } from 'react'
 
+import { isUndefined } from 'util'
+import { connect } from 'react-redux'
+
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -7,62 +10,63 @@ import Box from '@material-ui/core/Box'
 import Collapse from "@material-ui/core/Collapse"
 import { Typography } from '@material-ui/core'
 
+import { AppState } from '../index';
+
 import * as types from '../types'
-import { PlateCalculator, IAvailablePlates } from '../util/PlateCalculator'
+import { PlateCalculator } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from './WarmupGen'
 import ConfigurationPanel from '../components/ConfigurationPanel'
 import WorkoutStepper from '../components/WorkoutStepper';
 import Workout from './Workout'
 import createSets from './SetFactory';
-import NameExerciseMapper, { Exercise } from './Exercises';
-import { isUndefined } from 'util'
-import ExerciseProvider from './Exercises'
-import mainExercises from '../reducers/mainExercises';
+import { Exercise } from './Exercises';
+import { IMainExercisesState } from '../reducers/mainExercises';
+import { IWeightSettings } from '../reducers/weightSettings';
+import { ISetProtoConfig } from '../reducers/setProtoConfig';
 
-type ProgramProps = {
-    name: string
-}
-
-interface IProgramState {
-    [key: string]: any
-    unit: string
-    barWeight: number
-    availablePlates: IAvailablePlates
+interface ProgramProps {
+    weightSettings: IWeightSettings
+    mainExercises: IMainExercisesState
     volumeSettings: types.IVolumeSettings
-    mainExercises: Exercise[]
+    setProtoConfig: ISetProtoConfig
+    dispatch: any
 }
 
-export class Program extends Component<ProgramProps, IProgramState> {
+class Program extends Component<ProgramProps> {
     isRequiredDataSet(): boolean {
-        return true
-        const isAnyExerciseWithoutTm = this.state.mainExercises.some(x => isUndefined(x.trainingMax))
+        const isAnyExerciseWithoutTm = Array.from(
+            this.props.mainExercises.values()
+        ).some(x => isUndefined(x.trainingMax))
 
         return isAnyExerciseWithoutTm
     }
 
     render(): ReactNode {
-        const programName = this.props.name
-        //const plateCalculator = new PlateCalculator({ availablePlates: this.state.availablePlates, barWeight: this.state.barWeight })
-        //const setProtoConfig = this.state.setProtoConfig
-        //const warmupGen = new BeyondWarmupGen(this.state.liftWarmupBaseWeights)
-        //const unit = this.state.unit
+        const plateCalculator = new PlateCalculator(
+            {
+                availablePlates: this.props.weightSettings.availablePlates,
+                barWeight: this.props.weightSettings.barWeight
+            })
+        const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
+        const unit = this.props.weightSettings.unit
 
         // TODO START-SETBUILDER-CLASS
-        //const volumeSettings = this.state.volumeSettings
-        //const setProtosByPhase = createSets(setProtoConfig, volumeSettings)
+        const setProtosByPhase = createSets(this.props.setProtoConfig, this.props.volumeSettings)
 
-        // TODO ... can the ExerciseProvider live *in* the reducer?
-        //const exerciseProvider = new ExerciseProvider(mainExercises)
+        const mainExercises = this.props.mainExercises
 
-        const phases: JSX.Element[] = []
-        /*
         // TODO: extract the default workout into a reducer
         const phases = setProtosByPhase.flatMap(function (setProtos: types.ISetPrototype[], i) {
             return [
                 <Workout
                     number={1}
                     phase={i}
-                    mainLifts={["Squat", "Bench Press"]}
+                    mainLifts={
+                        [
+                            mainExercises.get("Squat") as Exercise,
+                            mainExercises.get("Bench Press") as Exercise
+                        ]
+                    }
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
                     setProtos={setProtos}
@@ -86,7 +90,12 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 <Workout
                     number={2}
                     phase={i}
-                    mainLifts={["Deadlift", "Overhead Press"]}
+                    mainLifts={
+                        [
+                            mainExercises.get("Deadlift") as Exercise,
+                            mainExercises.get("Overhead Press") as Exercise
+                        ]
+                    }
                     plateCalculator={plateCalculator}
                     warmupGen={warmupGen}
                     setProtos={setProtos}
@@ -95,15 +104,14 @@ export class Program extends Component<ProgramProps, IProgramState> {
                 />
             ]
         })
-        */
         // TODO END-SETBUILDER-CLASS
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
         return <Container>
-            <Grid container direction="column" justify="space-evenly" alignItems="stretch" >
+            <Grid container direction="column" justify="flex-start" alignItems="stretch" >
                 <Box>
-                    <h2>{programName}</h2>
+                    <h2>{"Program Name"}</h2>
                 </Box>
 
                 <ConfigurationPanel />
@@ -128,3 +136,12 @@ export class Program extends Component<ProgramProps, IProgramState> {
         </Container >
     }
 }
+
+const mapStateToProps = (state: AppState) => ({
+    mainExercises: state.mainExercises,
+    setProtoConfig: state.setProtoConfig,
+    volumeSettings: state.volumeSettings,
+    weightSettings: state.weightSettings,
+})
+
+export default connect(mapStateToProps)(Program)
