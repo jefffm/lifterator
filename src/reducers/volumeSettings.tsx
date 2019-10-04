@@ -1,4 +1,4 @@
-import { IVolumeSettings } from "../types"
+import { IVolumeSettings, VolumeSettingsActionTypes, SET_VOLUME_FIELD } from "../types"
 
 
 const initialState: IVolumeSettings = {
@@ -8,10 +8,18 @@ const initialState: IVolumeSettings = {
 
 const volumeSettings = (
     state: IVolumeSettings = initialState,
-    action: any
+    action: VolumeSettingsActionTypes
 ): IVolumeSettings => {
-    // TODO: volume settings toggle action
-    return state
+    switch (action.type) {
+        case SET_VOLUME_FIELD:
+            return {
+                ...state,
+                [action.field]: action.value
+            }
+
+        default:
+            return state
+    }
 }
 
 export default volumeSettings

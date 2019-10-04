@@ -62,7 +62,7 @@ export function Workout(props: WorkoutProps) {
                             trainingMax * setProto.intensityPct
                         )
                         return {
-                            exercise: lift.name,
+                            exercise: lift.shortname,
                             reps: setReps,
                             weight: setWeight,
                             plates: plateCalculator.getPlatesPerSide(setWeight)
@@ -73,7 +73,7 @@ export function Workout(props: WorkoutProps) {
                 const warmupSets = warmupGen.getSets(lift.name, trainingMax, sets[0].weight)
                     .map(function (set): WorkoutSetProps {
                         return {
-                            exercise: lift.name,
+                            exercise: lift.shortname,
                             reps: { "num": set.reps, "setType": SetType.WARMUP },
                             weight: set.weight,
                             plates: plateCalculator.getPlatesPerSide(set.weight)
@@ -82,7 +82,7 @@ export function Workout(props: WorkoutProps) {
 
                 return <SetGroup
                     key={lift.shortname}
-                    name={lift.shortname}
+                    name={lift.name}
                     sets={warmupSets.concat(sets)}
                     unit={unit} />
             }
@@ -98,9 +98,12 @@ export function Workout(props: WorkoutProps) {
             <Typography variant="h5" component="h3">
                 Phase {phase + 1}: Workout {number}
             </Typography>
-            <Grid container>
+            <Grid container
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start" >
                 {allSets.map(set => {
-                    return <Grid item xs={12} sm={6}>
+                    return <Grid item xs={12} md={6}>
                         {set}
                     </Grid>
                 })}

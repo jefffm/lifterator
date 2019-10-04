@@ -76,6 +76,7 @@ export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
 
 
 export interface IVolumeSettings {
+    [key: string]: any
     firstSetLastFives: boolean
     firstSetLastAmrap: boolean
 }
@@ -92,3 +93,13 @@ interface UpdateTMAction {
 }
 
 export type MainExerciseActionTypes = UpdateTMAction
+
+export const SET_VOLUME_FIELD = 'SET_VOLUME_FIELD'
+
+interface SetVolumeFieldAction {
+    type: typeof SET_VOLUME_FIELD
+    field: string
+    value: boolean
+}
+
+export type VolumeSettingsActionTypes = SetVolumeFieldAction

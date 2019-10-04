@@ -49,16 +49,13 @@ const mainExercises = (
     switch (action.type) {
         case UPDATE_TM:
             const exerciseKey: string = action.exercise.name
-            const newState = {
+            return {
                 ...state,
                 [exerciseKey]: {
                     ...state[exerciseKey] as Exercise,
                     trainingMax: action.trainingMax
                 }
             }
-
-            console.log({ old: state, new: newState })
-            return newState
         default:
             return state
     }

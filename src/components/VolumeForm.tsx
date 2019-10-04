@@ -13,6 +13,7 @@ import { useStyles } from './ConfigurationCommon';
 
 interface VolumeFormProps {
     volumeSettings: IVolumeSettings
+    toggleVolumeField: (fieldname: string) => void
 }
 
 export const VolumeForm = (props: VolumeFormProps) => {
@@ -28,6 +29,7 @@ export const VolumeForm = (props: VolumeFormProps) => {
                         control={
                             <Checkbox
                                 checked={props.volumeSettings.firstSetLastFives || false}
+                                onChange={e => props.toggleVolumeField("firstSetLastFives")}
                             />
                         }
                         label="5x5 sets"
@@ -36,6 +38,7 @@ export const VolumeForm = (props: VolumeFormProps) => {
                         control={
                             <Checkbox
                                 checked={props.volumeSettings.firstSetLastAmrap || false}
+                                onChange={e => props.toggleVolumeField("firstSetLastAmrap")}
                             />
                         }
                         label="AMRAP set"

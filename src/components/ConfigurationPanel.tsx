@@ -8,7 +8,7 @@ import { Exercise } from '../lib/Exercises';
 import { AppState } from '../index';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { connect } from 'react-redux';
-import { updateTM } from '../actions/index';
+import { updateTM, setVolumeField } from '../actions/index';
 import { IMainExercisesState } from '../reducers/mainExercises';
 
 interface ConfigurationPanelProps {
@@ -23,6 +23,11 @@ export class ConfigurationPanel extends Component<ConfigurationPanelProps> {
         this.props.dispatch(updateTM(exercise, trainingMax));
     }
 
+    toggleVolumeField = (fieldname: string) => {
+        const currentVal = this.props.volumeSettings[fieldname]
+        this.props.dispatch(setVolumeField(fieldname, !currentVal))
+    }
+
     render() {
         return <div>
             <Grid container direction="row" justify="flex-start" alignItems="stretch">
@@ -31,20 +36,17 @@ export class ConfigurationPanel extends Component<ConfigurationPanelProps> {
                         <TrainingMaxesForm
                             unit={this.props.weightSettings.unit}
                             mainExercises={this.props.mainExercises}
-                            updateTrainingMax={
-                                (e: Exercise) => (tm: number) => {
-                                    this.props.dispatch(
-                                        { type: UPDATE_TM, exercise: e, trainingMax: tm }
-                                    )
-                                }
-                            }
+                            updateTrainingMax={this.updateTmFunc}
                         />
                     </Paper>
                 </Grid>
 
                 <Grid item sm={6}>
                     <Paper>
-                        <VolumeForm volumeSettings={this.props.volumeSettings} />
+                        <VolumeForm
+                            volumeSettings={this.props.volumeSettings}
+                            toggleVolumeField={this.toggleVolumeField}
+                        />
                     </Paper>
                 </Grid>
             </Grid>
