@@ -1,6 +1,7 @@
 import React from 'react'
 import { Reps, SetType } from '../types'
-import { Card, Grid } from '@material-ui/core'
+import { Badge, Card, Grid, Button, Chip, Box } from '@material-ui/core'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 export type WorkoutSetProps = {
     exercise: string
@@ -31,12 +32,15 @@ export function WorkoutSetRow(props: WorkoutSetProps) {
     )()
 
     return <Grid item xs={6} sm={3} md={6} component={Card}>
-        <div>
-        {props.isNext ? "NEXT SET " : ""}{reps.num}{repsToken} x {weight}
-        </div>
-        <div>
-        [{plates.join(", ")}]
-        </div>
+        {reps.num}{repsToken}
+        {weight}
+        <Box>
+            {
+                plates.map(plate => {
+                    return <Chip size="small" label={plate} />
+                })
+            }
+        </Box>
     </Grid>
 }
 
