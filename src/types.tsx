@@ -103,3 +103,7 @@ interface SetVolumeFieldAction {
 }
 
 export type VolumeSettingsActionTypes = SetVolumeFieldAction
+
+export interface TitledObject {
+    getTitle(): string
+}
