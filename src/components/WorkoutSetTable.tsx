@@ -37,6 +37,7 @@ export default function SetGroup(props: SetGroupProps) {
 
     const name = props.name
     const sets = props.sets
+    const unit = props.unit
 
     var setElems = []
     for (const [i, item] of sets.entries()) {
@@ -46,6 +47,7 @@ export default function SetGroup(props: SetGroupProps) {
             exercise={item.exercise}
             reps={item.reps}
             weight={item.weight}
+            unit={unit}
             plates={item.plates}
         />)
     }

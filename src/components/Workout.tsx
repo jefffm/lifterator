@@ -66,6 +66,7 @@ export function Workout(props: WorkoutProps) {
                             exercise: lift.shortname,
                             reps: setReps,
                             weight: setWeight,
+                            unit: unit,
                             plates: plateCalculator.getPlatesPerSide(setWeight)
                         }
                     }
@@ -78,6 +79,7 @@ export function Workout(props: WorkoutProps) {
                             exercise: lift.shortname,
                             reps: { "num": set.reps, "setType": SetType.WARMUP },
                             weight: set.weight,
+                            unit: unit,
                             plates: plateCalculator.getPlatesPerSide(set.weight)
                         }
                     })

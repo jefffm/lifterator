@@ -23,6 +23,7 @@ import { Exercise } from '../lib/Exercises';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
+import weightSettings from '../reducers/weightSettings';
 
 interface ProgramProps {
     weightSettings: IWeightSettings
@@ -80,6 +81,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Kroc Row",
                             reps: { "num": 20, "setType": types.SetType.ACCESSORY },
                             weight: 70,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -87,6 +89,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -94,6 +97,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -101,6 +105,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -108,6 +113,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "DB OHP",
                             reps: { "num": 7, "setType": types.SetType.ACCESSORY },
                             weight: 35,
+                            unit: unit,
                             plates: []
                         },
                     ]}
@@ -132,6 +138,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Dips",
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -139,6 +146,7 @@ class Program extends Component<ProgramProps> {
                             isNext: false,
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -146,6 +154,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Dips",
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -153,6 +162,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Dips",
                             reps: { "num": 10, "setType": types.SetType.ACCESSORY },
                             weight: 0,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -160,6 +170,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -167,6 +178,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -174,6 +186,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
+                            unit: unit,
                             plates: []
                         },
                         {
@@ -181,6 +194,7 @@ class Program extends Component<ProgramProps> {
                             exercise: "Face Pull",
                             reps: { "num": 15, "setType": types.SetType.ACCESSORY },
                             weight: 32.3,
+                            unit: unit,
                             plates: []
                         },
 
@@ -201,20 +215,20 @@ class Program extends Component<ProgramProps> {
                 <ConfigurationPanel />
 
                 <Collapse in={!isRequiredDataSet}>
-                    <Paper>
+                    <div>
                         <Typography>
                             <h1>
                                 Lifterator
                             </h1>
                         </Typography>
                         <p>Configure all required fields to build your program.</p>
-                    </Paper>
+                    </div>
                 </Collapse>
 
                 <Collapse in={isRequiredDataSet}>
-                    <Box>
+                    <div>
                         {<WorkoutStepper elems={() => phases} />}
-                    </Box>
+                    </div>
                 </Collapse>
             </Grid>
         </Container >
