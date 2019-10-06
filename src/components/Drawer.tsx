@@ -70,7 +70,8 @@ export default function SwipeableTemporaryDrawer() {
         onKeyDown={toggleDrawer(false)}>
         <List>
             {menuItems.map((item, index) => (
-                <ListItem button key={index}>
+                // TODO: link this up with react-router
+                <ListItem button key={index} onClick={() => console.log(item.name)}>
                     <ListItemIcon><item.icon /></ListItemIcon>
                     <ListItemText primary={item.name} />
                 </ListItem>
