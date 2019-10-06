@@ -2,15 +2,15 @@ import React, { ElementType } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import Button from '@material-ui/core/Button';
+import HistoryIcon from '@material-ui/icons/History';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ImportExportIcon from '@material-ui/icons/ImportExport';
 
 interface menuItem {
     name: string
@@ -18,11 +18,10 @@ interface menuItem {
 }
 
 const menuItems: menuItem[] = [
-    { name: 'Program', icon: InboxIcon },
-    { name: 'History', icon: InboxIcon },
-    { name: 'Configuration', icon: InboxIcon },
-    { name: 'Import', icon: InboxIcon },
-    { name: 'Export', icon: InboxIcon }
+    { name: 'Program', icon: FitnessCenterIcon },
+    { name: 'History', icon: HistoryIcon },
+    { name: 'Configuration', icon: SettingsIcon },
+    { name: 'Import/Export', icon: ImportExportIcon },
 ]
 
 
