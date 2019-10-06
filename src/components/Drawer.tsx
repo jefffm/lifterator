@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
@@ -11,6 +11,20 @@ import MailIcon from '@material-ui/icons/Mail';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+
+interface menuItem {
+    name: string
+    icon: ElementType
+}
+
+const menuItems: menuItem[] = [
+    { name: 'Program', icon: InboxIcon },
+    { name: 'History', icon: InboxIcon },
+    { name: 'Configuration', icon: InboxIcon },
+    { name: 'Import', icon: InboxIcon },
+    { name: 'Export', icon: InboxIcon }
+]
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -56,10 +70,10 @@ export default function SwipeableTemporaryDrawer() {
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}>
         <List>
-            {['Program', 'History', 'Configuration', 'Import', 'Export'].map((text, index) => (
-                <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
+            {menuItems.map((item, index) => (
+                <ListItem button key={index}>
+                    <ListItemIcon><item.icon /></ListItemIcon>
+                    <ListItemText primary={item.name} />
                 </ListItem>
             ))}
         </List>
