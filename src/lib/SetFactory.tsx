@@ -2,6 +2,7 @@ import { ISetPrototype, Reps, SetType, IVolumeSettings } from '../types';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
 
 
+
 /**
  * Put the set/rep/intensity scheme together with the volume settings into "set prototypes" for each week
  * 

@@ -20,7 +20,7 @@ import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import { Link } from 'react-router-dom'
-import { ISetPrototype, IVolumeSettings, IWorkoutPrototype, SetType } from '../types';
+import { ISetPrototype, IVolumeSettings, IWorkoutPrototype } from '../types';
 import { Exercise } from '../lib/Exercises';
 
 interface ProgramProps {
@@ -33,6 +33,9 @@ interface ProgramProps {
 }
 
 class Program extends Component<ProgramProps> {
+    /**
+     * Is all the data we need to show the program configured?
+     */
     isRequiredDataSet(): boolean {
         const isAnyExerciseWithoutTm = Array.from(
             Object.values(this.props.mainExercises)
@@ -52,10 +55,10 @@ class Program extends Component<ProgramProps> {
         const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
         const unit = this.props.weightSettings.unit
 
-        const setProtosByPhase: ISetPrototype[][] = createSets(this.props.setProtoConfig, this.props.volumeSettings)
-
         const mainExercises = this.props.mainExercises
         const workoutDays = this.props.workoutDays
+
+        const setProtosByPhase: ISetPrototype[][] = createSets(this.props.setProtoConfig, this.props.volumeSettings)
 
         const createWorkoutsForPhase = function (
             phaseNum: number,
@@ -67,27 +70,31 @@ class Program extends Component<ProgramProps> {
                     const exerciseInstances: Exercise[] = workoutProto.exerciseNames.map(
                         name => (mainExercises[name] as Exercise)
                     )
-                    return <Workout
-                        number={i + 1}
-                        phase={phaseNum}
-                        unit={unit}
+
+                    // TODO: move application logic out of the "Workout"
+                    const props = {
+                        number: i + 1,
+                        phase: phaseNum,
+                        unit: unit,
 
                         // Workout combines the main Exercise instances with the set/rep/intensity schemes to build sets
-                        mainLifts={exerciseInstances}
-                        setProtos={phaseSetProtos}
+                        mainLifts: exerciseInstances,
+                        setProtos: phaseSetProtos,
 
                         // Warmupgen builds warmup sets for *just* the main exercises
-                        warmupGen={warmupGen}
-                        plateCalculator={plateCalculator}
+                        warmupGen: warmupGen,
+                        plateCalculator: plateCalculator,
 
                         // These are just raw sets tacked onto the end. This should be improved.
-                        accessorySets={workoutProto.accessorySets}
-                    />
+                        accessorySets: workoutProto.accessorySets,
+                    }
+
+                    return <Workout {...props} />
                 }
             )
 
         }
-        // TODO: extract the default workout into a reducer
+
         const phases = setProtosByPhase.flatMap((phaseSetProtos, i) => (
             createWorkoutsForPhase(i, phaseSetProtos, workoutDays)
         ))
@@ -120,7 +127,7 @@ class Program extends Component<ProgramProps> {
                     </div>
                 </Collapse>
             </Grid>
-        </Container>
+        </Container >
     }
 }
 
