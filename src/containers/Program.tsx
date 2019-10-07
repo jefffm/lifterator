@@ -59,6 +59,7 @@ class Program extends Component<ProgramProps> {
         const mainExercises = this.props.mainExercises
         const workoutDays = this.props.workoutDays
 
+        // TODO: move this logic into a "PHASE" component, separate app and presentation logic - START
         const setProtosByPhase: ISetPrototype[][] = createSets(this.props.setProtoConfig, this.props.volumeSettings)
 
         const createWorkoutsForPhase = function (
@@ -106,6 +107,7 @@ class Program extends Component<ProgramProps> {
         const phases = setProtosByPhase.flatMap((phaseSetProtos, i) => (
             createWorkoutsForPhase(i, phaseSetProtos, workoutDays)
         ))
+        // TODO: move this logic into a "PHASE" component, separate app and presentation logic - END
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
