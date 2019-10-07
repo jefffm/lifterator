@@ -116,6 +116,6 @@ export interface IAccessoryPrototype {
 }
 
 export interface IWorkoutPrototype {
-    mainExercises: Exercise[]
-    accessorySets: IAccessoryPrototype[]  // TODO: these should have their own type
+    exerciseNames: string[]  // TODO: These should be validated against the configured exercises
+    accessorySets: IAccessoryPrototype[]
 }
