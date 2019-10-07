@@ -2,7 +2,7 @@ import React from 'react'
 import SetGroup from './WorkoutSetTable';
 import { round5 } from '../util/Math';
 import PlateCalculator from '../util/PlateCalculator'
-import { ISetPrototype, SetType } from '../types';
+import { ISetPrototype, SetType, IAccessoryPrototype } from '../types';
 import Grid from '@material-ui/core/Grid'
 import WarmupGen from '../lib/WarmupGen'
 import Paper from '@material-ui/core/Paper'
@@ -35,7 +35,7 @@ type WorkoutProps = {
     warmupGen: WarmupGen
     setProtos: ISetPrototype[]
     unit: string
-    accessorySets: WorkoutSetProps[]
+    accessorySets: IAccessoryPrototype[]
 };
 
 export function Workout(props: WorkoutProps) {
@@ -93,9 +93,31 @@ export function Workout(props: WorkoutProps) {
 
         )
 
-    const allSets = mainSets.concat([
-        <SetGroup name="Accessories" sets={props.accessorySets} unit={unit} />
-    ])
+    const createAccessoryFromProto = function (accessory: IAccessoryPrototype): WorkoutSetProps[] {
+        var sets = []
+        for (var i = 0; i < accessory.sets; i++) {
+            sets.push(
+                {
+                    exercise: accessory.exercise,
+                    reps: accessory.reps,
+                    weight: accessory.weight,
+                    unit: unit,
+                }
+            )
+        }
+        return sets
+    }
+
+    // TODO: send the accessory sets grouped by exercise, rather than as a list
+    const accessorySets = props.accessorySets
+        .map(createAccessoryFromProto)
+        .map(
+            workoutSets => (
+                <SetGroup name={workoutSets[0].exercise} sets={workoutSets} unit={unit} />
+            )
+        )
+
+    const allSets = mainSets.concat(accessorySets)
 
     return <div className={classes.root}>
         <Paper className={classes.paper}>

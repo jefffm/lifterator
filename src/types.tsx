@@ -107,3 +107,15 @@ export type VolumeSettingsActionTypes = SetVolumeFieldAction
 export interface TitledObject {
     getTitle(): string
 }
+
+export interface IAccessoryPrototype {
+    exercise: string
+    sets: number
+    reps: Reps
+    weight: number
+}
+
+export interface IWorkoutPrototype {
+    mainExercises: Exercise[]
+    accessorySets: IAccessoryPrototype[]  // TODO: these should have their own type
+}

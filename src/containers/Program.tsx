@@ -11,7 +11,6 @@ import { Typography, Button } from '@material-ui/core'
 
 import { AppState } from '../index';
 
-import * as types from '../types'
 import { PlateCalculator } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from '../lib/WarmupGen'
 import WorkoutStepper from '../components/WorkoutStepper';
@@ -22,13 +21,12 @@ import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import { Link } from 'react-router-dom'
-import { ISetPrototype } from '../types';
-import { WorkoutSetProps } from '../components/WorkoutSetRow';
+import { ISetPrototype, IVolumeSettings, IWorkoutPrototype, SetType } from '../types';
 
 interface ProgramProps {
     weightSettings: IWeightSettings
     mainExercises: IMainExercisesState
-    volumeSettings: types.IVolumeSettings
+    volumeSettings: IVolumeSettings
     setProtoConfig: ISetProtoConfig
     dispatch: any
 }
@@ -57,11 +55,6 @@ class Program extends Component<ProgramProps> {
 
         const mainExercises = this.props.mainExercises
 
-        interface IWorkoutPrototype {
-            mainExercises: Exercise[]
-            accessorySets: WorkoutSetProps[]  // TODO: these should have their own type
-        }
-
         // TODO: move this to a reducer
         const workoutProtos: IWorkoutPrototype[] = [
             {
@@ -73,33 +66,15 @@ class Program extends Component<ProgramProps> {
                 accessorySets: [
                     {
                         exercise: "Kroc Row",
-                        reps: { "num": 20, "setType": types.SetType.ACCESSORY },
+                        sets: 1,
+                        reps: { "num": 20, "setType": SetType.ACCESSORY },
                         weight: 70,
-                        unit: unit,
                     },
                     {
                         exercise: "DB OHP",
-                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                        sets: 4,
+                        reps: { "num": 7, "setType": SetType.ACCESSORY },
                         weight: 35,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "DB OHP",
-                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
-                        weight: 35,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "DB OHP",
-                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
-                        weight: 35,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "DB OHP",
-                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
-                        weight: 35,
-                        unit: unit,
                     },
                 ]
             },
@@ -112,51 +87,15 @@ class Program extends Component<ProgramProps> {
                 accessorySets: [
                     {
                         exercise: "Dips",
-                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                        reps: { "num": 10, "setType": SetType.ACCESSORY },
+                        sets: 4,
                         weight: 0,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "Dips",
-                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
-                        weight: 0,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "Dips",
-                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
-                        weight: 0,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "Dips",
-                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
-                        weight: 0,
-                        unit: unit,
                     },
                     {
                         exercise: "Face Pull",
-                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                        reps: { "num": 15, "setType": SetType.ACCESSORY },
+                        sets: 4,
                         weight: 32.3,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "Face Pull",
-                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
-                        weight: 32.3,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "Face Pull",
-                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
-                        weight: 32.3,
-                        unit: unit,
-                    },
-                    {
-                        exercise: "Face Pull",
-                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
-                        weight: 32.3,
-                        unit: unit,
                     },
                 ]
             }
