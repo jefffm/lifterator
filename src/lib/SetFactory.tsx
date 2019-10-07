@@ -1,13 +1,22 @@
 import { ISetPrototype, Reps, SetType, IVolumeSettings } from '../types';
+import { ISetProtoConfig } from '../reducers/setProtoConfig';
 
 
+/**
+ * Put the set/rep/intensity scheme together with the volume settings into "set prototypes" for each week
+ * 
+ * A Set Prototype can be combined with an Exercise to generate the sets to do on a given day
+ */
 export default function createSets(
-    setProtoConfig: [number[], Reps[]][],
-    volumeSettings: IVolumeSettings) {
+    setProtoConfig: ISetProtoConfig,
+    volumeSettings: IVolumeSettings): ISetPrototype[][] {
     var setProtosByPhase = []
 
+    // For each workout...
     for (const [intensitySets, repSets] of setProtoConfig) {
         var setList: ISetPrototype[] = []
+
+        // For each set
         for (const [setNum, intensityPct] of intensitySets.entries()) {
             setList.push(
                 {

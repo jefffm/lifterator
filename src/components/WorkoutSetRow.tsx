@@ -4,6 +4,7 @@ import { Badge, Card, Grid, Button, Chip, Box, Typography, Paper } from '@materi
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { isUndefined } from 'util';
 
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -33,8 +34,8 @@ export type WorkoutSetProps = {
     reps: Reps
     weight: number
     unit: string
-    plates: number[]
-    isNext: boolean | undefined
+    plates?: number[]
+    isNext?: boolean | undefined
 }
 
 export function WorkoutSetRow(props: WorkoutSetProps) {
@@ -43,7 +44,6 @@ export function WorkoutSetRow(props: WorkoutSetProps) {
     const reps = props.reps
     const weight = props.weight
     const unit = props.unit
-    const plates = props.plates
 
     // TODO: wtf this can't be the right way to do this
     const repsToken = (
@@ -59,6 +59,14 @@ export function WorkoutSetRow(props: WorkoutSetProps) {
             }
         }
     )()
+
+    const plates = isUndefined(props.plates)
+        ? []
+        : (props.plates as number[]).map(
+            plate => (
+                <Chip size="small" label={plate} />
+            )
+        )
 
     return <Grid container item
         direction="row"
@@ -76,11 +84,7 @@ export function WorkoutSetRow(props: WorkoutSetProps) {
         </Grid>
 
         <Grid item>
-            {
-                plates.map(plate => {
-                    return <Chip size="small" label={plate} />
-                })
-            }
+            {plates}
         </Grid>
     </Grid >
 }

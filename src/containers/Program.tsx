@@ -22,6 +22,8 @@ import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import { Link } from 'react-router-dom'
+import { ISetPrototype } from '../types';
+import { WorkoutSetProps } from '../components/WorkoutSetRow';
 
 interface ProgramProps {
     weightSettings: IWeightSettings
@@ -52,155 +54,146 @@ class Program extends Component<ProgramProps> {
         const unit = this.props.weightSettings.unit
 
         // TODO START-SETBUILDER-CLASS
-        const setProtosByPhase = createSets(this.props.setProtoConfig, this.props.volumeSettings)
+        const setProtosByPhase: ISetPrototype[][] = createSets(this.props.setProtoConfig, this.props.volumeSettings)
 
         const mainExercises = this.props.mainExercises
-        console.log(mainExercises)
 
-        // TODO: extract the default workout into a reducer
-        const phases = setProtosByPhase.flatMap(function (setProtos: types.ISetPrototype[], i) {
-            return [
+        interface IWorkoutPrototype {
+            mainExercises: Exercise[]
+            accessorySets: WorkoutSetProps[]  // TODO: these should have their own type
+        }
+
+        const workoutProtos: IWorkoutPrototype[] = [
+            {
+                // Day 1
+                mainExercises: [
+                    mainExercises['Squat'] as Exercise,
+                    mainExercises['Bench Press'] as Exercise
+                ],
+                accessorySets: [
+                    {
+                        exercise: "Kroc Row",
+                        reps: { "num": 20, "setType": types.SetType.ACCESSORY },
+                        weight: 70,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "DB OHP",
+                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                        weight: 35,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "DB OHP",
+                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                        weight: 35,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "DB OHP",
+                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                        weight: 35,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "DB OHP",
+                        reps: { "num": 7, "setType": types.SetType.ACCESSORY },
+                        weight: 35,
+                        unit: unit,
+                    },
+                ]
+            },
+            // Day 2
+            {
+                mainExercises: [
+                    mainExercises["Deadlift"] as Exercise,
+                    mainExercises["Overhead Press"] as Exercise
+                ],
+                accessorySets: [
+                    {
+                        exercise: "Dips",
+                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                        weight: 0,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "Dips",
+                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                        weight: 0,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "Dips",
+                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                        weight: 0,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "Dips",
+                        reps: { "num": 10, "setType": types.SetType.ACCESSORY },
+                        weight: 0,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "Face Pull",
+                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                        weight: 32.3,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "Face Pull",
+                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                        weight: 32.3,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "Face Pull",
+                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                        weight: 32.3,
+                        unit: unit,
+                    },
+                    {
+                        exercise: "Face Pull",
+                        reps: { "num": 15, "setType": types.SetType.ACCESSORY },
+                        weight: 32.3,
+                        unit: unit,
+                    },
+                ]
+            }
+        ]
+
+        const createWorkoutsForPhase = function (
+            phaseNum: number,
+            phaseSetProtos: ISetPrototype[],
+            phaseWorkouts: IWorkoutPrototype[],
+        ) {
+            // TODO: assert the length is the same between phaseSetProtos and phaseWorkouts
+            // TODO: combine setProtos with Workouts somehow :S
+
+            return phaseWorkouts.map((workoutProto, i) => (
                 <Workout
-                    number={1}
-                    phase={i}
-                    mainLifts={
-                        [
-                            mainExercises['Squat'] as Exercise,
-                            mainExercises['Bench Press'] as Exercise
-                        ]
-                    }
-                    plateCalculator={plateCalculator}
-                    warmupGen={warmupGen}
-                    setProtos={setProtos}
+                    number={i + 1}
+                    phase={phaseNum + 1}
                     unit={unit}
-                    accessorySets={[
-                        {
-                            isNext: false,
-                            exercise: "Kroc Row",
-                            reps: { "num": 20, "setType": types.SetType.ACCESSORY },
-                            weight: 70,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "DB OHP",
-                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
-                            weight: 35,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "DB OHP",
-                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
-                            weight: 35,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "DB OHP",
-                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
-                            weight: 35,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "DB OHP",
-                            reps: { "num": 7, "setType": types.SetType.ACCESSORY },
-                            weight: 35,
-                            unit: unit,
-                            plates: []
-                        },
-                    ]}
-                />,
 
-                <Workout
-                    number={2}
-                    phase={i}
-                    mainLifts={
-                        [
-                            mainExercises["Deadlift"] as Exercise,
-                            mainExercises["Overhead Press"] as Exercise
-                        ]
-                    }
-                    plateCalculator={plateCalculator}
+                    // Workout combines the main Exercise instances with the set/rep/intensity schemes to build sets
+                    mainLifts={workoutProto.mainExercises}
+                    setProtos={phaseSetProtos}
+
+                    // Warmupgen builds warmup sets for *just* the main exercises
                     warmupGen={warmupGen}
-                    setProtos={setProtos}
-                    unit={unit}
-                    accessorySets={[
-                        {
-                            isNext: false,
-                            exercise: "Dips",
-                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
-                            weight: 0,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            exercise: "Dips",
-                            isNext: false,
-                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
-                            weight: 0,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "Dips",
-                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
-                            weight: 0,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "Dips",
-                            reps: { "num": 10, "setType": types.SetType.ACCESSORY },
-                            weight: 0,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "Face Pull",
-                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
-                            weight: 32.3,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "Face Pull",
-                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
-                            weight: 32.3,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "Face Pull",
-                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
-                            weight: 32.3,
-                            unit: unit,
-                            plates: []
-                        },
-                        {
-                            isNext: false,
-                            exercise: "Face Pull",
-                            reps: { "num": 15, "setType": types.SetType.ACCESSORY },
-                            weight: 32.3,
-                            unit: unit,
-                            plates: []
-                        },
+                    plateCalculator={plateCalculator}
 
-                    ]}
+                    // These are just raw sets tacked onto the end. This should be improved.
+                    accessorySets={workoutProto.accessorySets}
                 />
-            ]
-        })
-        // TODO END-SETBUILDER-CLASS
+            ))
+
+        }
+        // TODO: extract the default workout into a reducer
+        const phases = setProtosByPhase.flatMap((phaseSetProtos, i) => (
+            createWorkoutsForPhase(i, phaseSetProtos, workoutProtos)
+        ))
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
