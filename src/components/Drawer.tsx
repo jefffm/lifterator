@@ -11,17 +11,19 @@ import MenuIcon from '@material-ui/icons/Menu';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 interface menuItem {
     name: string
     icon: ElementType
+    path: string
 }
 
 const menuItems: menuItem[] = [
-    { name: 'Program', icon: FitnessCenterIcon },
-    { name: 'History', icon: HistoryIcon },
-    { name: 'Configuration', icon: SettingsIcon },
-    { name: 'Import/Export', icon: ImportExportIcon },
+    { name: 'Program', icon: FitnessCenterIcon, path: "/program" },
+    { name: 'History', icon: HistoryIcon, path: "/history" },
+    { name: 'Configuration', icon: SettingsIcon, path: "/config" },
+    { name: 'Import/Export', icon: ImportExportIcon, path: "/backup" },
 ]
 
 
@@ -42,7 +44,9 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function SwipeableTemporaryDrawer() {
+export function SwipeableTemporaryDrawer(props: RouteComponentProps) {
+    const { match, location, history } = props
+
     const classes = useStyles();
     const [state, setState] = React.useState({
         isOpen: false,
@@ -71,7 +75,7 @@ export default function SwipeableTemporaryDrawer() {
         <List>
             {menuItems.map((item, index) => (
                 // TODO: link this up with react-router
-                <ListItem button key={index} onClick={() => console.log(item.name)}>
+                <ListItem button key={index} onClick={() => history.push(item.path)}>
                     <ListItemIcon><item.icon /></ListItemIcon>
                     <ListItemText primary={item.name} />
                 </ListItem>
@@ -98,3 +102,5 @@ export default function SwipeableTemporaryDrawer() {
         </div>
     );
 }
+
+export default withRouter(SwipeableTemporaryDrawer)
