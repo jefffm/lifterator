@@ -74,7 +74,7 @@ class Program extends Component<ProgramProps> {
                     )
 
                     // TODO: move application logic out of the "Workout"
-                    const workoutFactory = new WorkoutFactory(
+                    return new WorkoutFactory(
                         {
                             number: i + 1,
                             phase: phaseNum,
@@ -92,20 +92,13 @@ class Program extends Component<ProgramProps> {
                             accessorySets: workoutProto.accessorySets,
                         }
                     )
-
-                    const sets = workoutFactory.getSets()
-
-                    return <Workout
-                        phase={phaseNum}
-                        number={i + 1}
-                        setGroupProps={sets} />
                 }
             )
-
         }
 
         const phases = setProtosByPhase.flatMap((phaseSetProtos, i) => (
             createWorkoutsForPhase(i, phaseSetProtos, workoutDays)
+                .map(workoutFactory => workoutFactory.getSetsAsWorkout())
         ))
         // TODO: move this logic into a "PHASE" component, separate app and presentation logic - END
 

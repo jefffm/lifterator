@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Exercise } from "./Exercises";
 import PlateCalculator from '../util/PlateCalculator';
 import WarmupGen from './WarmupGen';
@@ -6,6 +8,7 @@ import { isUndefined } from "util";
 import { WorkoutSetProps } from '../components/WorkoutSetRow';
 import { round5 } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
+import Workout from '../components/Workout';
 
 
 interface IWorkoutFactoryContext {
@@ -123,5 +126,9 @@ export default class WorkoutFactory {
 
     getSets() {
         return this.getMainSets().concat(this.getAccessorySets())
+    }
+
+    getSetsAsWorkout() {
+        return <Workout number={this.number} phase={this.phase} setGroupProps={this.getSets()} />
     }
 }
