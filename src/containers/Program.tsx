@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Collapse from "@material-ui/core/Collapse"
 import { Typography } from '@material-ui/core'
@@ -15,7 +14,6 @@ import { AppState } from '../index';
 import * as types from '../types'
 import { PlateCalculator } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from '../lib/WarmupGen'
-import ConfigurationPanel from './ConfigurationPanel'
 import WorkoutStepper from '../components/WorkoutStepper';
 import Workout from '../components/Workout'
 import createSets from '../lib/SetFactory';
@@ -23,7 +21,6 @@ import { Exercise } from '../lib/Exercises';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
-import weightSettings from '../reducers/weightSettings';
 
 interface ProgramProps {
     weightSettings: IWeightSettings
@@ -212,8 +209,6 @@ class Program extends Component<ProgramProps> {
                     <h2>{"Program Name"}</h2>
                 </Box>
 
-                <ConfigurationPanel />
-
                 <Collapse in={!isRequiredDataSet}>
                     <div>
                         <Typography>
@@ -227,7 +222,9 @@ class Program extends Component<ProgramProps> {
 
                 <Collapse in={isRequiredDataSet}>
                     <div>
-                        {<WorkoutStepper elems={() => phases} />}
+                        <WorkoutStepper>
+                            {phases}
+                        </WorkoutStepper>
                     </div>
                 </Collapse>
             </Grid>

@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 });
 
 interface WorkoutStepperProps {
-    elems: () => JSX.Element[]
+    children: React.ReactElement[]
 }
 
 export default function WorkoutStepper(props: WorkoutStepperProps) {
@@ -28,7 +28,7 @@ export default function WorkoutStepper(props: WorkoutStepperProps) {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
 
-    const elems = props.elems()
+    const elems = props.children
     const numSteps = elems.length
 
     return (
