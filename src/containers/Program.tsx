@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Collapse from "@material-ui/core/Collapse"
-import { Typography } from '@material-ui/core'
+import { Typography, Button } from '@material-ui/core'
 
 import { AppState } from '../index';
 
@@ -21,6 +21,7 @@ import { Exercise } from '../lib/Exercises';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
+import { Link } from 'react-router-dom'
 
 interface ProgramProps {
     weightSettings: IWeightSettings
@@ -217,6 +218,7 @@ class Program extends Component<ProgramProps> {
                             </h1>
                         </Typography>
                         <p>Configure all required fields to build your program.</p>
+                        <Button component={Link} to="/config">Configuration</Button>
                     </div>
                 </Collapse>
 
