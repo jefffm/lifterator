@@ -6,11 +6,10 @@ import ElevateAppBar from './components/ElevateAppBar';
 import SwipeableTemporaryDrawer from './components/Drawer';
 
 const App: React.FC = () => {
-  const menuButtonFunc = () => <SwipeableTemporaryDrawer />
   return (
     <div className="App">
       <CssBaseline />
-      <ElevateAppBar title={"Program"} menuButton={menuButtonFunc}>
+      <ElevateAppBar title={"Program"} menuButton={SwipeableTemporaryDrawer}>
         <Program />
       </ElevateAppBar>
     </div>
