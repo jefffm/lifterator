@@ -1,17 +1,9 @@
 import React from 'react'
-import SetGroup from './WorkoutSetTable';
-import { round5 } from '../util/Math';
-import PlateCalculator from '../util/PlateCalculator'
-import { ISetPrototype, SetType, IAccessoryPrototype } from '../types';
+import SetGroup, { SetGroupProps } from './WorkoutSetTable';
 import Grid from '@material-ui/core/Grid'
-import WarmupGen from '../lib/WarmupGen'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import { WorkoutSetProps } from './WorkoutSetRow';
-import { Exercise, IExerciseWeightMapping } from '../lib/Exercises';
-import { isUndefined } from 'util';
-import ExerciseProvider from '../lib/Exercises';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,94 +22,15 @@ const useStyles = makeStyles((theme: Theme) =>
 type WorkoutProps = {
     number: number
     phase: number
-    mainLifts: Exercise[]
-    plateCalculator: PlateCalculator
-    warmupGen: WarmupGen
-    setProtos: ISetPrototype[]
-    unit: string
-    accessorySets: IAccessoryPrototype[]
+    setGroupProps: SetGroupProps[]
 };
 
 export function Workout(props: WorkoutProps) {
     const number = props.number
     const phase = props.phase
-    const setProtos = props.setProtos
-    const mainLifts = props.mainLifts
-    const plateCalculator = props.plateCalculator
-    const warmupGen = props.warmupGen
-    const unit = props.unit
+    const setGroupProps = props.setGroupProps
 
     const classes = useStyles()
-
-    const mainSets = mainLifts
-        .filter(x => !isUndefined(x.trainingMax))
-        .map(
-            function (lift) {
-                const trainingMax = lift.trainingMax as number
-
-                const sets = setProtos.map(
-                    function (setProto: ISetPrototype): WorkoutSetProps {
-                        const setReps = setProto.reps
-                        const setWeight = round5(
-                            trainingMax * setProto.intensityPct
-                        )
-                        return {
-                            isNext: false,
-                            exercise: lift.shortname,
-                            reps: setReps,
-                            weight: setWeight,
-                            unit: unit,
-                            plates: plateCalculator.getPlatesPerSide(setWeight)
-                        }
-                    }
-                )
-
-                const warmupSets = warmupGen.getSets(lift.name, trainingMax, sets[0].weight)
-                    .map(function (set): WorkoutSetProps {
-                        return {
-                            isNext: false,
-                            exercise: lift.shortname,
-                            reps: { "num": set.reps, "setType": SetType.WARMUP },
-                            weight: set.weight,
-                            unit: unit,
-                            plates: plateCalculator.getPlatesPerSide(set.weight)
-                        }
-                    })
-
-                return <SetGroup
-                    key={lift.shortname}
-                    name={lift.name}
-                    sets={warmupSets.concat(sets)}
-                    unit={unit} />
-            }
-
-        )
-
-    const createAccessoryFromProto = function (accessory: IAccessoryPrototype): WorkoutSetProps[] {
-        var sets = []
-        for (var i = 0; i < accessory.sets; i++) {
-            sets.push(
-                {
-                    exercise: accessory.exercise,
-                    reps: accessory.reps,
-                    weight: accessory.weight,
-                    unit: unit,
-                }
-            )
-        }
-        return sets
-    }
-
-    // TODO: send the accessory sets grouped by exercise, rather than as a list
-    const accessorySets = props.accessorySets
-        .map(createAccessoryFromProto)
-        .map(
-            workoutSets => (
-                <SetGroup name={workoutSets[0].exercise} sets={workoutSets} unit={unit} />
-            )
-        )
-
-    const allSets = mainSets.concat(accessorySets)
 
     return <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -128,9 +41,9 @@ export function Workout(props: WorkoutProps) {
                 direction="row"
                 justify="flex-start"
                 alignItems="flex-start" >
-                {allSets.map(set => {
+                {setGroupProps.map(set => {
                     return <Grid item xs={12} md={6}>
-                        {set}
+                        {<SetGroup {...set} />}
                     </Grid>
                 })}
             </Grid >

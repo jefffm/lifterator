@@ -22,6 +22,7 @@ import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import { Link } from 'react-router-dom'
 import { ISetPrototype, IVolumeSettings, IWorkoutPrototype } from '../types';
 import { Exercise } from '../lib/Exercises';
+import WorkoutFactory from '../lib/WorkoutFactory'
 
 interface ProgramProps {
     weightSettings: IWeightSettings
@@ -72,24 +73,31 @@ class Program extends Component<ProgramProps> {
                     )
 
                     // TODO: move application logic out of the "Workout"
-                    const props = {
-                        number: i + 1,
-                        phase: phaseNum,
-                        unit: unit,
+                    const workoutFactory = new WorkoutFactory(
+                        {
+                            number: i + 1,
+                            phase: phaseNum,
+                            unit: unit,
 
-                        // Workout combines the main Exercise instances with the set/rep/intensity schemes to build sets
-                        mainLifts: exerciseInstances,
-                        setProtos: phaseSetProtos,
+                            // Workout combines the main Exercise instances with the set/rep/intensity schemes to build sets
+                            mainLifts: exerciseInstances,
+                            setProtos: phaseSetProtos,
 
-                        // Warmupgen builds warmup sets for *just* the main exercises
-                        warmupGen: warmupGen,
-                        plateCalculator: plateCalculator,
+                            // Warmupgen builds warmup sets for *just* the main exercises
+                            warmupGen: warmupGen,
+                            plateCalculator: plateCalculator,
 
-                        // These are just raw sets tacked onto the end. This should be improved.
-                        accessorySets: workoutProto.accessorySets,
-                    }
+                            // These are just raw sets tacked onto the end. This should be improved.
+                            accessorySets: workoutProto.accessorySets,
+                        }
+                    )
 
-                    return <Workout {...props} />
+                    const sets = workoutFactory.getSets()
+
+                    return <Workout
+                        phase={phaseNum}
+                        number={i + 1}
+                        setGroupProps={sets} />
                 }
             )
 

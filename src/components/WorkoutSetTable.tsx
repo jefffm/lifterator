@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-type SetGroupProps = {
+export type SetGroupProps = {
     name: string
     sets: WorkoutSetProps[]
     unit: string
