@@ -53,7 +53,6 @@ class Program extends Component<ProgramProps> {
         const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
         const unit = this.props.weightSettings.unit
 
-        // TODO START-SETBUILDER-CLASS
         const setProtosByPhase: ISetPrototype[][] = createSets(this.props.setProtoConfig, this.props.volumeSettings)
 
         const mainExercises = this.props.mainExercises
@@ -63,6 +62,7 @@ class Program extends Component<ProgramProps> {
             accessorySets: WorkoutSetProps[]  // TODO: these should have their own type
         }
 
+        // TODO: move this to a reducer
         const workoutProtos: IWorkoutPrototype[] = [
             {
                 // Day 1
@@ -167,9 +167,6 @@ class Program extends Component<ProgramProps> {
             phaseSetProtos: ISetPrototype[],
             phaseWorkouts: IWorkoutPrototype[],
         ) {
-            // TODO: assert the length is the same between phaseSetProtos and phaseWorkouts
-            // TODO: combine setProtos with Workouts somehow :S
-
             return phaseWorkouts.map((workoutProto, i) => (
                 <Workout
                     number={i + 1}
@@ -223,7 +220,7 @@ class Program extends Component<ProgramProps> {
                     </div>
                 </Collapse>
             </Grid>
-        </Container >
+        </Container>
     }
 }
 
