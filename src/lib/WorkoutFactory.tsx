@@ -131,4 +131,9 @@ export default class WorkoutFactory {
     getSetsAsWorkout() {
         return <Workout number={this.number} phase={this.phase} setGroupProps={this.getSets()} />
     }
+
+    // TODO
+    getSetsasWorkoutSummary() {
+
+    }
 }

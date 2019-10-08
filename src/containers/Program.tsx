@@ -14,7 +14,6 @@ import { AppState } from '../index';
 import { PlateCalculator } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from '../lib/WarmupGen'
 import WorkoutStepper from '../components/WorkoutStepper';
-import Workout from '../components/Workout'
 import createSets from '../lib/SetFactory';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
