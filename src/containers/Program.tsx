@@ -22,6 +22,8 @@ import { Link } from 'react-router-dom'
 import { ISetPrototype, IVolumeSettings, IWorkoutPrototype } from '../types';
 import { Exercise } from '../lib/Exercises';
 import WorkoutFactory from '../lib/WorkoutFactory'
+import PhaseFactory from '../lib/Phase';
+import weightSettings from '../reducers/weightSettings';
 
 interface ProgramProps {
     weightSettings: IWeightSettings
@@ -51,12 +53,19 @@ class Program extends Component<ProgramProps> {
                 barWeight: this.props.weightSettings.barWeight
             }
         )
-
         const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
-        const unit = this.props.weightSettings.unit
 
-        const mainExercises = this.props.mainExercises
-        const workoutDays = this.props.workoutDays
+        const phaseFactory = new PhaseFactory({
+            unit: this.props.weightSettings.unit,
+            setProtoConfig: this.props.setProtoConfig,
+            volumeSettings: this.props.volumeSettings,
+            mainExercises: this.props.mainExercises,
+            warmupGen: warmupGen,
+            plateCalculator: plateCalculator,
+            workoutPrototypes: this.props.workoutDays
+        })
+
+        const phases = phaseFactory.getPhases()
 
         const isRequiredDataSet = this.isRequiredDataSet()
 

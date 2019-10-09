@@ -1,12 +1,13 @@
 import createSets from "./SetFactory"
 import { ISetPrototype, IWorkoutPrototype, IVolumeSettings } from '../types';
 import { Exercise } from "./Exercises";
-import WorkoutFactory from "./WorkoutFactory";
+import WorkoutFactory from './WorkoutFactory';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import WarmupGen from './WarmupGen';
 import PlateCalculator from "../util/PlateCalculator";
-import { SetGroupProps } from '../components/WorkoutSetTable';
+import mainExercises from '../reducers/mainExercises';
+import { isUndefined } from "util";
 
 
 interface PhaseFactoryCtx {
@@ -16,7 +17,7 @@ interface PhaseFactoryCtx {
     mainExercises: IMainExercisesState
     warmupGen: WarmupGen
     plateCalculator: PlateCalculator
-    workoutDays: IWorkoutPrototype[]
+    workoutPrototypes: IWorkoutPrototype[]
 }
 
 
@@ -26,52 +27,70 @@ export default class PhaseFactory {
         this.ctx = ctx
     }
 
-    getPhases(): SetGroupProps[] {
-        const unit = this.ctx.unit
-        const mainExercises = this.ctx.mainExercises
+    getExerciseFromName = (name: string): Exercise => {
+        const exercise = this.ctx.mainExercises[name]
+        if (isUndefined(exercise)) {
+            console.error("Exercise " + name + " not found in main exercises!")
+        }
+
+        return exercise as Exercise
+    }
+
+    getWorkoutFactory = (
+        phaseNum: number,
+        workoutNum: number,
+        workoutProto: IWorkoutPrototype,
+        phaseSetProtos: ISetPrototype[],
+    ): WorkoutFactory => {
+        const exerciseInstances: Exercise[] = workoutProto.exerciseNames
+            .map(this.getExerciseFromName)
+        const warmupGen = this.ctx.warmupGen
+        const plateCalculator = this.ctx.plateCalculator
+
+        return new WorkoutFactory(
+            {
+                number: workoutNum + 1,
+                phase: phaseNum,
+                unit: this.ctx.unit,
+
+                // Workout combines the main Exercise instances with the set/rep/intensity schemes to build sets
+                mainLifts: exerciseInstances,
+                setProtos: phaseSetProtos,
+
+                // Warmupgen builds warmup sets for *just* the main exercises
+                warmupGen: warmupGen,
+                plateCalculator: plateCalculator,
+
+                // These are just raw sets tacked onto the end. This should be improved.
+                accessorySets: workoutProto.accessorySets,
+            }
+        )
+
+    }
+
+    createWorkoutsForPhase = (
+        phaseNum: number,
+        phaseSetProtos: ISetPrototype[],
+        workoutPrototypes: IWorkoutPrototype[],
+    ): WorkoutFactory[] => {
+        return workoutPrototypes.map(
+            (workoutProto, workoutNum) => (
+                this.getWorkoutFactory(
+                    phaseNum, workoutNum, workoutProto, phaseSetProtos
+                )
+            )
+        )
+    }
+
+    getPhases(): JSX.Element[] {
         const setProtosByPhase: ISetPrototype[][] = createSets(
             this.ctx.setProtoConfig,
             this.ctx.volumeSettings
         )
-        const warmupGen = this.ctx.warmupGen
-        const plateCalculator = this.ctx.plateCalculator
-        const workoutDays = this.ctx.workoutDays
-
-        const createWorkoutsForPhase = function (
-            phaseNum: number,
-            phaseSetProtos: ISetPrototype[],
-            phaseWorkouts: IWorkoutPrototype[],
-        ) {
-            return phaseWorkouts.map(
-                (workoutProto, i) => {
-                    const exerciseInstances: Exercise[] = workoutProto.exerciseNames.map(
-                        name => (mainExercises[name] as Exercise)
-                    )
-
-                    return new WorkoutFactory(
-                        {
-                            number: i + 1,
-                            phase: phaseNum,
-                            unit: unit,
-
-                            // Workout combines the main Exercise instances with the set/rep/intensity schemes to build sets
-                            mainLifts: exerciseInstances,
-                            setProtos: phaseSetProtos,
-
-                            // Warmupgen builds warmup sets for *just* the main exercises
-                            warmupGen: warmupGen,
-                            plateCalculator: plateCalculator,
-
-                            // These are just raw sets tacked onto the end. This should be improved.
-                            accessorySets: workoutProto.accessorySets,
-                        }
-                    )
-                }
-            )
-        }
+        const workoutPrototypes = this.ctx.workoutPrototypes
 
         return setProtosByPhase.flatMap((phaseSetProtos, i) => (
-            createWorkoutsForPhase(i, phaseSetProtos, workoutDays)
+            this.createWorkoutsForPhase(i, phaseSetProtos, workoutPrototypes)
                 .map(workoutFactory => workoutFactory.getSetsAsWorkout())
         ))
     }
