@@ -14,16 +14,12 @@ import { AppState } from '../index';
 import { PlateCalculator } from '../util/PlateCalculator'
 import { BeyondWarmupGen } from '../lib/WarmupGen'
 import WorkoutStepper from '../components/WorkoutStepper';
-import createSets from '../lib/SetFactory';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import { Link } from 'react-router-dom'
-import { ISetPrototype, IVolumeSettings, IWorkoutPrototype } from '../types';
-import { Exercise } from '../lib/Exercises';
-import WorkoutFactory from '../lib/WorkoutFactory'
-import PhaseFactory from '../lib/Phase';
-import weightSettings from '../reducers/weightSettings';
+import { IVolumeSettings, IWorkoutPrototype } from '../types';
+import Cycle from '../lib/Cycle';
 
 interface ProgramProps {
     weightSettings: IWeightSettings
@@ -55,7 +51,7 @@ class Program extends Component<ProgramProps> {
         )
         const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
 
-        const phaseFactory = new PhaseFactory({
+        const phaseFactory = new Cycle({
             unit: this.props.weightSettings.unit,
             setProtoConfig: this.props.setProtoConfig,
             volumeSettings: this.props.volumeSettings,

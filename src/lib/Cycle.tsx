@@ -6,11 +6,10 @@ import { IMainExercisesState } from '../reducers/mainExercises';
 import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import WarmupGen from './WarmupGen';
 import PlateCalculator from "../util/PlateCalculator";
-import mainExercises from '../reducers/mainExercises';
 import { isUndefined } from "util";
 
 
-interface PhaseFactoryCtx {
+interface CycleCtx {
     unit: string
     setProtoConfig: ISetProtoConfig
     volumeSettings: IVolumeSettings
@@ -21,9 +20,9 @@ interface PhaseFactoryCtx {
 }
 
 
-export default class PhaseFactory {
-    ctx: PhaseFactoryCtx
-    constructor(ctx: PhaseFactoryCtx) {
+export default class Cycle {
+    ctx: CycleCtx
+    constructor(ctx: CycleCtx) {
         this.ctx = ctx
     }
 
