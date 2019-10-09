@@ -58,49 +58,6 @@ class Program extends Component<ProgramProps> {
         const mainExercises = this.props.mainExercises
         const workoutDays = this.props.workoutDays
 
-        // TODO: move this logic into a "PHASE" component, separate app and presentation logic - START
-        const setProtosByPhase: ISetPrototype[][] = createSets(this.props.setProtoConfig, this.props.volumeSettings)
-
-        const createWorkoutsForPhase = function (
-            phaseNum: number,
-            phaseSetProtos: ISetPrototype[],
-            phaseWorkouts: IWorkoutPrototype[],
-        ) {
-            return phaseWorkouts.map(
-                (workoutProto, i) => {
-                    const exerciseInstances: Exercise[] = workoutProto.exerciseNames.map(
-                        name => (mainExercises[name] as Exercise)
-                    )
-
-                    // TODO: move application logic out of the "Workout"
-                    return new WorkoutFactory(
-                        {
-                            number: i + 1,
-                            phase: phaseNum,
-                            unit: unit,
-
-                            // Workout combines the main Exercise instances with the set/rep/intensity schemes to build sets
-                            mainLifts: exerciseInstances,
-                            setProtos: phaseSetProtos,
-
-                            // Warmupgen builds warmup sets for *just* the main exercises
-                            warmupGen: warmupGen,
-                            plateCalculator: plateCalculator,
-
-                            // These are just raw sets tacked onto the end. This should be improved.
-                            accessorySets: workoutProto.accessorySets,
-                        }
-                    )
-                }
-            )
-        }
-
-        const phases = setProtosByPhase.flatMap((phaseSetProtos, i) => (
-            createWorkoutsForPhase(i, phaseSetProtos, workoutDays)
-                .map(workoutFactory => workoutFactory.getSetsAsWorkout())
-        ))
-        // TODO: move this logic into a "PHASE" component, separate app and presentation logic - END
-
         const isRequiredDataSet = this.isRequiredDataSet()
 
         return <Container>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ElementType } from 'react'
 
 import { Exercise } from "./Exercises";
 import PlateCalculator from '../util/PlateCalculator';
@@ -124,7 +124,7 @@ export default class WorkoutFactory {
 
     }
 
-    getSets() {
+    getSets(): SetGroupProps[] {
         return this.getMainSets().concat(this.getAccessorySets())
     }
 
