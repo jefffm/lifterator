@@ -110,15 +110,30 @@ export default class WorkoutFactory {
 
     }
 
-    getSets(): SetGroupProps[] {
+    getSetGroups(): SetGroupProps[] {
         return this.getMainSets().concat(this.getAccessorySets())
     }
+
+    /**
+     * For each set in the setgroup, accumulate the setgroup's total volume
+     */
+    getSetGroupVolume = (set: SetGroupProps): number => {
+        return set.sets.reduce(
+            (acc, current) => (
+                acc + current.reps.num * current.weight
+            ),
+            0
+        )
+    }
+
+    getWorkoutVolume = (): number => this.getSetGroups()
+        .reduce((acc, setGroup) => acc + this.getSetGroupVolume(setGroup), 0)
 
     getSetsAsWorkout() {
         return <Workout
             number={this.ctx.number}
             phase={this.ctx.phase}
-            setGroupProps={this.getSets()} />
+            setGroupProps={this.getSetGroups()} />
     }
 
     // TODO
