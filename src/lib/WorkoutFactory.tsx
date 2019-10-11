@@ -9,7 +9,7 @@ import { WorkoutSetProps } from '../components/WorkoutSetRow';
 import { round5 } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
 import Workout from '../components/Workout';
-import WorkoutSummary from '../components/WorkoutSummary';
+import WorkoutSummary, { ExerciseSummary } from '../components/WorkoutSummary';
 
 
 interface IWorkoutFactoryContext {
@@ -166,6 +166,26 @@ export default class WorkoutFactory {
             setCount={this.getWorkoutSetCount()}
             volume={this.getWorkoutVolume()}
             unit={this.ctx.unit}
+            exerciseSummaryComponents={
+                this.getSetGroups().map(
+                    setGroup => (
+                        <ExerciseSummary
+                            name={setGroup.name}
+                            topPct={0}
+                            topWeight={
+                                setGroup.sets.reduce(
+                                    (acc, set) => (
+                                        Math.max(acc, set.weight)
+                                    ), 0
+                                )
+                            }
+                            setCount={this.getSetGroupSetCount(setGroup)}
+                            volume={this.getSetGroupVolume(setGroup)}
+                            unit={this.ctx.unit}
+                        />
+                    )
+                )
+            }
         />
     )
 }
