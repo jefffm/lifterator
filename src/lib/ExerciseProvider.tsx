@@ -31,7 +31,7 @@ export default class ExerciseProvider {
         this.exercises = exercises
 
         const nameExercisePairs = exercises.flatMap(
-            (exercise: Exercise, i: number) => {
+            (exercise: Exercise) => {
                 const allNames = [exercise.name, exercise.shortname].concat(exercise.aliases)
                 return allNames.map(
                     (name: string): [string, Exercise] => [
@@ -43,11 +43,11 @@ export default class ExerciseProvider {
         this.nameToExercise = new Map(nameExercisePairs)
     }
 
-    filterWithTms(): Exercise[] {
+    filterWithTms = (): Exercise[] => {
         return this.exercises.filter(x => !isUndefined(x.trainingMax))
     }
 
-    get(exerciseName: string): Exercise {
+    get = (exerciseName: string): Exercise => {
         return this.nameToExercise.get(exerciseName.toLowerCase()) || UNDEFINED_EXERCISE
     }
 }

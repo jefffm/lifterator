@@ -16,16 +16,18 @@ import { BeyondWarmupGen } from '../lib/WarmupGen'
 import WorkoutStepper from '../components/WorkoutStepper';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
-import { ISetProtoConfig } from '../reducers/setProtoConfig';
 import { Link } from 'react-router-dom'
 import { IVolumeSettings, IWorkoutPrototype } from '../types';
 import Cycle from '../lib/Cycle';
+import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
+import ExerciseProvider from '../lib/ExerciseProvider'
+import WorkoutFactory from '../lib/WorkoutFactory'
 
 interface ProgramProps {
     weightSettings: IWeightSettings
     mainExercises: IMainExercisesState
     volumeSettings: IVolumeSettings
-    setProtoConfig: ISetProtoConfig
+    phaseIntensityRepSchemes: IntensityRepScheme[]
     workoutDays: IWorkoutPrototype[]
     dispatch: any
 }
@@ -42,26 +44,29 @@ class Program extends Component<ProgramProps> {
         return !isAnyExerciseWithoutTm
     }
 
-    render(): ReactNode {
+    render = (): ReactNode => {
         const plateCalculator = new PlateCalculator(
             {
                 availablePlates: this.props.weightSettings.availablePlates,
                 barWeight: this.props.weightSettings.barWeight
             }
         )
+        // TODO: make warmupGen configurable
         const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
 
-        const phaseFactory = new Cycle({
+        const exerciseProvider = new ExerciseProvider(Object.values(this.props.mainExercises))
+
+        const cycle = new Cycle({
             unit: this.props.weightSettings.unit,
-            setProtoConfig: this.props.setProtoConfig,
+            phaseIntensityRepSchemes: this.props.phaseIntensityRepSchemes,
             volumeSettings: this.props.volumeSettings,
-            mainExercises: this.props.mainExercises,
+            exerciseProvider: exerciseProvider,
             warmupGen: warmupGen,
             plateCalculator: plateCalculator,
             workoutPrototypes: this.props.workoutDays
         })
 
-        const phases = phaseFactory.getPhases()
+        const workouts: WorkoutFactory[] = cycle.getWorkouts()
 
         const isRequiredDataSet = this.isRequiredDataSet()
 
@@ -86,7 +91,7 @@ class Program extends Component<ProgramProps> {
                 <Collapse in={isRequiredDataSet}>
                     <div>
                         <WorkoutStepper>
-                            {phases}
+                            {workouts.map(workout => workout.getSetsAsWorkout())}
                         </WorkoutStepper>
                     </div>
                 </Collapse>
@@ -97,7 +102,7 @@ class Program extends Component<ProgramProps> {
 
 const mapStateToProps = (state: AppState) => ({
     mainExercises: state.mainExercises,
-    setProtoConfig: state.setProtoConfig,
+    phaseIntensityRepSchemes: state.phaseIntensityRepSchemes,
     volumeSettings: state.volumeSettings,
     weightSettings: state.weightSettings,
     workoutDays: state.workoutDays,

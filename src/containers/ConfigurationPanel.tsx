@@ -4,7 +4,7 @@ import TrainingMaxesForm from '../components/TrainingMaxesForm'
 import { VolumeForm } from '../components/VolumeForm'
 import { IVolumeSettings, UPDATE_TM } from '../types';
 import { Paper, Grid } from '@material-ui/core';
-import { Exercise } from '../lib/Exercises';
+import { Exercise } from '../lib/ExerciseProvider';
 import { AppState } from '../index';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { connect } from 'react-redux';

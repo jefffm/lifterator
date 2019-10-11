@@ -1,6 +1,6 @@
 import React, { ElementType } from 'react'
 
-import { Exercise } from "./Exercises";
+import { Exercise } from "./ExerciseProvider";
 import PlateCalculator from '../util/PlateCalculator';
 import WarmupGen from './WarmupGen';
 import { ISetPrototype, IAccessoryPrototype, SetType } from '../types';
@@ -9,6 +9,7 @@ import { WorkoutSetProps } from '../components/WorkoutSetRow';
 import { round5 } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
 import Workout from '../components/Workout';
+import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
 
 
 interface IWorkoutFactoryContext {
@@ -24,33 +25,19 @@ interface IWorkoutFactoryContext {
 
 
 export default class WorkoutFactory {
-    number: number
-    phase: number
-    mainLifts: Exercise[]
-    plateCalculator: PlateCalculator
-    warmupGen: WarmupGen
-    setProtos: ISetPrototype[]
-    unit: string
-    accessorySets: IAccessoryPrototype[]
+    ctx: IWorkoutFactoryContext
 
     constructor(ctx: IWorkoutFactoryContext) {
-        this.number = ctx.number
-        this.phase = ctx.phase
-        this.mainLifts = ctx.mainLifts
-        this.plateCalculator = ctx.plateCalculator
-        this.warmupGen = ctx.warmupGen
-        this.setProtos = ctx.setProtos
-        this.unit = ctx.unit
-        this.accessorySets = ctx.accessorySets
+        this.ctx = ctx
     }
 
-    getMainSets(): SetGroupProps[] {
-        const setProtos = this.setProtos
-        const unit = this.unit
-        const plateCalculator = this.plateCalculator
-        const warmupGen = this.warmupGen
+    getMainSets = (): SetGroupProps[] => {
+        const unit = this.ctx.unit
+        const plateCalculator = this.ctx.plateCalculator
+        const warmupGen = this.ctx.warmupGen
+        const setProtos = this.ctx.setProtos
 
-        return this.mainLifts
+        return this.ctx.mainLifts
             .filter(x => !isUndefined(x.trainingMax))
             .map(
                 function (lift): SetGroupProps {
@@ -95,8 +82,8 @@ export default class WorkoutFactory {
     }
 
     getAccessorySets(): SetGroupProps[] {
-        const unit = this.unit
-        const accessorySets = this.accessorySets
+        const unit = this.ctx.unit
+        const accessorySets = this.ctx.accessorySets
 
         const createAccessoryFromProto = function (accessory: IAccessoryPrototype): WorkoutSetProps[] {
             var sets = []
@@ -129,7 +116,10 @@ export default class WorkoutFactory {
     }
 
     getSetsAsWorkout() {
-        return <Workout number={this.number} phase={this.phase} setGroupProps={this.getSets()} />
+        return <Workout
+            number={this.ctx.number}
+            phase={this.ctx.phase}
+            setGroupProps={this.getSets()} />
     }
 
     // TODO

@@ -7,7 +7,7 @@ import FormGroup from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { useStyles } from '../lib/ConfigurationCommon';
-import { Exercise } from '../lib/Exercises';
+import { Exercise } from '../lib/ExerciseProvider';
 import { IMainExercisesState } from '../reducers/mainExercises'
 
 interface ITrainingMaxesFormProps {

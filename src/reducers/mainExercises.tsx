@@ -1,5 +1,5 @@
 import { MainExerciseActionTypes, UPDATE_TM } from '../types';
-import { Exercise } from '../lib/Exercises';
+import { Exercise } from '../lib/ExerciseProvider';
 
 
 export interface IMainExercisesState {

@@ -1,5 +1,5 @@
 import { round5 } from "../util/Math";
-import { Exercise } from './Exercises';
+import { Exercise } from './ExerciseProvider';
 import { isUndefined } from "util";
 import { IMainExercisesState } from '../reducers/mainExercises';
 

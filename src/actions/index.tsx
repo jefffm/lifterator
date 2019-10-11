@@ -1,4 +1,4 @@
-import { Exercise } from "../lib/Exercises"
+import { Exercise } from "../lib/ExerciseProvider"
 import {
     MainExerciseActionTypes, UPDATE_TM,
     VolumeSettingsActionTypes, SET_VOLUME_FIELD,

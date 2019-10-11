@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
 
 import mainExercises from './mainExercises';
-import setProtoConfig from './setProtoConfig';
 import volumeSettings from './volumeSettings';
 import weightSettings from './weightSettings';
 import workoutDays from './workoutDays';
+import phaseIntensityRepSchemes from './PhaseIntensityRepSchemes';
 
 export default combineReducers({
     mainExercises,
-    setProtoConfig,
+    phaseIntensityRepSchemes,
     volumeSettings,
     weightSettings,
     workoutDays,

@@ -1,4 +1,4 @@
-import { Exercise } from "./lib/Exercises"
+import { Exercise } from "./lib/ExerciseProvider"
 
 /**
  * Defines the intensity presets we can build sets with
