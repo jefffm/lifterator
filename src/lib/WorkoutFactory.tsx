@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react'
+import React from 'react'
 
 import { Exercise } from "./ExerciseProvider";
 import PlateCalculator from '../util/PlateCalculator';
@@ -9,7 +9,6 @@ import { WorkoutSetProps } from '../components/WorkoutSetRow';
 import { round5 } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
 import Workout from '../components/Workout';
-import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
 
 
 interface IWorkoutFactoryContext {

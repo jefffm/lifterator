@@ -1,5 +1,4 @@
-import { ISetPrototype, IWorkoutPrototype, IVolumeSettings } from '../types';
-import { Exercise } from "./ExerciseProvider";
+import { IWorkoutPrototype, IVolumeSettings } from '../types';
 import WorkoutFactory from './WorkoutFactory';
 import WarmupGen from './WarmupGen';
 import PlateCalculator from "../util/PlateCalculator";

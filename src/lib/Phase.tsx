@@ -1,4 +1,3 @@
-import React from 'react'
 import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
 import { IVolumeSettings, IWorkoutPrototype, ISetPrototype, Reps } from '../types';
 import WarmupGen from './WarmupGen';

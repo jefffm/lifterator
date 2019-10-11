@@ -1,7 +1,6 @@
 import React from 'react'
 import { Reps, SetType } from '../types'
-import { Badge, Card, Grid, Button, Chip, Box, Typography, Paper } from '@material-ui/core'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { Grid, Chip } from '@material-ui/core'
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { isUndefined } from 'util';

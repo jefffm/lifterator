@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import TrainingMaxesForm from '../components/TrainingMaxesForm'
 import { VolumeForm } from '../components/VolumeForm'
-import { IVolumeSettings, UPDATE_TM } from '../types';
+import { IVolumeSettings } from '../types';
 import { Paper, Grid } from '@material-ui/core';
 import { Exercise } from '../lib/ExerciseProvider';
 import { AppState } from '../index';
