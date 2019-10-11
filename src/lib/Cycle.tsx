@@ -38,7 +38,7 @@ export default class Cycle {
             (scheme, i) => (
                 new Phase(
                     {
-                        phaseNum: i,
+                        phaseNum: i + 1,
                         workoutPrototypes: ctx.workoutPrototypes,
                         intensityRepScheme: scheme,
                         warmupGen: ctx.warmupGen,

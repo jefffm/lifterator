@@ -47,14 +47,18 @@ export default class Phase {
         const intensityRepScheme = this.ctx.intensityRepScheme
 
         var setProtos: ISetPrototype[] = []
-        for (var i = 0; i < intensityRepScheme.length; i++) {
+        const intensityPcts = intensityRepScheme[0]
+        const setReps = intensityRepScheme[1]
+
+        for (const [i, intensityPct] of intensityPcts.entries()) {
             setProtos.push(
                 {
-                    intensityPct: intensityRepScheme[i][0] as number,
-                    reps: intensityRepScheme[i][1] as Reps
+                    intensityPct: intensityPct as number,
+                    reps: setReps[i] as Reps
                 }
             )
         }
+        console.log({ setProtos: setProtos })
 
         return new WorkoutFactory(
             {

@@ -9,6 +9,7 @@ import { WorkoutSetProps } from '../components/WorkoutSetRow';
 import { round5 } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
 import Workout from '../components/Workout';
+import WorkoutSummary from '../components/WorkoutSummary';
 
 
 interface IWorkoutFactoryContext {
@@ -117,27 +118,54 @@ export default class WorkoutFactory {
     /**
      * For each set in the setgroup, accumulate the setgroup's total volume
      */
-    getSetGroupVolume = (set: SetGroupProps): number => {
-        return set.sets.reduce(
-            (acc, current) => (
-                acc + current.reps.num * current.weight
-            ),
+    getSetGroupVolume = (set: SetGroupProps): number => (
+        set.sets.reduce(
+            (acc: number, current: WorkoutSetProps) => {
+                // TODO: if this is a dumbell exercise, double the volume!
+                const result = acc + (current.reps.num * current.weight)
+                if (isNaN(result)) {
+                    console.log(
+                        {
+                            acc: acc,
+                            reps: current.reps.num,
+                            weight: current.weight
+                        }
+                    )
+                }
+                return result
+            },
             0
         )
-    }
+    )
+
+    getSetGroupSetCount = (set: SetGroupProps): number => set.sets.length
 
     getWorkoutVolume = (): number => this.getSetGroups()
         .reduce((acc, setGroup) => acc + this.getSetGroupVolume(setGroup), 0)
 
-    getSetsAsWorkout() {
-        return <Workout
+    getWorkoutSetCount = (): number => this.getSetGroups()
+        .reduce((acc, setGroup) => acc + this.getSetGroupSetCount(setGroup), 0)
+
+    getKey = (): string => (
+        this.ctx.phase.toString() + this.ctx.number.toString()
+    )
+
+    getSetsAsWorkout = (): JSX.Element => (
+        <Workout
+            key={this.getKey()}
             number={this.ctx.number}
             phase={this.ctx.phase}
             setGroupProps={this.getSetGroups()} />
-    }
+    )
 
-    // TODO
-    getSetsasWorkoutSummary() {
-
-    }
+    getSetsasWorkoutSummary = (): JSX.Element => (
+        <WorkoutSummary
+            key={this.getKey()}
+            phaseNum={this.ctx.phase}
+            workoutNum={this.ctx.number}
+            setCount={this.getWorkoutSetCount()}
+            volume={this.getWorkoutVolume()}
+            unit={this.ctx.unit}
+        />
+    )
 }

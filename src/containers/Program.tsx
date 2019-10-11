@@ -78,11 +78,9 @@ class Program extends Component<ProgramProps> {
 
                 <Collapse in={!isRequiredDataSet}>
                     <div>
-                        <Typography>
-                            <h1>
-                                Lifterator
+                        <h1>
+                            Lifterator
                             </h1>
-                        </Typography>
                         <p>Configure all required fields to build your program.</p>
                         <Button component={Link} to="/config">Configuration</Button>
                     </div>
@@ -90,9 +88,7 @@ class Program extends Component<ProgramProps> {
 
                 <Collapse in={isRequiredDataSet}>
                     <div>
-                        <WorkoutStepper>
-                            {workouts.map(workout => workout.getSetsAsWorkout())}
-                        </WorkoutStepper>
+                        {workouts.map(workout => workout.getSetsasWorkoutSummary())}
                     </div>
                 </Collapse>
             </Grid>
