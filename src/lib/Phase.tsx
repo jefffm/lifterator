@@ -62,7 +62,7 @@ export default class Phase {
 
         return new WorkoutFactory(
             {
-                number: workoutNum + 1,
+                number: workoutNum,
                 phase: phaseNum,
                 unit: this.ctx.unit,
 

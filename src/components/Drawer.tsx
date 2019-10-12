@@ -74,7 +74,6 @@ export function SwipeableTemporaryDrawer(props: RouteComponentProps) {
         onKeyDown={toggleDrawer(false)}>
         <List>
             {menuItems.map((item, index) => (
-                // TODO: link this up with react-router
                 <ListItem button key={index} onClick={() => history.push(item.path)}>
                     <ListItemIcon><item.icon /></ListItemIcon>
                     <ListItemText primary={item.name} />

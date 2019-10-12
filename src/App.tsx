@@ -7,6 +7,7 @@ import ElevateAppBar from './components/ElevateAppBar';
 import SwipeableTemporaryDrawer from './components/Drawer';
 import ConfigurationPanel from './containers/ConfigurationPanel'
 import './App.css';
+import Workout from './containers/Workout';
 
 
 const App: React.FC = () => {
@@ -17,13 +18,12 @@ const App: React.FC = () => {
         <ElevateAppBar title={"Program"} menuButton={SwipeableTemporaryDrawer}>
           <Switch>
 
-            <Route path="/config">
-              <ConfigurationPanel />
-            </Route>
-
-            <Route path="/program">
-              <Program />
-            </Route>
+            <Route path="/config" component={ConfigurationPanel} />
+            <Route path="/program" component={Program} />
+            <Route
+              path="/workout/:workoutId"
+              render={(props) => <Workout workoutId={props.match.params.workoutId} />}
+            />
 
             <Route path="/">
               <Redirect to="/program" />

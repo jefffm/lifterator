@@ -1,7 +1,8 @@
 import React from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Container, Grid, Paper, Card, CardHeader, CardContent, Box, TableHead, Table, TableCell, TableRow } from '@material-ui/core'
+import { Container, Grid, Paper, Card, CardHeader, CardContent, Box, TableHead, Table, TableCell, TableRow, Button } from '@material-ui/core'
 import TableBody from '@material-ui/core/TableBody';
+import { withRouter, RouteComponentProps } from 'react-router'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,29 +55,39 @@ interface WorkoutSummaryProps {
  * - What is the top weight for the heaviest set for each exercise?
  * - What unique accessory sets are there for this day?
  */
-export default function WorkoutSummary(props: WorkoutSummaryProps) {
+const WorkoutSummary = (props: WorkoutSummaryProps & RouteComponentProps) => {
     const classes = useStyles()
+    const { match, location, history } = props
+
     return <Card className={classes.workout}>
         <h3>Phase {props.phaseNum} Workout {props.workoutNum}</h3>
         <h4>{props.setCount} sets, {props.volume} {props.unit}</h4>
-
         <CardContent>
-            <Grid container direction="row" justify="flex-start" alignItems="stretch">
+            <Grid container direction="row" justify="center" alignItems="stretch">
                 <Grid item xs={12}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Volume</TableCell>
+                                <TableCell>Top set</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {props.exerciseSummaryComponents}
+                        </TableBody>
+                    </Table>
                 </Grid>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Volume</TableCell>
-                            <TableCell>Top set</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {props.exerciseSummaryComponents}
-                    </TableBody>
-                </Table>
+
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        onClick={() => history.push("/workout/" + props.phaseNum + "-" + props.workoutNum)}
+                    >Workout!</Button>
+                </Grid>
             </Grid>
         </CardContent>
     </Card >
 }
+
+export default withRouter(WorkoutSummary)

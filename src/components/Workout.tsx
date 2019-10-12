@@ -35,7 +35,7 @@ export function Workout(props: WorkoutProps) {
     return <div className={classes.root}>
         <Paper className={classes.paper}>
             <Typography variant="h5" component="h3">
-                Phase {phase + 1}: Workout {number}
+                Phase {phase}: Workout {number}
             </Typography>
             <Grid container
                 direction="row"

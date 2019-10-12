@@ -53,7 +53,6 @@ class Program extends Component<ProgramProps> {
         )
         // TODO: make warmupGen configurable
         const warmupGen = new BeyondWarmupGen(this.props.mainExercises)
-
         const exerciseProvider = new ExerciseProvider(Object.values(this.props.mainExercises))
 
         const cycle = new Cycle({
