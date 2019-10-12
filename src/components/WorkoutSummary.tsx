@@ -26,29 +26,12 @@ interface ExerciseSummaryProps {
 
 export function ExerciseSummary(props: ExerciseSummaryProps) {
     const classes = useStyles()
-    return <Grid className={classes.exercise} item xs={6}>
-        <Box border={1}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Volume</TableCell>
-                        <TableCell>Top set</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow>
-                        <TableCell>{props.name}</TableCell>
-                        <TableCell>{props.volume}</TableCell>
-                        <TableCell>
-                            {props.topWeight} {props.unit} ({props.topPct}%)
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
-            {/* TODO: add reps to top set */}
-        </Box>
-    </Grid>
+    {/* TODO: add reps to top set */ }
+    return <TableRow>
+        <TableCell>{props.name}</TableCell>
+        <TableCell>{props.volume.toPrecision(4)}</TableCell>
+        <TableCell> {props.topWeight} {props.unit} ({props.topPct}%) </TableCell>
+    </TableRow>
 }
 
 
@@ -75,14 +58,24 @@ export default function WorkoutSummary(props: WorkoutSummaryProps) {
     const classes = useStyles()
     return <Card className={classes.workout}>
         <h3>Phase {props.phaseNum} Workout {props.workoutNum}</h3>
-        <CardContent>
+        <h4>{props.setCount} sets, {props.volume} {props.unit}</h4>
 
+        <CardContent>
             <Grid container direction="row" justify="flex-start" alignItems="stretch">
                 <Grid item xs={12}>
-                    <p>total sets: {props.setCount}</p>
-                    <p>total volume: {props.volume} {props.unit}</p>
                 </Grid>
-                {props.exerciseSummaryComponents}
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Volume</TableCell>
+                            <TableCell>Top set</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {props.exerciseSummaryComponents}
+                    </TableBody>
+                </Table>
             </Grid>
         </CardContent>
     </Card >
