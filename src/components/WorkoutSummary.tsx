@@ -1,6 +1,19 @@
 import React from 'react'
-import { Container, Grid, Paper, Card, CardHeader, CardContent } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Container, Grid, Paper, Card, CardHeader, CardContent, Box, TableHead, Table, TableCell, TableRow } from '@material-ui/core'
+import TableBody from '@material-ui/core/TableBody';
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        exercise: {
+            padding: theme.spacing(1),
+        },
+        workout: {
+            margin: theme.spacing(2),
+            padding: theme.spacing(2),
+        }
+    }),
+);
 
 interface ExerciseSummaryProps {
     name: string
@@ -12,16 +25,29 @@ interface ExerciseSummaryProps {
 }
 
 export function ExerciseSummary(props: ExerciseSummaryProps) {
-    return <Grid item xs={6}>
-        <p>
-            Name: {props.name}
-        </p>
-        <p>
-            Volume: {props.volume}
-        </p>
-        <p>
-            Top set: {props.topWeight} {props.unit} ({props.topPct}%)
-        </p>
+    const classes = useStyles()
+    return <Grid className={classes.exercise} item xs={6}>
+        <Box border={1}>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Volume</TableCell>
+                        <TableCell>Top set</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow>
+                        <TableCell>{props.name}</TableCell>
+                        <TableCell>{props.volume}</TableCell>
+                        <TableCell>
+                            {props.topWeight} {props.unit} ({props.topPct}%)
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+            {/* TODO: add reps to top set */}
+        </Box>
     </Grid>
 }
 
@@ -46,7 +72,8 @@ interface WorkoutSummaryProps {
  * - What unique accessory sets are there for this day?
  */
 export default function WorkoutSummary(props: WorkoutSummaryProps) {
-    return <Card>
+    const classes = useStyles()
+    return <Card className={classes.workout}>
         <h3>Phase {props.phaseNum} Workout {props.workoutNum}</h3>
         <CardContent>
 
