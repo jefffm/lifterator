@@ -1,7 +1,5 @@
 import React from 'react'
-import { Container, Grid } from '@material-ui/core'
-import WorkoutFactory from '../lib/WorkoutFactory'
-import { useParams } from 'react-router';
+import { Container, Grid, Button } from '@material-ui/core'
 import { AppState } from '..';
 import { connect } from 'react-redux';
 import PlateCalculator from '../util/PlateCalculator';
@@ -12,6 +10,7 @@ import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
 import { BeyondWarmupGen } from '../lib/WarmupGen';
 import ExerciseProvider from '../lib/ExerciseProvider';
 import Cycle from '../lib/Cycle';
+import { withRouter, RouteComponentProps } from 'react-router'
 
 interface WorkoutProps {
     workoutId: string
@@ -23,7 +22,7 @@ interface WorkoutProps {
     dispatch: any
 }
 
-class Workout extends React.Component<WorkoutProps> {
+class Workout extends React.Component<WorkoutProps & RouteComponentProps> {
     render = (): React.ReactNode => {
         // TODO uncopypasta this somehow
         const plateCalculator = new PlateCalculator(
@@ -55,7 +54,8 @@ class Workout extends React.Component<WorkoutProps> {
         const workout = cycle.getWorkout(phaseNum, workoutNum)
 
         return <Container>
-            <Grid container direction="column" justify="flex-start" alignItems="stretch" >
+            <Grid container direction="column" justify="flex-start" alignItems="flex-start" >
+                <Button variant="contained" onClick={() => this.props.history.goBack()}>Back</Button>
                 {workout.getSetsAsWorkout()}
             </Grid>
         </Container>
@@ -70,4 +70,4 @@ const mapStateToProps = (state: AppState) => ({
     workoutDays: state.workoutDays,
 })
 
-export default connect(mapStateToProps)(Workout)
+export default connect(mapStateToProps)(withRouter(Workout))

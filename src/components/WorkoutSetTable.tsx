@@ -37,15 +37,17 @@ export default function SetGroup(props: SetGroupProps) {
 
     var setElems = []
     for (const [i, item] of sets.entries()) {
-        setElems.push(<WorkoutSetRow
-            key={i}
-            isNext={i === 0}
-            exercise={item.exercise}
-            reps={item.reps}
-            weight={item.weight}
-            unit={unit}
-            plates={item.plates}
-        />)
+        setElems.push(
+            <WorkoutSetRow
+                key={i}
+                isNext={i === 0}
+                exercise={item.exercise}
+                reps={item.reps}
+                weight={item.weight}
+                unit={unit}
+                plates={item.plates}
+            />
+        )
     }
     return <div className={classes.root}>
         <Typography>

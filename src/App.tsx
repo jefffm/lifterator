@@ -15,7 +15,9 @@ const App: React.FC = () => {
     <div className="App">
       <HashRouter>
         <CssBaseline />
-        <ElevateAppBar title={"Program"} menuButton={SwipeableTemporaryDrawer}>
+        {/* TODO: dynamically fetch the app bar title */}
+        {/* TODO: change the menu button to a back button for workouts */}
+        <ElevateAppBar title={() => "Lifterator"} menuButton={SwipeableTemporaryDrawer}>
           <Switch>
 
             <Route path="/config" component={ConfigurationPanel} />

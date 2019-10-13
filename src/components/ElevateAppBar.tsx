@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-    title: string
+    title(): string
     menuButton: React.ElementType
     children: React.ReactElement
 }
@@ -43,7 +43,7 @@ export default function ElevateAppBar(props: Props) {
             <AppBar>
                 <Toolbar>
                     <props.menuButton />
-                    <Typography variant="h6">{props.title}</Typography>
+                    <Typography variant="h6">{props.title()}</Typography>
                 </Toolbar>
             </AppBar>
         </ElevationScroll>

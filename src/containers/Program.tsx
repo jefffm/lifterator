@@ -87,7 +87,11 @@ class Program extends Component<ProgramProps> {
 
                 <Collapse in={isRequiredDataSet}>
                     <div>
-                        {workouts.map(workout => workout.getSetsasWorkoutSummary())}
+                        <WorkoutStepper>
+                            {workouts.map(workout => (
+                                workout.getSetsasWorkoutSummary()
+                            ))}
+                        </WorkoutStepper>
                     </div>
                 </Collapse>
             </Grid>
