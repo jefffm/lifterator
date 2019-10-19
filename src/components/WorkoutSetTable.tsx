@@ -1,7 +1,7 @@
 import React from 'react'
 import { WorkoutSetRow, WorkoutSetProps } from './WorkoutSetRow'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography, Table } from '@material-ui/core'
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,13 +53,9 @@ export default function SetGroup(props: SetGroupProps) {
         <Typography>
             <h2>{name}</h2>
         </Typography>
-        <Grid container
-            spacing={3}
-            direction="row"
-            justify="flex-start"
-            alignItems="stretch">
+        <Table>
             {setElems}
-        </Grid>
+        </Table>
 
     </div>
 }

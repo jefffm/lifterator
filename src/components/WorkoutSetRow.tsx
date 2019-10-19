@@ -1,6 +1,6 @@
 import React from 'react'
 import { Reps, SetType } from '../types'
-import { Grid, Chip } from '@material-ui/core'
+import { Grid, Chip, TableCell, TableRow } from '@material-ui/core'
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { isUndefined } from 'util';
@@ -18,9 +18,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         textField: {
             margin: theme.spacing(1),
         },
-        dense: {
-            marginTop: 19,
-            backgroundColor: theme.palette.background.paper
+        setData: {
         },
         menu: {
         },
@@ -67,25 +65,16 @@ export function WorkoutSetRow(props: WorkoutSetProps) {
             )
         )
 
-    return <Grid container item
-        direction="row"
-        justify="flex-start"
-        alignItems="stretch"
-        xs={6} sm={3} md={6}
-        className={classes.dense}>
-
-        <Grid item>
+    return <TableRow>
+        <TableCell>
             {reps.num}{repsToken}
-        </Grid>
 
-        <Grid item>
             {weight} {unit}
-        </Grid>
-
-        <Grid item>
+        </TableCell>
+        <TableCell>
             {plates}
-        </Grid>
-    </Grid >
+        </TableCell>
+    </TableRow>
 }
 
 export default WorkoutSetRow

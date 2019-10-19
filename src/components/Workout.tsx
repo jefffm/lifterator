@@ -25,14 +25,14 @@ const useStyles = makeStyles((theme: Theme) =>
         appBar: {
             top: 'auto',
             bottom: 0,
+            textAlign: 'center',
+            padding: theme.spacing(1),
         },
         fabButton: {
-            //position: 'absolute',
-            //zIndex: 1,
-            //top: -30,
-            //left: 0,
-            //right: 0,
-            //margin: '0 auto',
+            position: 'absolute',
+            zIndex: 1,
+            top: -30,
+            margin: '0 auto',
         },
         toolbar: theme.mixins.toolbar,
     }),
@@ -57,34 +57,39 @@ export function Workout(props: WorkoutProps) {
 
     // TODO: floating "up next" panel with the next set and success/fail
     return <div className={classes.root}>
-        <Typography variant="h5" component="h3">
-            Phase {phase}: Workout {number}
-        </Typography>
         <Grid container
             direction="row"
             justify="flex-start"
             alignItems="flex-start" >
-            {setGroupProps.map(set => {
-                return <Grid item xs={12} md={6}>
+
+        <Grid item xs={12}>
+            <Typography variant="h5" component="h3">
+                Phase {phase}: Workout {number}
+            </Typography>
+        </Grid>
+
+        {
+            setGroupProps.map(set => {
+                <Grid item xs={12} md={6} lg={3}>
                     {<SetGroup {...set} />}
                 </Grid>
-            })}
+            }
+        )
+        }
         </Grid >
 
         <div className={classes.toolbar}>
             <AppBar position="fixed" color="inherit" className={classes.appBar}>
                 <Grid container
-                    component={Paper}
-                    className={classes.paper}
                     direction="row"
                     justify="space-evenly"
                     alignItems="center">
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <h2>
                             {currentSetGroup.name}
                         </h2>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs={6}>
                         <h3>
                             <WorkoutSetRow
                                 exercise={currentSetGroup.name}
@@ -95,8 +100,6 @@ export function Workout(props: WorkoutProps) {
                             />
                         </h3>
                     </Grid>
-
-                    <Divider />
 
                     <Grid item xs={6}>
                         <Fab color="inherit" aria-label="add" className={classes.fabButton}>
