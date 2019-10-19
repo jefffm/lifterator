@@ -16,7 +16,7 @@ export abstract class WarmupGen {
 
 /**
  * The Starting Strength Warmup
- * 
+ *
  * 2×5 with just the bar
  * 1×5 with bar + 25% of weight to add
  * 1×3 with bar + 50% of weight to add

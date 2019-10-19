@@ -20,9 +20,9 @@ interface CycleCtx {
 
 /**
  * cycle -> phase -> workout -> setgroup -> set -> exercise/rep/weight (via intensity or static)
- * 
+ *
  * For each phase of the intensity/rep schemes, (list of each phase's intensity/rep scheme)
- *   create a phase. 
+ *   create a phase.
  *   for each phase...
  *     create a workout for each workout prototype (list of each workout's prototype [eg. exercises])
  *      ...which requires a warmupGen and a volumeSettings

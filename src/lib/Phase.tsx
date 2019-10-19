@@ -43,6 +43,7 @@ export default class Phase {
         const exerciseInstances: Exercise[] = workoutProto.exerciseNames
             .map(this.ctx.exerciseProvider.get)
         const warmupGen = this.ctx.warmupGen
+        const volumeSettings = this.ctx.volumeSettings
         const plateCalculator = this.ctx.plateCalculator
         const intensityRepScheme = this.ctx.intensityRepScheme
 
@@ -71,6 +72,7 @@ export default class Phase {
 
                 // Warmupgen builds warmup sets for *just* the main exercises
                 warmupGen: warmupGen,
+                volumeSettings: volumeSettings,
                 plateCalculator: plateCalculator,
 
                 // These are just raw sets tacked onto the end. This should be improved.

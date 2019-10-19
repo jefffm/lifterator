@@ -10,6 +10,7 @@ import { round5 } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
 import Workout from '../components/Workout';
 import WorkoutSummary, { ExerciseSummary } from '../components/WorkoutSummary';
+import { IVolumeSettings } from '../types';
 
 
 interface IWorkoutFactoryContext {
@@ -18,6 +19,7 @@ interface IWorkoutFactoryContext {
     mainLifts: Exercise[]
     plateCalculator: PlateCalculator
     warmupGen: WarmupGen
+    volumeSettings: IVolumeSettings
     setProtos: ISetPrototype[]
     unit: string
     accessorySets: IAccessoryPrototype[]
@@ -35,6 +37,7 @@ export default class WorkoutFactory {
         const unit = this.ctx.unit
         const plateCalculator = this.ctx.plateCalculator
         const warmupGen = this.ctx.warmupGen
+        const volumeSettings = this.ctx.volumeSettings
         const setProtos = this.ctx.setProtos
 
         return this.ctx.mainLifts
@@ -61,20 +64,32 @@ export default class WorkoutFactory {
                     )
 
                     const warmupSets = warmupGen.getSets(lift.name, trainingMax, sets[0].weight)
-                        .map(function (set): WorkoutSetProps {
-                            return {
-                                isNext: false,
+                        .map((set): WorkoutSetProps => (
+                            {
                                 exercise: lift.shortname,
                                 reps: { "num": set.reps, "setType": SetType.WARMUP },
                                 weight: set.weight,
                                 unit: unit,
                                 plates: plateCalculator.getPlatesPerSide(set.weight)
                             }
-                        })
+                        ))
+
+                    // TODO: read this from the config, not hardcoded to FSL 5x5
+                    const supplementalVolume = [5, 5, 5, 5, 5].map(
+                        (reps): WorkoutSetProps => (
+                            {
+                                exercise: lift.shortname,
+                                reps: { "num": reps, "setType": SetType.NORMAL },
+                                weight: sets[0].weight,
+                                unit: unit,
+                                plates: plateCalculator.getPlatesPerSide(sets[0].weight)
+                            }
+                        )
+                    )
 
                     return {
                         name: lift.name,
-                        sets: warmupSets.concat(sets),
+                        sets: warmupSets.concat(sets).concat(supplementalVolume),
                         unit: unit
                     }
                 }
@@ -175,9 +190,8 @@ export default class WorkoutFactory {
                             topPct={0}
                             topWeight={
                                 setGroup.sets.reduce(
-                                    (acc, set) => (
-                                        Math.max(acc, set.weight)
-                                    ), 0
+                                    (acc, set) => Math.max(acc, set.weight),
+                                    0
                                 )
                             }
                             setCount={this.getSetGroupSetCount(setGroup)}
