@@ -30,7 +30,7 @@ export default class Phase {
     getWorkoutFactories = (): WorkoutFactory[] => {
         return this.ctx.workoutPrototypes.map(
             (workoutProto, workoutNum) => (
-                this.getWorkoutFactory(this.ctx.phaseNum, workoutNum, workoutProto)
+                this.getWorkoutFactory(this.ctx.phaseNum, workoutNum + 1, workoutProto)
             )
         )
     }

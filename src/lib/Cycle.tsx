@@ -38,7 +38,7 @@ export default class Cycle {
             (scheme, i) => (
                 new Phase(
                     {
-                        phaseNum: i,
+                        phaseNum: i + 1,
                         workoutPrototypes: ctx.workoutPrototypes,
                         intensityRepScheme: scheme,
                         warmupGen: ctx.warmupGen,
@@ -53,8 +53,8 @@ export default class Cycle {
     }
 
     getWorkout(phaseNum: number, workoutNum: number): WorkoutFactory {
-        const phase = this.phases[phaseNum]
-        return phase.getWorkoutFactories()[workoutNum]
+        const phase = this.phases[phaseNum - 1]
+        return phase.getWorkoutFactories()[workoutNum - 1]
     }
 
     getWorkouts(): WorkoutFactory[] {
