@@ -58,7 +58,6 @@ export default class Phase {
                 }
             )
         }
-        console.log({ setProtos: setProtos })
 
         return new WorkoutFactory(
             {

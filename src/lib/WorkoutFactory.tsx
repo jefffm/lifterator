@@ -168,8 +168,9 @@ export default class WorkoutFactory {
             unit={this.ctx.unit}
             exerciseSummaryComponents={
                 this.getSetGroups().map(
-                    setGroup => (
+                    (setGroup, i) => (
                         <ExerciseSummary
+                            key={i}
                             name={setGroup.name}
                             topPct={0}
                             topWeight={

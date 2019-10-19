@@ -47,7 +47,7 @@ interface WorkoutSummaryProps {
 
 /**
  *  Display summarized stats about the current workout
- * 
+ *
  * TODOs:
  * - Why doesn't CardHeader work?
  * - What are the main exercises for this day?
