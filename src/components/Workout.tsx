@@ -62,20 +62,20 @@ export function Workout(props: WorkoutProps) {
             justify="flex-start"
             alignItems="flex-start" >
 
-        <Grid item xs={12}>
-            <Typography variant="h5" component="h3">
-                Phase {phase}: Workout {number}
-            </Typography>
-        </Grid>
+            <Grid item xs={12}>
+                <Typography variant="h5" component="h3">
+                    Phase {phase}: Workout {number}
+                </Typography>
+            </Grid>
 
-        {
-            setGroupProps.map(set => {
-                <Grid item xs={12} md={6} lg={3}>
-                    {<SetGroup {...set} />}
-                </Grid>
+            {
+                setGroupProps.map(set => {
+                    return <Grid item xs={12} md={6} lg={3}>
+                        <SetGroup {...set} />
+                    </Grid>
+                }
+                )
             }
-        )
-        }
         </Grid >
 
         <div className={classes.toolbar}>
