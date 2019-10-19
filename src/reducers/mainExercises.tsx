@@ -12,32 +12,28 @@ const initialState = [
         name: "Bench Press",
         shortname: "BP",
         aliases: ["bps", "bench", "horizontal press"],
-        //trainingMax: undefined,
-        trainingMax: 155,
+        trainingMax: undefined,
         warmupBaseWeight: 95
     },
     {
         name: "Deadlift",
         shortname: "DL",
         aliases: ["dead", "deads", "dls"],
-        //trainingMax: undefined,
-        trainingMax: 155,
+        trainingMax: undefined,
         warmupBaseWeight: 135
     },
     {
         name: "Overhead Press",
         shortname: "OHP",
         aliases: ["press", "military press"],
-        //trainingMax: undefined,
-        trainingMax: 155,
+        trainingMax: undefined,
         warmupBaseWeight: 95
     },
     {
         name: "Squat",
         shortname: "SQ",
         aliases: ["back squat"],
-        //trainingMax: undefined,
-        trainingMax: 155,
+        trainingMax: undefined,
         warmupBaseWeight: 135
     }
 ].reduce((acc: IMainExercisesState, exercise: Exercise) => {
