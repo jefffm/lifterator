@@ -3,6 +3,7 @@ import React from 'react'
 import { Exercise } from "./ExerciseProvider";
 import PlateCalculator from '../util/PlateCalculator';
 import WarmupGen from './WarmupGen';
+import { StaticSet } from './WarmupGen'
 import { ISetPrototype, IAccessoryPrototype, SetType } from '../types';
 import { isUndefined } from "util";
 import { WorkoutSetProps } from '../components/WorkoutSetRow';
@@ -33,12 +34,28 @@ export default class WorkoutFactory {
         this.ctx = ctx
     }
 
+    getVolumeSets = (weight: number): StaticSet[] => {
+        const sets: StaticSet[] = []
+
+        if (this.ctx.volumeSettings.firstSetLastFives) {
+            sets.concat(
+                [5, 5, 5, 5, 5].map(
+                    reps => ({ reps: reps, weight: weight })
+                )
+            )
+        }
+
+        return sets
+    }
+
     getMainSets = (): SetGroupProps[] => {
         const unit = this.ctx.unit
         const plateCalculator = this.ctx.plateCalculator
         const warmupGen = this.ctx.warmupGen
         const volumeSettings = this.ctx.volumeSettings
         const setProtos = this.ctx.setProtos
+
+        const getVolumeSets = this.getVolumeSets
 
         return this.ctx.mainLifts
             .filter(x => !isUndefined(x.trainingMax))
@@ -75,12 +92,12 @@ export default class WorkoutFactory {
                         ))
 
                     // TODO: read this from the config, not hardcoded to FSL 5x5
-                    const supplementalVolume = [5, 5, 5, 5, 5].map(
-                        (reps): WorkoutSetProps => (
+                    const supplementalVolume = getVolumeSets(sets[0].weight).map(
+                        (set): WorkoutSetProps => (
                             {
                                 exercise: lift.shortname,
-                                reps: { "num": reps, "setType": SetType.NORMAL },
-                                weight: sets[0].weight,
+                                reps: { "num": set.reps, "setType": SetType.NORMAL },
+                                weight: set.weight,
                                 unit: unit,
                                 plates: plateCalculator.getPlatesPerSide(sets[0].weight)
                             }
