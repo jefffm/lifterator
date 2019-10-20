@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PlateCalculator from '../util/PlateCalculator';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { IMainExercisesState } from '../reducers/mainExercises';
-import { IVolumeSettings, IWorkoutPrototype } from '../types';
+import { ISetSettings, IWorkoutPrototype } from '../types';
 import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
 import { BeyondWarmupGen } from '../lib/WarmupGen';
 import ExerciseProvider from '../lib/ExerciseProvider';
@@ -16,7 +16,7 @@ interface WorkoutProps {
     workoutId: string
     weightSettings: IWeightSettings
     mainExercises: IMainExercisesState
-    volumeSettings: IVolumeSettings
+    setSettings: ISetSettings
     phaseIntensityRepSchemes: IntensityRepScheme[]
     workoutDays: IWorkoutPrototype[]
     dispatch: any
@@ -38,7 +38,7 @@ class Workout extends React.Component<WorkoutProps & RouteComponentProps> {
         const cycle = new Cycle({
             unit: this.props.weightSettings.unit,
             phaseIntensityRepSchemes: this.props.phaseIntensityRepSchemes,
-            volumeSettings: this.props.volumeSettings,
+            setSettings: this.props.setSettings,
             exerciseProvider: exerciseProvider,
             warmupGen: warmupGen,
             plateCalculator: plateCalculator,
@@ -65,7 +65,7 @@ class Workout extends React.Component<WorkoutProps & RouteComponentProps> {
 const mapStateToProps = (state: AppState) => ({
     mainExercises: state.mainExercises,
     phaseIntensityRepSchemes: state.phaseIntensityRepSchemes,
-    volumeSettings: state.volumeSettings,
+    setSettings: state.setSettings,
     weightSettings: state.weightSettings,
     workoutDays: state.workoutDays,
 })

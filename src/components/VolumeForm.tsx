@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IVolumeSettings } from '../types'
+import { ISetSettings } from '../types'
 
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
@@ -11,7 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { useStyles } from '../lib/ConfigurationCommon';
 
 interface VolumeFormProps {
-    volumeSettings: IVolumeSettings
+    volumeSettings: ISetSettings
     toggleVolumeField: (fieldname: string) => void
 }
 

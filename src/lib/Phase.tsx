@@ -1,5 +1,5 @@
 import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
-import { IVolumeSettings, IWorkoutPrototype, ISetPrototype, Reps } from '../types';
+import { ISetSettings, IWorkoutPrototype, ISetPrototype, Reps } from '../types';
 import WarmupGen from './WarmupGen';
 import WorkoutFactory from './WorkoutFactory';
 import ExerciseProvider, { Exercise } from './ExerciseProvider';
@@ -11,7 +11,7 @@ interface PhaseCtx {
     workoutPrototypes: IWorkoutPrototype[]
     intensityRepScheme: IntensityRepScheme
     warmupGen: WarmupGen
-    volumeSettings: IVolumeSettings
+    setSettings: ISetSettings
     exerciseProvider: ExerciseProvider
     plateCalculator: PlateCalculator
     unit: string
@@ -43,7 +43,7 @@ export default class Phase {
         const exerciseInstances: Exercise[] = workoutProto.exerciseNames
             .map(this.ctx.exerciseProvider.get)
         const warmupGen = this.ctx.warmupGen
-        const volumeSettings = this.ctx.volumeSettings
+        const setSettings = this.ctx.setSettings
         const plateCalculator = this.ctx.plateCalculator
         const intensityRepScheme = this.ctx.intensityRepScheme
 
@@ -72,7 +72,7 @@ export default class Phase {
 
                 // Warmupgen builds warmup sets for *just* the main exercises
                 warmupGen: warmupGen,
-                volumeSettings: volumeSettings,
+                setSettings: setSettings,
                 plateCalculator: plateCalculator,
 
                 // These are just raw sets tacked onto the end. This should be improved.

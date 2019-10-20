@@ -11,7 +11,7 @@ import { round5 } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
 import Workout from '../components/Workout';
 import WorkoutSummary, { ExerciseSummary } from '../components/WorkoutSummary';
-import { IVolumeSettings } from '../types';
+import { ISetSettings } from '../types';
 
 
 interface IWorkoutFactoryContext {
@@ -20,7 +20,7 @@ interface IWorkoutFactoryContext {
     mainLifts: Exercise[]
     plateCalculator: PlateCalculator
     warmupGen: WarmupGen
-    volumeSettings: IVolumeSettings
+    setSettings: ISetSettings
     setProtos: ISetPrototype[]
     unit: string
     accessorySets: IAccessoryPrototype[]
@@ -37,7 +37,7 @@ export default class WorkoutFactory {
     getVolumeSets = (weight: number): StaticSet[] => {
         const sets: StaticSet[] = []
 
-        if (this.ctx.volumeSettings.firstSetLastFives) {
+        if (this.ctx.setSettings.firstSetLastFives) {
             sets.concat(
                 [5, 5, 5, 5, 5].map(
                     reps => ({ reps: reps, weight: weight })
@@ -52,7 +52,6 @@ export default class WorkoutFactory {
         const unit = this.ctx.unit
         const plateCalculator = this.ctx.plateCalculator
         const warmupGen = this.ctx.warmupGen
-        const volumeSettings = this.ctx.volumeSettings
         const setProtos = this.ctx.setProtos
 
         const getVolumeSets = this.getVolumeSets

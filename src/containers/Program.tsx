@@ -17,7 +17,7 @@ import WorkoutStepper from '../components/WorkoutStepper';
 import { IMainExercisesState } from '../reducers/mainExercises';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { Link } from 'react-router-dom'
-import { IVolumeSettings, IWorkoutPrototype } from '../types';
+import { ISetSettings, IWorkoutPrototype } from '../types';
 import Cycle from '../lib/Cycle';
 import { IntensityRepScheme } from '../reducers/PhaseIntensityRepSchemes';
 import ExerciseProvider from '../lib/ExerciseProvider'
@@ -26,7 +26,7 @@ import WorkoutFactory from '../lib/WorkoutFactory'
 interface ProgramProps {
     weightSettings: IWeightSettings
     mainExercises: IMainExercisesState
-    volumeSettings: IVolumeSettings
+    setSettings: ISetSettings
     phaseIntensityRepSchemes: IntensityRepScheme[]
     workoutDays: IWorkoutPrototype[]
     dispatch: any
@@ -58,7 +58,7 @@ class Program extends Component<ProgramProps> {
         const cycle = new Cycle({
             unit: this.props.weightSettings.unit,
             phaseIntensityRepSchemes: this.props.phaseIntensityRepSchemes,
-            volumeSettings: this.props.volumeSettings,
+            setSettings: this.props.setSettings,
             exerciseProvider: exerciseProvider,
             warmupGen: warmupGen,
             plateCalculator: plateCalculator,
@@ -102,7 +102,7 @@ class Program extends Component<ProgramProps> {
 const mapStateToProps = (state: AppState) => ({
     mainExercises: state.mainExercises,
     phaseIntensityRepSchemes: state.phaseIntensityRepSchemes,
-    volumeSettings: state.volumeSettings,
+    setSettings: state.setSettings,
     weightSettings: state.weightSettings,
     workoutDays: state.workoutDays,
 })

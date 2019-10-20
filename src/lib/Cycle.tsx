@@ -1,4 +1,4 @@
-import { IWorkoutPrototype, IVolumeSettings } from '../types';
+import { IWorkoutPrototype, ISetSettings } from '../types';
 import WorkoutFactory from './WorkoutFactory';
 import WarmupGen from './WarmupGen';
 import PlateCalculator from "../util/PlateCalculator";
@@ -11,7 +11,7 @@ interface CycleCtx {
     exerciseProvider: ExerciseProvider
     phaseIntensityRepSchemes: IntensityRepScheme[]
     workoutPrototypes: IWorkoutPrototype[]
-    volumeSettings: IVolumeSettings
+    setSettings: ISetSettings
     warmupGen: WarmupGen
     plateCalculator: PlateCalculator  // TODO: move to a presentational component
     unit: string  // TODO: move to a presentational component
@@ -42,7 +42,7 @@ export default class Cycle {
                         workoutPrototypes: ctx.workoutPrototypes,
                         intensityRepScheme: scheme,
                         warmupGen: ctx.warmupGen,
-                        volumeSettings: ctx.volumeSettings,
+                        setSettings: ctx.setSettings,
                         exerciseProvider: ctx.exerciseProvider,
                         plateCalculator: ctx.plateCalculator,
                         unit: ctx.unit,

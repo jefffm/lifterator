@@ -2,19 +2,19 @@ import React, { Component } from 'react'
 
 import TrainingMaxesForm from '../components/TrainingMaxesForm'
 import { VolumeForm } from '../components/VolumeForm'
-import { IVolumeSettings } from '../types';
+import { ISetSettings } from '../types';
 import { Paper, Grid } from '@material-ui/core';
 import { Exercise } from '../lib/ExerciseProvider';
 import { AppState } from '../index';
 import { IWeightSettings } from '../reducers/weightSettings';
 import { connect } from 'react-redux';
-import { updateTM, setVolumeField } from '../actions/index';
+import { updateTM, setSettingsField } from '../actions/index';
 import { IMainExercisesState } from '../reducers/mainExercises';
 
 interface ConfigurationPanelProps {
     weightSettings: IWeightSettings  // TODO: weight settings type
     mainExercises: IMainExercisesState
-    volumeSettings: IVolumeSettings
+    volumeSettings: ISetSettings
     dispatch: any
 }
 
@@ -25,7 +25,7 @@ export class ConfigurationPanel extends Component<ConfigurationPanelProps> {
 
     toggleVolumeField = (fieldname: string) => {
         const currentVal = this.props.volumeSettings[fieldname]
-        this.props.dispatch(setVolumeField(fieldname, !currentVal))
+        this.props.dispatch(setSettingsField(fieldname, !currentVal))
     }
 
     render() {
@@ -57,7 +57,7 @@ export class ConfigurationPanel extends Component<ConfigurationPanelProps> {
 const mapStateToProps = (state: AppState) => ({
     weightSettings: state.weightSettings,
     mainExercises: state.mainExercises,
-    volumeSettings: state.volumeSettings,
+    volumeSettings: state.setSettings,
 })
 
 export default connect(mapStateToProps)(ConfigurationPanel)
