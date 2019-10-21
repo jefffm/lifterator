@@ -35,7 +35,21 @@ const initialState = [
         aliases: ["back squat"],
         trainingMax: undefined,
         warmupBaseWeight: 135
-    }
+    },
+    {
+        name: "Chin Up",
+        shortname: "CHINS",
+        aliases: ["chins", "chin-ups", "chin ups"],
+        trainingMax: undefined,
+        warmupBaseWeight: 0
+    },
+    {
+        name: "Barbell Row",
+        shortname: "BB ROW",
+        aliases: ["rows"],
+        trainingMax: undefined,
+        warmupBaseWeight: 95
+    },
 ].reduce((acc: IMainExercisesState, exercise: Exercise) => {
     acc[exercise.name] = exercise
     return acc

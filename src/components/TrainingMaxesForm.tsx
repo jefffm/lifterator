@@ -31,7 +31,7 @@ const TrainingMaxesForm = (props: ITrainingMaxesFormProps) => {
                     type="number"
                     onChange={
                         (event) => [
-                            props.updateTrainingMax(exercise)(parseInt(event.currentTarget.value))
+                            props.updateTrainingMax(exercise)(parseFloat(event.currentTarget.value))
                         ]
                     }
                     InputProps={{
