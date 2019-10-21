@@ -12,10 +12,12 @@ const initialState: IWeightSettings = {
     "barWeight": 45,
     "availablePlates": {
         45: 4,
-        25: 3,
+        35: 2,
+        25: 2,
         10: 2,
         5: 1,
-        2.5: 1
+        2.5: 1,
+        1.25: 1,
     },
 }
 

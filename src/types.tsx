@@ -16,7 +16,9 @@ export const INTENSITY_SCHEME_DATA = {
     '3s': [0.70, 0.80, 0.90],
     '1s': [0.75, 0.85, 0.95],
     'deload': [0.4, 0.5, 0.6],
-    'tm-test': [0.7, 0.8, 0.9, 1]
+    'tm-test': [0.7, 0.8, 0.9, 1],
+    '3-sets': [1, 1, 1],
+    '5-sets': [1, 1, 1, 1, 1],
 }
 
 export enum SetType {
@@ -46,7 +48,7 @@ export interface IRepetitionSchemeData {
  */
 export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
     // 5s pro can also be used for deload
-    '5s pro': [
+    '3x5 pro': [
         { num: 5, setType: SetType.NORMAL },
         { num: 5, setType: SetType.NORMAL },
         { num: 5, setType: SetType.NORMAL },
@@ -71,12 +73,30 @@ export const REPETITIONS_SCHEME_DATA: IRepetitionSchemeData = {
         { num: 5, setType: SetType.NORMAL },
         { num: 5, setType: SetType.NORMAL },
         { num: 3, setType: SetType.AMRAP },
+    ],
+    'starting-strength': [
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
+    ],
+    // TODO: Each exercise needs to be able to override its own set-rep scheme
+    'starting-strength-deadlift': [
+        { num: 5, setType: SetType.NORMAL },
+    ],
+    'gslp': [
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.NORMAL },
+        { num: 5, setType: SetType.AMRAP },
+    ],
+    'gslp-deadlift': [
+        { num: 5, setType: SetType.AMRAP },
     ]
 }
 
 
 export interface ISetSettings {
     [key: string]: any
+    lastSetAmrap: boolean
     firstSetLastFives: boolean
     firstSetLastAmrap: boolean
 }

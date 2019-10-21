@@ -2,6 +2,7 @@ import { ISetSettings, SetSettingsActionTypes, SET_SETTINGS_FIELD } from "../typ
 
 
 const initialState: ISetSettings = {
+    "lastSetAmrap": false,
     "firstSetLastFives": true,
     "firstSetLastAmrap": false
 }

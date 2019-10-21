@@ -37,12 +37,20 @@ export default class WorkoutFactory {
     getVolumeSets = (weight: number): StaticSet[] => {
         const sets: StaticSet[] = []
 
+        if (this.ctx.setSettings.lastSetAmrap) {
+            // TODO lastSetAmrap
+        }
+
         if (this.ctx.setSettings.firstSetLastFives) {
             sets.concat(
                 [5, 5, 5, 5, 5].map(
                     reps => ({ reps: reps, weight: weight })
                 )
             )
+        }
+
+        if (this.ctx.setSettings.firstSetLastAmrap) {
+            // TODO
         }
 
         return sets
