@@ -1,4 +1,4 @@
-import { round5 } from "../util/Math";
+import { roundn } from "../util/Math";
 import { Exercise } from './ExerciseProvider';
 import { isUndefined } from "util";
 import { IMainExercisesState } from '../reducers/mainExercises';
@@ -49,11 +49,11 @@ export class StartingStrengthWarmupGen extends WarmupGen {
 
 /**
  * This class implements the warmup from Beyond 531:
- * 
+ *
  * * Bar set for 10 reps
  * * Starting at your first set's weight, work backwards at increments of 10%
  * of your TM down to a "base weight"
- * 
+ *
  */
 export class BeyondWarmupGen extends WarmupGen {
     mainExercises: IMainExercisesState
@@ -89,9 +89,9 @@ export class BeyondWarmupGen extends WarmupGen {
             const numSets = Math.floor(additionalWarmupSetCount)
 
             for (var i = numSets; i > 0; i--) {
-                const nextWarmupWeight = round5(firstSetWeight - (i * step))
+                const nextWarmupWeight = roundn(firstSetWeight - (i * step), 2.5)
 
-                sets.push({ "reps": 5, "weight": nextWarmupWeight })
+                sets.push({ "reps": 5, "weight": Math.max(nextWarmupWeight, baseWeight) })
             }
         }
 

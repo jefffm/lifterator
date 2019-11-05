@@ -7,7 +7,7 @@ import { StaticSet } from './WarmupGen'
 import { ISetPrototype, IAccessoryPrototype, SetType } from '../types';
 import { isUndefined } from "util";
 import { WorkoutSetProps } from '../components/WorkoutSetRow';
-import { round5 } from "../util/Math";
+import { roundn } from "../util/Math";
 import { SetGroupProps } from "../components/WorkoutSetTable";
 import Workout from '../components/Workout';
 import WorkoutSummary, { ExerciseSummary } from '../components/WorkoutSummary';
@@ -38,7 +38,7 @@ export default class WorkoutFactory {
         const sets: StaticSet[] = []
 
         if (this.ctx.setSettings.lastSetAmrap) {
-            // TODO lastSetAmrap
+            // TODO lastSetAmrap - modify the type of the last set
         }
 
         if (this.ctx.setSettings.firstSetLastFives) {
@@ -50,7 +50,7 @@ export default class WorkoutFactory {
         }
 
         if (this.ctx.setSettings.firstSetLastAmrap) {
-            // TODO
+            // TODO - fsl amrap should add a set with amrap type
         }
 
         return sets
@@ -73,8 +73,8 @@ export default class WorkoutFactory {
                     const sets = setProtos.map(
                         function (setProto: ISetPrototype): WorkoutSetProps {
                             const setReps = setProto.reps
-                            const setWeight = round5(
-                                trainingMax * setProto.intensityPct
+                            const setWeight = roundn(
+                                trainingMax * setProto.intensityPct, 2.5
                             )
                             return {
                                 isNext: false,

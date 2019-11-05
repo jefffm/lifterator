@@ -1,3 +1,3 @@
-export function round5(x: number) {
-    return Math.ceil(x / 5) * 5
+export function roundn(x: number, n: number) {
+    return Math.ceil(x / n) * n
 }
